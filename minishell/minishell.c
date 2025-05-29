@@ -12,153 +12,144 @@
 
 #include "minishell.h"
 
-static int	count_tokens(const char *input)
+t_token	*ft_tokenize(t_token *token, char *input)
 {
-	int	count;
-	
-	count = 0;
+	t_token	*head;
+	t_token	*tail;
+	t_token	*new;
+	const char	*start;
+	char quote;
+
+	head = NULL;
+	tail = NULL;
 	while (*input)
 	{
-		while (*input == ' ') // Salta spazi iniziali
+		while (*input == ' ') // ignora spazi
 			input++;
-		if (*input == '\0')  // fine stringa
+		if (*input == '\0') // fine stringa
 			break;
-		if (*input == '\'')  // quote singola
+		new = NULL;
+		if (*input == '|') 
 		{
+			new = ft_create_token(TK_PIPE_1, input, 1);
 			input++;
-			while (*input && *input != '\'')
-				input++;
-			if (*input == '\'')
-				input++;
-			else
-				return (error("Unclosed single quote")); //Errore in caso single quote non e chiusa
-			count++;
 		}
-		else if (*input == '\"')  // quote doppia
+		else if (*input == '<')
 		{
-			input++;
-			while (*input && *input != '\"')
-				input++;
-			if (*input == '\"')
-				input++;
-			else
-				return (error("Unclosed double quote")); //Errore in caso double quote non e chiusa
-			count++;
-		}
-		else if (*input == '|' || *input == '<' || *input == '>')  // conta i metacaratteri
-		{
-			if ((*input == '<' && *(input + 1) == '<') || (*input == '>' && *(input + 1) == '>'))
+			if (*(input+1) == '<')
+			{
+				new = ft_create_token(TK_HEREDOC_5, input, 2);
 				input += 2;
-			else
+			} else 
+			{
+				new = ft_create_token(TK_REDIR_IN_2, input, 1);
 				input++;
-			count++;
+			}
 		}
-		else  // token normale
+		else if (*input == '>')
 		{
-			while (*input && *input != ' ' && *input != '\'' && *input != '\"' && *input != '|' && *input != '<' && *input != '>')
+			if (*(input+1) == '>')
+			{
+				new = ft_create_token(TK_REDIR_APPEND_4, input, 2);
+				input += 2;
+			} else 
+			{
+				new = ft_create_token(TK_REDIR_OUT_3, input, 1);
 				input++;
-			count++;
+			}
 		}
-	}
-	return (count);
-}
-
-
-static void	ft_free(char **s, int i)
-{
-	while (i-- > 0)
-		free(s[i]);
-	free(s);
-}
-
-static int	token_len(const char *input, unsigned int start)
-{
-	int	len;
-	
-	len = 0;
-	if (input[start] == '\'') // single quote
-	{
-		len++; // includi la quote iniziale
-		start++;
-		while (input[start + len - 1] && input[start + len - 1] != '\'')
-			len++;
-	}
-	else if (input[start] == '\"') // double quote
-	{
-		len++; // includi la quote iniziale
-		start++;
-		while (input[start + len - 1] && input[start + len - 1] != '\"')
-			len++;
-	}
-	else if (input[start] == '|' || input[start] == '<' || input[start] == '>')
-	{
-		if ((input[start] == '<' && input[start + 1] == '<') || (input[start] == '>' && input[start + 1] == '>'))
-			return 2;
+		else if (*input == '\'')
+		{
+			quote = *input++;
+			start = input;
+			while (*input && *input != quote)
+				input++;
+			if (*input != quote)
+				return (ft_error(token, "Unclosed quote", input), NULL);
+			new = ft_create_token(TK_S_QUOTE_6, start, input - start);
+			input++; // salta chiusura quote
+		}
+		else if (*input == '"')
+		{
+			quote = *input++;
+			start = input;
+			while (*input && *input != quote)
+				input++;
+			if (*input != quote)
+				return (ft_error(token, "Unclosed quote", input), NULL);
+			new = ft_create_token(TK_D_QUOTE_7, start, input - start);
+			input++; // salta chiusura quote
+		}
 		else
-			return 1;
+		{
+			start = input;
+			while (*input && *input != ' ' && *input != '|' &&
+					*input != '<' && *input != '>' &&
+					*input != '\'' && *input != '"')
+				input++;
+			new = ft_create_token(TK_WORD_0, start, input - start);
+		}
+		if (!new)
+			return (NULL);
+		if (!head)
+			head = new;
+		else
+			tail->next = new;
+		tail = new;
 	}
-	else
-	{
-		while (input[start + len] && input[start + len] != ' ' && input[start + len] != '\'' &&
-				input[start + len] != '\"' && input[start + len] != '|' && input[start + len] != '<' &&
-				input[start + len] != '>')
-				len++;
-	}
-	return (len);
+	return (head);
 }
 
-static char	**fill_token(char **dest, const char *input, int tokens)
+t_token	*ft_create_token(t_token_type type, const char *start, int len)
 {
-	int	i;
-	int	j;
-	int	len;
-	int	k;
+	t_token *new;
 
+	new = malloc(sizeof(t_token));
+	if (!new)
+		return NULL;
+
+	new->type = type;
+	new->value = ft_strndup(start, len);
+	new->next = NULL;
+	return new;
+}
+
+char	*ft_strndup(const char *s, size_t n)
+{
+	char	*dup;
+	size_t	i;
+
+	dup = (char *)malloc(n + 1);
+	if (!dup)
+		return (NULL);
 	i = 0;
-	j = 0;
-	while (i < tokens)
+	while (i < n && s[i])
 	{
-		while (input[j] == ' ') // Salta spazi
-			j++;
-		len = token_len(input, j);
-		dest[i] = (char *)malloc(sizeof(char) * (len + 1));
-		if (!dest[i])
-			return (ft_free(dest, i), NULL);
-		k = 0;
-		while (k < len)
-		{
-			dest[i][k] = input[j + k];
-			k++;
-		}
-		dest[i][k] = '\0';
-		j += len;
+		dup[i] = s[i];
 		i++;
 	}
-	dest[i] = NULL;
-	return (dest);
+	dup[i] = '\0';
+	return (dup);
 }
 
-char	**ft_tokenize(const char *input)
+void	ft_print_token(t_token *token)
 {
-	char	**dest;
-	int		tokens;
+	int	i;
 
-	if (!input)
-		return (NULL);
-	tokens = count_tokens(input);
-	if (tokens <= 0)
-		return (NULL);  // gestisci errore di parsing o input vuoto
-	dest = (char **)malloc(sizeof(char *) * (tokens + 1));
-	if (!dest)
-		return (NULL);
-	return fill_token(dest, input, tokens);
+	i = 0;
+	while (token)
+	{
+		printf("Token[%d]: Type=%d, Value='%s'\n", i++, token->type, token->value);
+		token = token->next;
+	}
 }
 
-int	main(int argc, char **argv, char ** envp)
+int	main(void)
 {
 	char	*input;
-	char	**tokens;
-
+	t_token *token;
+	
+	token = NULL;
 	while (1)
 	{
 		input = readline("minishell$ "); // Se l’utente digita qualcosa e preme Invio, readline() ritorna un puntatore a una stringa allocata dinamicamente contenente quel testo (senza il carattere \n).
@@ -166,8 +157,9 @@ int	main(int argc, char **argv, char ** envp)
 			break; // il programma termina
 		if (input && *input) // se input != NULL e non vuota
 			add_history(input); // aggiungere una riga di testo alla cronologia dei comandi.
-		tokens = ft_tokenize(input); // conta i token e crear l'array 
-		ft_free_tokens(tokens);
+		token = ft_tokenize(token, input); // conta i token 
+		ft_print_token(token);
+		ft_free_token(token);
 		free(input);
 	}
 	rl_clear_history(); // NON prende parametri.

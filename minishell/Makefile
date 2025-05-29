@@ -9,7 +9,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 all: $(NAME)
 
 # Lista dei file sorgenti e oggetti
-SRCS = minishell.c
+SRCS = minishell.c minishell_error.c
 
 OBJS = $(SRCS:.c=.o)
 
