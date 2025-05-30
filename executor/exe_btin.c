@@ -77,7 +77,7 @@ int save_stdout(void)
 }
 
 
-int exe_btin(int n, char **args, t_env **env, int prev)	   		// senza fork per built-in serve fare manualmente 
+int exe_btin(int n, char **args, t_env **env, int prev)	
 {
 	if (n == CMD_PWD)
 		return exe_pwd(args, env, prev);
@@ -94,7 +94,7 @@ int main(void)
 	close(fd_out);
                            
 	char *argv[] = { "pwd", NULL }; 				// senza fork per built-in serve impostare manualmente nodi ed env
-	t_env *env_list = NULL;
+	t_env *env_list = NULL;						// impostati arbitrariamente args e env
 	exe_btin(CMD_PWD, argv + 1, &env_list, 0);
 
 	switch_fd(clone_stdout, 1);     				// ripristina stdout alla copia fatta con dup2
