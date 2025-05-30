@@ -49,6 +49,7 @@ typedef enum e_token_type
 	TK_HEREDOC_5,  	// <<
 	TK_S_QUOTE_6, // ' delimitatore (potresti usarlo o gestire quote nel lexer stesso)
 	TK_D_QUOTE_7,  // " delimitatore (potresti usarlo o gestire quote nel lexer stesso)
+	TK_DOLLAR_8, // $ o $VAR
 } t_token_type;
 
 typedef struct s_token 
