@@ -63,7 +63,7 @@ int	open_outfile(const char *filename)                      	// O_CREAT	Se il fi
 
 int save_stdout(void)
 {
-	int clone = dup(1); du
+	int clone = dup(1);
 	if (clone == -1)
 	{
 		perror("dup stdout");
