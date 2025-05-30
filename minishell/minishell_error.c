@@ -12,11 +12,11 @@
 
 #include "minishell.h"
 
-void	ft_error(t_token *token, char *msg, char *input)
+void	ft_error(t_token *token, char *msg)
 {
 	ft_putstr(msg);
 	ft_free_token(token);
-	free(input);
+	rl_clear_history();
 	exit(1);
 }
 
@@ -35,8 +35,8 @@ void	ft_putstr(char *str)
 
 void	ft_free_token(t_token *token)
 {
-	t_token *tmp;
-	
+	t_token	*tmp;
+
 	while (token)
 	{
 		tmp = token;

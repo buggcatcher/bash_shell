@@ -74,13 +74,23 @@ typedef struct s_node
 } t_node;
 
 // minishell.c
-t_token	*ft_tokenize(t_token *token, char *input);
-t_token	*ft_create_token(t_token_type type, const char *start, int len);
 void	ft_print_token(t_token *token);
+
+// minishell_tokenize.c
+t_token	*ft_tokenize(t_token *token, char *input);
+t_token *ft_get_token(t_token *token, char **input, t_token **new);
+t_token	*ft_create_token(t_token_type type, const char *start, int len);
 char	*ft_strndup(const char *s, size_t n);
 
+// minishell_token_type.c
+t_token	*ft_pipe(t_token **new, char **input);
+t_token	*ft_redher(t_token **new, char **input);
+t_token	*ft_redred(t_token **new, char **input);
+t_token	*ft_squote(t_token *token, t_token **new, char **input);
+t_token	*ft_dquote(t_token *token, t_token **new, char **input);
+
 // minishell_error.c
-void	ft_error(t_token *token, char *msg, char *input);
+void	ft_error(t_token *token, char *msg);
 void	ft_putstr(char *str);
 void	ft_free_token(t_token *token);
 
