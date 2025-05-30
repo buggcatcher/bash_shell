@@ -30,17 +30,21 @@ typedef struct s_env {
 
 int exe_pwd(char **args, t_env **env, int prev)
 {
-	(void)args;
 	(void)env;
 	(void)prev;
 	char cwd[PATH_MAX + 1];                               		// +1 per assicurarsi \0
 
+	if (args[0] != NULL)
+	{
+		fprintf(stderr, "pwd: too many arguments\n");
+		return (1); // moeglio EXIT_FAILURE
+	}
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 		printf("%s\n", cwd);
 
 	else
 	{
-		fprintf(stderr, "pwd: %s\n", strerror(errno));
+		fprintf(stderr, "pwd: %s\n", strerror(errno));		// converte un codice errno in una stringa come "Permission denied"
 		return (1);
 	}
 	return (0);
