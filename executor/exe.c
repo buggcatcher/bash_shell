@@ -354,10 +354,10 @@ int env_size(t_env *env) {
  * Il file di heredoc viene già preconfigurato dal parser e usato direttamente.
  * Se un redirect fallisce, stampa errore e ritorna 1.
  */
-int apply_redirects(t_redir *red) {
+int apply_redirects(t_redir *red)
+{
     int fd;
     
-
     while (red) {
         if (red->type == R_IN)
             fd = open(red->file, O_RDONLY);
