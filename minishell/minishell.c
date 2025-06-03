@@ -12,6 +12,14 @@
 
 #include "minishell.h"
 
+int	exit_status = 0; //Lo aggiorni dopo l'esecuzione di un comando, per esempio:
+
+// int status;
+// waitpid(pid, &status, 0);
+// if (WIFEXITED(status))
+// 	exit_status = WEXITSTATUS(status);  // aggiorna il valore globale
+
+
 // funzione per testare che controlla i token (DA RIMUOVERE)
 void	ft_print_token(t_token *token)
 {
@@ -29,7 +37,7 @@ int	main(void)
 {
 	char	*input;
 	t_token	*token;
-	
+
 	token = NULL;
 	while (1)
 	{

@@ -25,6 +25,8 @@
 #include <string.h>              // strerror
 #include <termios.h>             // tcsetattr, tcgetattr
 
+extern int	exit_status;
+
 // typedef enum e_token_type 
 // {
 // 	TK_WORD_0,     	// qualunque parola non speciale (comando, opzione, argomento)
@@ -81,7 +83,10 @@ void	ft_print_token(t_token *token);
 t_token	*ft_tokenize(t_token *token, char *input);
 t_token *ft_get_token(t_token *token, char **input, t_token **new);
 t_token	*ft_create_token(t_token_type type, const char *start, int len);
-char	*ft_strndup(const char *s, size_t n);
+t_token *ft_word(t_token **new, char **input);
+int		ft_check_var(char **input);
+char	*ft_create_var(char *buffer, char **input);
+char	*ft_expand_var(char **input);
 
 // minishell_token_type.c
 t_token	*ft_pipe(t_token **new, char **input);
@@ -94,6 +99,18 @@ t_token	*ft_dquote(t_token *token, t_token **new, char **input);
 void	ft_error(t_token *token, char *msg);
 void	ft_putstr(char *str);
 void	ft_free_token(t_token *token);
+
+// minishell_utils.c
+size_t	ft_strlen(const char *a);
+char	*ft_strndup(const char *s, size_t n);
+char	*ft_strdup(const char *s);
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_append_char(const char *s, char c);
+
+// minishell_itoa.c
+char	*ft_char(char *s, unsigned int number, long int len);
+int		ft_nlen(int n);
+char	*ft_itoa(int n);
 
 
 #endif

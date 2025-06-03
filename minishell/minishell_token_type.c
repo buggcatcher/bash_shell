@@ -58,23 +58,63 @@ t_token	*ft_squote(t_token *token, t_token **new, char **input)
 	while (**input && **input != '\'')
 		(*input)++;
 	if (**input != '\'')
+	{
+		(*input)++;
 		return (ft_error(token, "Unclosed single quote"), NULL);
+	}
 	*new = ft_create_token(TK_S_QUOTE_6, start, *input - start);
 	(*input)++;
 	return (*new);
 }
 
+// t_token	*ft_dquote(t_token *token, t_token **new, char **input)
+// {
+// 	const char	*start;
+// 	int			var;
+
+// 	(*input)++;
+// 	start = *input;
+// 	while (**input && **input != '"')
+// 		(*input)++;
+// 	if (**input != '"')
+// 	{
+// 		(*input)++;
+// 		return (ft_error(token, "Unclosed double quote"), NULL);
+// 	}
+// 	*new = ft_create_token(TK_D_QUOTE_7, start, *input - start);
+// 	(*input)++;
+// 	return (*new);
+// }
+
 t_token	*ft_dquote(t_token *token, t_token **new, char **input)
 {
 	const char	*start;
+	char		*buffer;
+	int			var;
 
+	start = *input;
+	buffer = NULL;
 	(*input)++;
 	start = *input;
 	while (**input && **input != '"')
-		(*input)++;
+	{
+			var = ft_check_var(input);
+			buffer = ft_create_var(buffer, input);
+	}
 	if (**input != '"')
+	{
+		(*input)++;
+		free(buffer);
 		return (ft_error(token, "Unclosed double quote"), NULL);
-	*new = ft_create_token(TK_D_QUOTE_7, start, *input - start);
+	}
+	if (var == 1)
+		*new = ft_create_token(TK_D_QUOTE_7, start, *input - start);
+	else if (var == 2)
+	{
+		*new = ft_create_token(TK_DOLLAR_8, buffer, ft_strlen(buffer));
+		free(buffer);
+	}
 	(*input)++;
 	return (*new);
 }
+
