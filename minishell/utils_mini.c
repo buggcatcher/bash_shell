@@ -41,6 +41,7 @@ char	*ft_strndup(const char *s, size_t n)
 	dup[i] = '\0';
 	return (dup);
 }
+
 char	*ft_strdup(const char *s)
 {
 	char	*c;
@@ -87,30 +88,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (final);
 }
 
-// char	*ft_append_char(const char *s, char c)
-// {
-// 	int		len;
-// 	char	*new;
-// 	int		i;
-
-// 	if (!s)
-// 		return (NULL);
-// 	len = ft_strlen(s);
-// 	new = (char *)malloc(sizeof(char) * (len + 2));
-// 	if (!new)
-// 		return (NULL);
-// 	i = 0;
-// 	while (i < len)
-// 	{
-// 		new[i] = s[i];
-// 		i++;
-// 	}
-// 	new[i++] = c;
-// 	new[i] = '\0';
-// 	return (new);
-// }
-
-char	*ft_append_char(const char *s, char c)
+char	*ft_append_char(char *s, char c)
 {
 	int		len;
 	char	*new;
@@ -121,7 +99,7 @@ char	*ft_append_char(const char *s, char c)
 		new = malloc(2);
 		new[0] = c;
 		new[1] = '\0';
-		return new;
+		return (new);
 	}
 	len = ft_strlen(s);
 	new = (char *)malloc(sizeof(char) * (len + 2));
@@ -135,7 +113,8 @@ char	*ft_append_char(const char *s, char c)
 	}
 	new[i++] = c;
 	new[i] = '\0';
-	return new;
+	free(s);
+	return (new);
 }
 
 

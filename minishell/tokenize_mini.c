@@ -63,11 +63,13 @@ t_token *ft_word(t_token **new, char **input)
 
 	start = *input;
 	buffer = NULL;
+	var = 1;
 	while (**input && **input != ' ' && **input != '|' && **input != '<' && **input != '>' && 
 			**input != '\'' && **input != '"')  
 	{
-			var = ft_check_var(input);
-			buffer = ft_create_var(buffer, input);
+		if (var != 2)
+			var = ft_check_var(input);			
+		buffer = ft_create_var(buffer, input);
 	}
 	if (var == 1)
 		*new = ft_create_token(TK_WORD_0, start, *input - start);

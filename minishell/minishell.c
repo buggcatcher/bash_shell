@@ -48,8 +48,9 @@ int	main(void)
 			add_history(input); // aggiungere una riga di testo alla cronologia dei comandi.
 		token = ft_tokenize(token, input); // conta i token 
 		ft_print_token(token); // funzione per testare che controlla i token (DA RIMUOVERE)
-		ft_free_token(token);
+		ft_check_syntax(token);
 		free(input);
+		ft_free_token(token);
 	}
 	rl_clear_history(); // NON prende parametri.
 	return (0);

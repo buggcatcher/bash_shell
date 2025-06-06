@@ -27,20 +27,6 @@
 
 extern int	exit_status;
 
-// typedef enum e_token_type 
-// {
-// 	TK_WORD_0,     	// qualunque parola non speciale (comando, opzione, argomento)
-// 	TK_PIPE_1,     	// |
-// 	TK_REDIR_IN_2, 	// <
-// 	TK_REDIR_OUT_3,	// >
-// 	TK_REDIR_APPEND_4, // >>
-// 	TK_HEREDOC_5,  	// <<
-// 	TK_DOLLAR_6,   	// $VAR o $?
-// 	TK_QUOTE_7,    	// " o ' delimitatore (potresti usarlo o gestire quote nel lexer stesso)
-// 	TK_WHITESPACE_8,  // spazio, tab (usato per splitting o ignorato)
-// 	TK_EOF_9       	// fine input
-// } t_token_type;
-
 typedef enum e_token_type 
 {
 	TK_WORD_0,     	// qualunque parola non speciale (comando, opzione, argomento)
@@ -79,7 +65,7 @@ typedef struct s_node
 // minishell.c
 void	ft_print_token(t_token *token);
 
-// minishell_tokenize.c
+// tokenize_mini.c
 t_token	*ft_tokenize(t_token *token, char *input);
 t_token *ft_get_token(t_token *token, char **input, t_token **new);
 t_token	*ft_create_token(t_token_type type, const char *start, int len);
@@ -92,25 +78,29 @@ int		ft_check_var(char **input);
 char	*ft_create_var(char *buffer, char **input);
 char	*ft_expand_var(char **input);
 
-// minishell_token_type.c
+// token_type_mini.c
 t_token	*ft_pipe(t_token **new, char **input);
 t_token	*ft_redher(t_token **new, char **input);
 t_token	*ft_redred(t_token **new, char **input);
 t_token	*ft_squote(t_token *token, t_token **new, char **input);
 
-// minishell_error.c
+// syntax_check.c
+void	ft_check_syntax(t_token *token);
+int		ft_is_operator(t_token *token);
+
+// error_mini.c
 void	ft_error(t_token *token, char *msg);
 void	ft_putstr(char *str);
 void	ft_free_token(t_token *token);
 
-// minishell_utils.c
+// utils_mini.c
 size_t	ft_strlen(const char *a);
 char	*ft_strndup(const char *s, size_t n);
 char	*ft_strdup(const char *s);
 char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_append_char(const char *s, char c);
+char	*ft_append_char(char *s, char c);
 
-// minishell_itoa.c
+// itoa_mini.c
 char	*ft_char(char *s, unsigned int number, long int len);
 int		ft_nlen(int n);
 char	*ft_itoa(int n);
