@@ -54,20 +54,20 @@ void	ft_check_dquote(t_token *token, char *start)
 
 int	ft_check_var(char **input)
 {
-	char	*current;
+	char	*tmp;
 	int		start_pos;
 
 	if (**input != '$')
 		return (1); // Restituisce 1, caso di TK_WORD_0 o TK_D_QUOTE_7
-	current = *input + 1; // Puntatore al carattere dopo '$'
+	tmp = *input + 1; // Puntatore al carattere dopo '$'
 	start_pos = 0;  // Posizione relativa dopo '$'
-	if (current[start_pos] == '?')  // Caso speciale $?
+	if (tmp[start_pos] == '?')  // Caso speciale $?
 		return (2);  // Restituisce 2, caso di TK_DOLLAR_8
-	while (current[start_pos] && 
-		  ((current[start_pos] >= '0' && current[start_pos] <= '9') || 
-		   (current[start_pos] >= 'A' && current[start_pos] <= 'Z') ||
-		   (current[start_pos] >= 'a' && current[start_pos] <= 'z') || 
-		   current[start_pos] == '_'))
+	while (tmp[start_pos] && 
+		  ((tmp[start_pos] >= '0' && tmp[start_pos] <= '9') || 
+		   (tmp[start_pos] >= 'A' && tmp[start_pos] <= 'Z') ||
+		   (tmp[start_pos] >= 'a' && tmp[start_pos] <= 'z') || 
+		   tmp[start_pos] == '_'))
 		start_pos++;
 	if (start_pos == 0)  // Se non abbiamo trovato caratteri validi dopo '$'
 		return (1);  // Restituisce 1, caso di TK_WORD_0 o TK_D_QUOTE_7

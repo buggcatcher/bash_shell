@@ -37,8 +37,10 @@ int	main(void)
 {
 	char	*input;
 	t_token	*token;
+	t_node	*node;
 
 	token = NULL;
+	node = NULL;
 	while (1)
 	{
 		input = readline("minishell$ "); // Se l’utente digita qualcosa e preme Invio, readline() ritorna un puntatore a una stringa allocata dinamicamente contenente quel testo (senza il carattere \n).
@@ -49,6 +51,7 @@ int	main(void)
 		token = ft_tokenize(token, input); // conta i token 
 		ft_print_token(token); // funzione per testare che controlla i token (DA RIMUOVERE)
 		ft_check_syntax(token);
+		node = ft_node(token, node);
 		free(input);
 		ft_free_token(token);
 	}

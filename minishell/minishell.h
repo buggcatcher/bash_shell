@@ -68,7 +68,7 @@ void	ft_print_token(t_token *token);
 // tokenize_mini.c
 t_token	*ft_tokenize(t_token *token, char *input);
 t_token *ft_get_token(t_token *token, char **input, t_token **new);
-t_token	*ft_create_token(t_token_type type, const char *start, int len);
+t_token	*ft_create_token(t_token_type type, char *start, int len);
 t_token *ft_word(t_token **new, char **input);
 
 // dollar_mini.c
@@ -88,16 +88,22 @@ t_token	*ft_squote(t_token *token, t_token **new, char **input);
 void	ft_check_syntax(t_token *token);
 int		ft_is_operator(t_token *token);
 
+// node.mini.c
+t_node	*ft_create_node(t_token *token);
+void	ft_add_redirection(t_node *node, t_token *token);
+char	**ft_build_argv(t_token *start, t_token *end);
+t_node	*ft_free_nodes(t_node *head);
+
 // error_mini.c
 void	ft_error(t_token *token, char *msg);
 void	ft_putstr(char *str);
 void	ft_free_token(t_token *token);
 
 // utils_mini.c
-size_t	ft_strlen(const char *a);
-char	*ft_strndup(const char *s, size_t n);
-char	*ft_strdup(const char *s);
-char	*ft_strjoin(char const *s1, char const *s2);
+size_t	ft_strlen(char *a);
+char	*ft_strndup(char *s, size_t n);
+char	*ft_strdup(char *s);
+char	*ft_strjoin(char *s1, char *s2);
 char	*ft_append_char(char *s, char c);
 
 // itoa_mini.c

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-size_t	ft_strlen(const char *a)
+size_t	ft_strlen(char *a)
 {
 	size_t	i;
 
@@ -24,7 +24,7 @@ size_t	ft_strlen(const char *a)
 	return (i);
 }
 
-char	*ft_strndup(const char *s, size_t n)
+char	*ft_strndup(char *s, size_t n)
 {
 	char	*dup;
 	size_t	i;
@@ -42,7 +42,7 @@ char	*ft_strndup(const char *s, size_t n)
 	return (dup);
 }
 
-char	*ft_strdup(const char *s)
+char	*ft_strdup(char *s)
 {
 	char	*c;
 	size_t	i;
@@ -63,7 +63,7 @@ char	*ft_strdup(const char *s)
 	return (NULL);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*final;
 	int		i;

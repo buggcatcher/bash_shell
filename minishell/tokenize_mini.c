@@ -79,7 +79,7 @@ t_token *ft_word(t_token **new, char **input)
 	return (*new);
 }
 
-t_token	*ft_create_token(t_token_type type, const char *start, int len)
+t_token	*ft_create_token(t_token_type type, char *start, int len)
 {
 	t_token	*new;
 
