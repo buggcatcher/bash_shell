@@ -33,6 +33,56 @@ void	ft_print_token(t_token *token)
 	}
 }
 
+void	ft_print_nodes(t_node *node)
+{
+	int i;
+	int cmd_index = 0;
+	t_redir *redir;
+
+	while (node)
+	{
+		printf("Comando %d:\n", ++cmd_index);
+		if (node->argv)
+		{
+			for (i = 0; node->argv[i]; i++)
+				printf("  argv[%d]: %s\n", i, node->argv[i]);
+		}
+		else
+		{
+			printf("  (nessun argomento)\n");
+		}
+		redir = node->redirs;
+		while (redir)
+		{
+			const char *symbol;
+			switch (redir->type)
+			{
+				case TK_REDIR_IN_2:
+					symbol = "<";
+					break;
+				case TK_REDIR_OUT_3:
+					symbol = ">";
+					break;
+				case TK_REDIR_APPEND_4:
+					symbol = ">>";
+					break;
+				case TK_HEREDOC_5:
+					symbol = "<<";
+					break;
+				default:
+					symbol = "(tipo sconosciuto)";
+					break;
+			}
+			printf("  Redirect: %s %s (fd: %d)\n", symbol, redir->filename, redir->fd);
+			redir = redir->next;
+		}
+		node = node->next;
+		if (node)
+			printf("  [Pipe ->]\n");
+	}
+}
+
+
 int	main(void)
 {
 	char	*input;
@@ -51,9 +101,11 @@ int	main(void)
 		token = ft_tokenize(token, input); // conta i token 
 		ft_print_token(token); // funzione per testare che controlla i token (DA RIMUOVERE)
 		ft_check_syntax(token);
-		node = ft_node(token, node);
+		node = ft_node(token);
+		ft_print_nodes(node);
 		free(input);
 		ft_free_token(token);
+		ft_free_nodes(node);
 	}
 	rl_clear_history(); // NON prende parametri.
 	return (0);

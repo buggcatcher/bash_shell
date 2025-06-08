@@ -64,6 +64,7 @@ typedef struct s_node
 
 // minishell.c
 void	ft_print_token(t_token *token);
+void	ft_print_nodes(t_node *node);
 
 // tokenize_mini.c
 t_token	*ft_tokenize(t_token *token, char *input);
@@ -89,10 +90,17 @@ void	ft_check_syntax(t_token *token);
 int		ft_is_operator(t_token *token);
 
 // node.mini.c
-t_node	*ft_create_node(t_token *token);
+t_node	*ft_node(t_token *token);
+t_node	*ft_get_node(t_token *token);
+void	ft_create_node(t_node **head, t_node *new);
+void	ft_advance_tokens(t_token **cmd_start, t_token **tmp);
 void	ft_add_redirection(t_node *node, t_token *token);
 char	**ft_build_argv(t_token *start, t_token *end);
+int		ft_count_tokens(t_token *start, t_token *end);
+char	**populate_argv(char **argv, t_token *start, t_token *end);
 t_node	*ft_free_nodes(t_node *head);
+void	ft_free_argv(char **argv);
+void	ft_free_redirs(t_redir *redir);
 
 // error_mini.c
 void	ft_error(t_token *token, char *msg);

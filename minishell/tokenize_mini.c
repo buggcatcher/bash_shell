@@ -57,7 +57,7 @@ t_token	*ft_get_token(t_token *token, char **input, t_token **new)
 
 t_token *ft_word(t_token **new, char **input)
 {
-	const char	*start;
+	char	*start;
 	char		*buffer;
 	int			var;
 

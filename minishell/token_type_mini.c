@@ -51,7 +51,7 @@ t_token	*ft_redred(t_token **new, char **input)
 
 t_token	*ft_squote(t_token *token, t_token **new, char **input)
 {
-	const char	*start;
+	char	*start;
 
 	(*input)++;
 	start = *input;
