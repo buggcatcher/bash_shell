@@ -24,8 +24,9 @@
 #include <dirent.h>              // opendir, readdir, closedir
 #include <string.h>              // strerror
 #include <termios.h>             // tcsetattr, tcgetattr
+#include <stdbool.h>			// boolean variable
 
-extern int	exit_status;
+extern bool	exit_status;
 
 typedef enum e_token_type 
 {

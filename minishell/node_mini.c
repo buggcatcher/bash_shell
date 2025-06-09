@@ -136,7 +136,8 @@ void	ft_advance_tokens(t_token **cmd_start, t_token **tmp)
 
 void	ft_add_redirection(t_node *node, t_token *token)
 {
-	t_redir *new_redir;
+	t_redir *new_redir; //t_node fd in base a cosa c'e nella redir del nodo
+	t_redir *last;
 
 	new_redir = malloc(sizeof(t_redir));
 	if (!new_redir)
@@ -152,7 +153,7 @@ void	ft_add_redirection(t_node *node, t_token *token)
 		node->redirs = new_redir;
 	else
 	{
-		t_redir *last = node->redirs;
+		last = node->redirs;
 		while (last->next)
 			last = last->next;
 		last->next = new_redir;

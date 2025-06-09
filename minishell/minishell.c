@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	exit_status = 0; //Lo aggiorni dopo l'esecuzione di un comando, per esempio:
+bool	exit_status = false; //Lo aggiorni dopo l'esecuzione di un comando, per esempio:
 
 // int status;
 // waitpid(pid, &status, 0);
