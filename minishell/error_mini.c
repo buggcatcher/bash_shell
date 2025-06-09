@@ -33,15 +33,4 @@ void	ft_putstr(char *str)
 	write(2, "\n", 1);
 }
 
-void	ft_free_token(t_token *token)
-{
-	t_token	*tmp;
 
-	while (token)
-	{
-		tmp = token;
-		token = token->next;
-		free(tmp->value);
-		free(tmp);
-	}
-}

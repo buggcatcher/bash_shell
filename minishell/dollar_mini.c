@@ -34,7 +34,8 @@ t_token	*ft_dquote(t_token *token, t_token **new, char **input)
 		*new = ft_create_token(TK_D_QUOTE_7, start, *input - start);
 	else if (var == 2)
 		*new = ft_create_token(TK_DOLLAR_8, buffer, ft_strlen(buffer));
-	free(buffer);
+	if (buffer)
+		free(buffer);
 	(*input)++;
 	return (*new);
 }
@@ -78,6 +79,7 @@ int	ft_check_var(char **input)
 char	*ft_create_var(char *buffer, char **input)
 {
 	char	*var;
+	char	*tmp;
 
 	if (**input == '$')
 	{
@@ -86,8 +88,10 @@ char	*ft_create_var(char *buffer, char **input)
 			buffer = var;  // Assegna direttamente se buffer è NULL
 		else
 		{
-			buffer = ft_strjoin(buffer, var);  // Concatena
+			tmp = ft_strjoin(buffer, var); // Concatena
+			free(buffer);
 			free(var);
+			buffer = tmp;
 		}
 	}
 	else

@@ -54,7 +54,7 @@ void	ft_print_nodes(t_node *node)
 		redir = node->redirs;
 		while (redir)
 		{
-			const char *symbol;
+			 char *symbol;
 			switch (redir->type)
 			{
 				case TK_REDIR_IN_2:

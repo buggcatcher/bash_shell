@@ -95,9 +95,14 @@ t_node	*ft_get_node(t_token *token);
 void	ft_create_node(t_node **head, t_node *new);
 void	ft_advance_tokens(t_token **cmd_start, t_token **tmp);
 void	ft_add_redirection(t_node *node, t_token *token);
+
+// node_argv_mini.c
 char	**ft_build_argv(t_token *start, t_token *end);
 int		ft_count_tokens(t_token *start, t_token *end);
 char	**populate_argv(char **argv, t_token *start, t_token *end);
+
+// free_mini.c
+void	ft_free_token(t_token *token);
 t_node	*ft_free_nodes(t_node *head);
 void	ft_free_argv(char **argv);
 void	ft_free_redirs(t_redir *redir);
@@ -105,7 +110,6 @@ void	ft_free_redirs(t_redir *redir);
 // error_mini.c
 void	ft_error(t_token *token, char *msg);
 void	ft_putstr(char *str);
-void	ft_free_token(t_token *token);
 
 // utils_mini.c
 size_t	ft_strlen(char *a);
