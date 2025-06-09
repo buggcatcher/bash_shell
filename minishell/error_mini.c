@@ -32,5 +32,3 @@ void	ft_putstr(char *str)
 	}
 	write(2, "\n", 1);
 }
-
-

@@ -98,11 +98,24 @@ int	main(void)
 			break; // il programma termina
 		if (input && *input) // se input != NULL e non vuota
 			add_history(input); // aggiungere una riga di testo alla cronologia dei comandi.
-		token = ft_tokenize(token, input); // conta i token 
+		token = ft_tokenize(token, input);
+		if (!token) // conta i token 
+		{
+			ft_free_token(token);
+			rl_clear_history();
+			exit(1);
+		}
 		ft_print_token(token); // funzione per testare che controlla i token (DA RIMUOVERE)
 		ft_check_syntax(token);
 		node = ft_node(token);
 		ft_print_nodes(node);
+		if (ft_handle_out_append(node) == -1 || ft_handle_in(node) == -1) // per testare se il redirect funziona, ma devono essere fatti nel processo figlio
+		{
+			ft_free_nodes(node);
+			ft_free_token(token);
+			rl_clear_history();
+			exit(1);
+		}
 		free(input);
 		ft_free_token(token);
 		ft_free_nodes(node);

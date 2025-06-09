@@ -25,6 +25,7 @@
 #include <string.h>              // strerror
 #include <termios.h>             // tcsetattr, tcgetattr
 #include <stdbool.h>			// boolean variable
+#include <fcntl.h>				// open, O_RDONLY, O_WRONLY, O_CREAT, ecc.
 
 extern bool	exit_status;
 
@@ -101,6 +102,10 @@ void	ft_add_redirection(t_node *node, t_token *token);
 char	**ft_build_argv(t_token *start, t_token *end);
 int		ft_count_tokens(t_token *start, t_token *end);
 char	**populate_argv(char **argv, t_token *start, t_token *end);
+
+// redirections_mini.c
+int		ft_handle_out_append(t_node *node);
+int		ft_handle_in(t_node *node);
 
 // free_mini.c
 void	ft_free_token(t_token *token);
