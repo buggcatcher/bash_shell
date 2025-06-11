@@ -10,7 +10,7 @@ void set_env_var(t_env **env,  char *key,  char *value)
 
 	while (cur)
 	{
-		if (strcmp(cur->key, key) == 0) //ft_
+		if (ft_strcmp(cur->key, key) == 0) //ft_
 		{
 			free(cur->value);
 			cur->value = ft_strdup_m(value);
@@ -85,7 +85,6 @@ int exe_pwd(char **args, t_env **env)
 }	
 
 /**
- * is_parent_builtin:
  * Ritorna 1 se il comando deve essere eseguito nel processo padre.
  * Questi comandi modificano lo stato della shell e devono essere
  * eseguiti solo se sono l'ultimo della pipe (senza next).
@@ -93,10 +92,10 @@ int exe_pwd(char **args, t_env **env)
 int is_parent_builtin(char *cmd)
 {
     if (!cmd) return 0;
-    return (!strcmp(cmd, "cd") || 
-            !strcmp(cmd, "export") || 
-            !strcmp(cmd, "unset") || 
-            !strcmp(cmd, "exit"));
+    return (!ft_strcmp(cmd, "cd") || 
+            !ft_strcmp(cmd, "export") || 
+            !ft_strcmp(cmd, "unset") || 
+            !ft_strcmp(cmd, "exit"));
 }
 
 /**
@@ -107,14 +106,12 @@ int is_parent_builtin(char *cmd)
 int is_child_builtin(char *cmd)
 {
     if (!cmd) return 0;
-    return (!strcmp(cmd, "echo") || 
-            !strcmp(cmd, "pwd") || 
-            !strcmp(cmd, "env"));
+    return (!ft_strcmp(cmd, "echo") || 
+            !ft_strcmp(cmd, "pwd") || 
+            !ft_strcmp(cmd, "env"));
 }
 
 /**
- * should_execute_in_parent:
- * Determina se il comando deve essere eseguito nel processo padre.
  * Un builtin viene eseguito nel padre solo SE:
  * 1. È un parent_builtin (cd, export, unset, exit)
  * 2. È l'ultimo comando della pipe (node->next == NULL)
@@ -144,7 +141,7 @@ t_env *find_env_node(t_env *env,  char *key)
 {
     while (env)
     {
-        if (strcmp(env->key, key) == 0)
+        if (ft_strcmp(env->key, key) == 0)
             return env;
         env = env->next;
     }
@@ -187,7 +184,7 @@ int remove_env_node(t_env **env,  char *key)
     
     while (current)
     {
-        if (strcmp(current->key, key) == 0)
+        if (ft_strcmp(current->key, key) == 0)
         {
             if (prev)
                 prev->next = current->next;
@@ -206,8 +203,6 @@ int remove_env_node(t_env **env,  char *key)
 }
 
 /**
- * exe_export:
- * Implementa il comando export.
  * Sintassi: export [VAR=value] [VAR2=value2] ...
  * Senza argomenti: mostra tutte le variabili esportate
  * Con argomenti: esporta le variabili specificate
@@ -322,3 +317,29 @@ int exe_env(t_env *env)
     }
     return 0;
 }
+
+
+int exe_echo(char **args)
+{
+    int i = 1;
+    int no_newline = 0;
+    
+    if (args[1] && ft_strcmp(args[1], "-n") == 0)
+    {
+        no_newline = 1;
+        i = 2;
+    }
+    while (args[i])
+    {
+        printf("%s", args[i]);
+        if (args[i + 1])
+            printf(" ");
+        i++;
+    }
+    if (!no_newline)     // Stampa newline solo se non è stata specificata l'opzione -n
+        printf("\n");
+        
+    return 0;
+}
+
+

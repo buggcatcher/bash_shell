@@ -115,7 +115,7 @@ int	main(int arc, char **argv, char **envp)
 		node = ft_node(token);
 		ft_print_nodes(node); // funzione per testare che controlla i nodi (DA RIMUOVERE)
 		executor_loop(node, &env, &status);
-		debug_print_env(env);
+		//debug_print_env(env);
 		debug_status(status);
 		free(input);
 		ft_free_token(token);

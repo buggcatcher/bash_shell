@@ -1,7 +1,6 @@
 #include "minishell.h"
 
 /**
- * resolve_path:
  * Cerca il path assoluto di un binario usando la variabile d’ambiente PATH.
  * Se il comando contiene '/', lo restituisce direttamente (path assoluto o relativo).
  * In caso contrario, prova a risolverlo in ogni directory di PATH.
@@ -84,7 +83,7 @@ char *get_env_value(char *key, t_env *env)
     if (!key)
         return NULL;
     while (env) {
-        if (strcmp(env->key, key) == 0)
+        if (ft_strcmp(env->key, key) == 0)
             return env->value;
         env = env->next;
     }
@@ -116,7 +115,6 @@ char *join_key_value(char *key, char *value)
 
 
 /**
- * exec_child:
  * Processo figlio creato da fork().
  * Imposta i pipe in/out se richiesti, applica redirect, poi esegue il comando.
  * Se è un built-in, la esegue e chiude il processo.
@@ -181,9 +179,7 @@ int spawn_forked_command(t_node *node, int pipe_fd[2], int prev_fd, t_env *env)
 }
 
 
-// NOTE - Continua da qui
 /**
- * env_to_array:
  * Converte la lista linkata di variabili d’ambiente in un array "KEY=VALUE",
  * da passare come terzo argomento a execve().
  */
@@ -214,35 +210,7 @@ char **env_to_array(t_env *env)
 }
 
 
-/// ---
-
-
-// int exe_btin(int n, char **args, t_env **env, int prev_exit)
-// {
-// 	(void)env;
-// 	(void)prev_exit;
-// 	// if (n == ECHO)
-// 	// 	return exe_echo(args);
-// 	if (n == CD)
-// 		return exe_cd(args, env);
-// 	else if (n == PWD)
-// 		return exe_pwd(args, env);
-// 	// else if (n == EXPORT)
-// 	// 	return exe_export(args, env);
-// 	// else if (n == UNSET)
-// 	// 	return exe_unset(args, env);
-// 	// else if (n == ENV)
-// 	// 	return exe_env(*env);
-// 	// else if (n == EXIT)
-// 	// 	return exe_exit(args, prev_exit, env); // può fare free e exit() direttamente
-// 	return 0;
-// }
-
-
-
-
 /**
- * exec_builtin (anchessa da estendere):
  * Esegue un built-in. `is_child` determina se uscire o no dal processo.
  * Deve ricevere l’array degli argomenti e un doppio puntatore a env.
  * Solo i built-in implementati vengono eseguiti, altrimenti ritorna 1.
@@ -254,29 +222,28 @@ int exec_builtin(char **args, t_env **env)
         return 1;
     
     // Builtin del padre
-    if (!strcmp(args[0], "cd"))
+    if (!ft_strcmp(args[0], "cd"))
         return exe_cd(args, env);
-    else if (!strcmp(args[0], "export"))
+    else if (!ft_strcmp(args[0], "export"))
         return exe_export(args, env);
-    else if (!strcmp(args[0], "unset"))
+    else if (!ft_strcmp(args[0], "unset"))
         return exe_unset(args, env);
-    //else if (!strcmp(args[0], "exit"))
+    //else if (!ft_strcmp(args[0], "exit"))
         //return exe_exit(args, env);
     
     // Builtin del figlio
-    else if (!strcmp(args[0], "pwd"))
+    else if (!ft_strcmp(args[0], "pwd"))
         return exe_pwd(args, env);
-    else if (!strcmp(args[0], "env"))
+    else if (!ft_strcmp(args[0], "env"))
         return exe_env(*env);
-    //else if (!strcmp(args[0], "echo"))
-        //return exe_echo(args);
+    else if (!ft_strcmp(args[0], "echo"))
+        return exe_echo(args);
     
     return 1;
 }
 
 
 /**
- * apply_redirects:
  * Applica in ordine la lista di redirect del nodo (>, >>, <, <<).
  * Usa dup2() per rimpiazzare STDIN/STDOUT con il filename aperto.
  * Il filename di heredoc viene già preconfigurato dal parser e usato direttamente.

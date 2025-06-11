@@ -161,6 +161,7 @@ char	*resolve_path(char *cmd, t_env *env);
 void	set_env_var(t_env **env,  char *key,  char *value);
 int		exe_cd(char **args, t_env **env);
 int		exe_pwd(char **args, t_env **env);
+int		exe_echo(char **args);
 
 int		is_parent_builtin(char *cmd);
 int		is_child_builtin(char *cmd);
@@ -197,6 +198,7 @@ char	**ft_split( char *s, char c);
 size_t	ft_strlen( char *s);
 void	free_array(char **arr);
 int		env_size(t_env *env);
+int		ft_strcmp(char *s1, char *s2);
 
 /// debug.c ///
 
