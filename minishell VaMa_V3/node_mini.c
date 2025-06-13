@@ -142,9 +142,10 @@ void	ft_add_redirection(t_node *node, t_token *token)
 	if (!new_redir)
 		return; 
 	new_redir->type = token->type;
-	new_redir->fd = -1; //di default, inizializza a -1
-	new_redir->herfd[0] = -1;
-	new_redir->herfd[1] = -1;
+	new_redir->fd[0] = -1; //di default, inizializza a -1
+	new_redir->fd[1] = -1; //di default, inizializza a -1
+	//new_redir->herfd[0] = -1;
+	//new_redir->herfd[1] = -1;
 	new_redir->next = NULL;
 	if (token->next && (token->next->type == TK_WORD_0 || token->next->type == TK_S_QUOTE_6 || token->next->type == TK_D_QUOTE_7 || token->next->type == TK_DOLLAR_8)) // Imposta il filename (se presente)
 			new_redir->filename = ft_strdup(token->next->value);

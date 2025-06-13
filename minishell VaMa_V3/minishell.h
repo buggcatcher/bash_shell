@@ -58,8 +58,7 @@ typedef struct s_redir
 {
 	int type;     	// REDIR_IN, REDIR_OUT, etc.
 	char *filename;   // nome filename da redirigere
-	int fd;       	// 0, 1, 2... o -1 per default
-	int	herfd[2];	// fd dell'heredoc
+	int fd[2];       	// 0, 1, 2... o -1 per default - fd usato solo in caso di heredoc, per questo diventa un array per gestire heredoc come una pipe
 	struct s_redir *next;
 } t_redir;
 
@@ -116,8 +115,11 @@ int		ft_handle_out_append(t_node *node);
 int		ft_handle_in(t_node *node);
 
 // heredoc_mini.c
-int	handle_heredoc(t_redir *redirs);
-int	heredoc_child_process(char *delimiter, int write_fd);
+int		ft_handle_heredoc(t_redir *redirs);
+void	ft_handle_fail_heredoc_child(int pipefd[2]);
+void	ft_handle_heredoc_child(int pipefd[2], char *delimiter);
+int		ft_heredoc_child_process(char *delimiter, int write_fd);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 // free_mini.c
 void	ft_free_token(t_token *token);

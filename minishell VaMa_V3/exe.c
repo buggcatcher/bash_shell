@@ -249,6 +249,48 @@ int exec_builtin(char **args, t_env **env)
  * Il filename di heredoc viene già preconfigurato dal parser e usato direttamente.
  * Se un redirect fallisce, stampa errore e ritorna 1.
  */
+// int apply_redirects(t_redir *redirs)
+// {
+//     int fd;
+    
+//     while (redirs) {
+//         if (redirs->type == TK_REDIR_IN_2)
+//             fd = open(redirs->filename, O_RDONLY);
+//         else if (redirs->type == TK_REDIR_OUT_3)
+//             fd = open(redirs->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+//         else if (redirs->type == TK_REDIR_APPEND_4)
+//             fd = open(redirs->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+//         else if (redirs->type == TK_HEREDOC_5)
+//             //fd = redirs->fd; // Assume already prepared
+//             handle_heredoc(redirs);
+//         else
+//             return (1);
+
+//         if (fd < 0) {
+//             perror("redirect open error");
+//             return (1);
+//         }
+// 		int target; // STDIN_FILENO;=0, STDOUT_FILENO;=1,STDERR_FILENO;=2
+// 		if (redirs->type == TK_REDIR_IN_2 || redirs->type == TK_HEREDOC_5)
+// 			target = STDIN_FILENO;
+// 		else
+// 			target = STDOUT_FILENO;
+
+// 		if (switch_fd(fd, target) != 0)
+// 		{
+// 			close(fd);
+// 			return (1);
+// 		}
+// 		// Lasciare questo commento
+// 		// chiude solo se fd è diverso da target
+// 		// if (fd != target)
+// 		// 	close(fd);
+// 		close(fd);
+//         redirs = redirs->next;
+//     }
+//     return (0);
+// }
+
 int apply_redirects(t_redir *redirs)
 {
     int fd;
@@ -261,36 +303,42 @@ int apply_redirects(t_redir *redirs)
         else if (redirs->type == TK_REDIR_APPEND_4)
             fd = open(redirs->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
         else if (redirs->type == TK_HEREDOC_5)
+        {
+            fd = -2; // AGGIUNTO DA VALE, iizializzata la variabile per evitare memry leak in caso di heredoc, inizializzata a -2 cosi da poter tenere il controddlo di errore apertura fd (-1) negli altri casi 
             //fd = redirs->fd; // Assume already prepared
-            handle_heredoc(redirs);
+            ft_handle_heredoc(redirs);
+        }
         else
             return (1);
 
-        if (fd < 0) {
+        if (fd == -1) // AGGIUNTO DA VALE, modificato il controllo da (f < 0) cosi fa poter tenere il controllo e la inizializzazione di fd in caso di heredoc
+        {
             perror("redirect open error");
             return (1);
         }
 		int target; // STDIN_FILENO;=0, STDOUT_FILENO;=1,STDERR_FILENO;=2
-		if (redirs->type == TK_REDIR_IN_2 || redirs->type == TK_HEREDOC_5)
+		if (redirs->type == TK_REDIR_IN_2)
 			target = STDIN_FILENO;
 		else
 			target = STDOUT_FILENO;
 
-		if (switch_fd(fd, target) != 0)
+        if (redirs->type == TK_REDIR_IN_2 || redirs->type == TK_REDIR_OUT_3 || redirs->type == TK_REDIR_OUT_3 || redirs->type == TK_REDIR_APPEND_4) // AGGIUNTO DA VALE per evitare memory leak in caso di heredoc
 		{
-			close(fd);
-			return (1);
-		}
+            if (switch_fd(fd, target) != 0)
+		    {
+			    close(fd);
+			    return (1);
+		    }
 		// Lasciare questo commento
 		// chiude solo se fd è diverso da target
 		// if (fd != target)
 		// 	close(fd);
 		close(fd);
+        }
         redirs = redirs->next;
     }
     return (0);
 }
-
 
 /**
  * handle_builtin_if_applicable: rinomina (next no)
