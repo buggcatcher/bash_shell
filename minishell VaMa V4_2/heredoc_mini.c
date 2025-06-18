@@ -62,7 +62,7 @@ int	ft_handle_heredoc(t_redir *redirs)
 		return (perror("Heredoc Pipe"), 1);
 	pid = fork();
 	if (pid == -1)
-		return (ft_handle_fail_heredoc_child(&pipefd[2]), 1);
+		return (ft_handle_fail_heredoc_child(pipefd), 1);
 	if (pid == 0)
 		ft_handle_heredoc_child(pipefd, redirs->filename);
 	else

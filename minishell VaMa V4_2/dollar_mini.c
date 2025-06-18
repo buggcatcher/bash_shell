@@ -23,7 +23,8 @@ t_token	*ft_dquote(t_shell_state *state, t_token *token, t_token **new, char **i
 	var = 1;
 	(*input)++;
 	start = *input;
-	ft_check_dquote(state, token, start); // MODIFICATO NUOVO
+	if (ft_check_dquote(state, token, start) == 1)
+		return (NULL); // MODIFICATO NUOVO
 	while (**input && **input != '"')
 	{
 		if (var != 2)
@@ -40,7 +41,7 @@ t_token	*ft_dquote(t_shell_state *state, t_token *token, t_token **new, char **i
 	return (*new);
 }
 
-void	ft_check_dquote(t_shell_state *state, t_token *token, char *start) // MODIFICATO NUOVO
+int	ft_check_dquote(t_shell_state *state, t_token *token, char *start) // MODIFICATO NUOVO
 {
 	int	i;
 
@@ -52,7 +53,9 @@ void	ft_check_dquote(t_shell_state *state, t_token *token, char *start) // MODIF
 		state->last_status = 2;
 		//state->syntax_error = true; si potrebbe implementare
 		ft_error(token, "Unclosed double quote");
+		return (1);
 	}
+	return (0);
 }
 
 int	ft_check_var(char **input)

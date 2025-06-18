@@ -98,7 +98,7 @@ t_token *ft_word(t_shell_state *state, t_token **new, char **input);
 
 // dollar_mini.c
 t_token	*ft_dquote(t_shell_state *state, t_token *token, t_token **new, char **input);
-void	ft_check_dquote(t_shell_state *state, t_token *token, char *start);
+int		ft_check_dquote(t_shell_state *state, t_token *token, char *start);
 int		ft_check_var(char **input);
 char	*ft_create_var(char *buffer, char **input, t_shell_state *state);
 char	*ft_expand_var(char **input, t_shell_state *state);
