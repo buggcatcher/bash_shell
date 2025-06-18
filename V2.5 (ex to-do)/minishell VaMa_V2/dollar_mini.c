@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-t_token	*ft_dquote(t_token *token, t_token **new, char **input)
+t_token *ft_dquote(t_shell_state *state, t_token **new, char **input)  // MODIFICATO
 {
 	char	*start;
 	char	*buffer;
@@ -23,12 +23,12 @@ t_token	*ft_dquote(t_token *token, t_token **new, char **input)
 	var = 1;
 	(*input)++;
 	start = *input;
-	ft_check_dquote(token, start);
+	ft_check_dquote(state, start);  // MODIFICATO
 	while (**input && **input != '"')
 	{
 		if (var != 2)
 			var = ft_check_var(input);
-		buffer = ft_create_var(buffer, input);
+		buffer = ft_create_var(buffer, input, state); // MODIFICATO
 	}
 	if (var == 1)
 		*new = ft_create_token(TK_D_QUOTE_7, start, *input - start);
@@ -40,17 +40,18 @@ t_token	*ft_dquote(t_token *token, t_token **new, char **input)
 	return (*new);
 }
 
-void	ft_check_dquote(t_token *token, char *start)
+void ft_check_dquote(t_shell_state *state, char *start) // MODIFICATO
 {
-	int	i;
-
-	i = 0;
-	while (start[i] && start[i] != '"')
-		i++;
-	if (start[i] != '"')
-	{
-		ft_error(token, "Unclosed double quote");
-	}
+    int i = 0;
+    while (start[i] && start[i] != '"')
+        i++;
+    
+    if (start[i] != '"')
+    {
+        state->last_status = 2;  
+        //state->syntax_error = true; si potrebbe implementare
+        ft_putstr_stderr("Error: unclosed double quotes\n");
+    }
 }
 
 int	ft_check_var(char **input)
@@ -76,14 +77,14 @@ int	ft_check_var(char **input)
 		return (2);  /// Restituisce 2, caso di TK_DOLLAR_8
 }
 
-char	*ft_create_var(char *buffer, char **input)
+char	*ft_create_var(char *buffer, char **input, t_shell_state *state) // MODIFICATO
 {
 	char	*var;
 	char	*tmp;
 
 	if (**input == '$')
-	{
-		var = ft_expand_var(input);  // Avanza *input in ft_expand_var
+	{							 // QUI
+		var = ft_expand_var(input, state);  // Avanza *input in ft_expand_var
 		if (!buffer)
 			buffer = var;  // Assegna direttamente se buffer è NULL
 		else
@@ -102,7 +103,7 @@ char	*ft_create_var(char *buffer, char **input)
 	return (buffer);  // Ritorna il nuovo buffer
 }
 	
-char	*ft_expand_var(char **input)
+char	*ft_expand_var(char **input, t_shell_state *state) // MODIFICATO
 {
 	char	*start;       // Puntatore all'inizio del nome della variabile
 	char	*var_name;    // Nome della variabile (es. "USER")
@@ -113,7 +114,7 @@ char	*ft_expand_var(char **input)
 	if (**input == '?')  // Caso $?
 	{
 		(*input)++; // Salta '?'
-		return (ft_itoa(exit_status));  // Restituisci lo status (es. 0), ma senza creare token
+		return (ft_itoa(state->last_status));  // Restituisci lo status (es. 0), ma senza creare token
 	}
 	while (**input && ((**input >= '0' && **input <= '9') || (**input >= 'A' && **input <= 'Z') ||// Leggi il nome della variabile, numeri, Lettere maiuscole
 			(**input >= 'a' && **input <= 'z') || **input == '_')) // Lettere minuscole, underscore

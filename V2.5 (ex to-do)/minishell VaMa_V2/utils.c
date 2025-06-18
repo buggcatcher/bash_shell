@@ -341,8 +341,7 @@ void handle_sigint(int sig)
 	rl_redisplay();                 // riscrive il prompt
 }
 
-
-// Setup handler per SIGINT e ignora SIGQUIT
+// ignora gli errori rossi é intellisense che é stupido 
 void setup_signals(void)
 {
     struct sigaction sa;
@@ -350,7 +349,7 @@ void setup_signals(void)
     // Handler SIGINT
     memset(&sa, 0, sizeof(sa));
     sa.sa_handler = handle_sigint;
-    sa.sa_flags = SA_RESTART; // readline() continua
+    //sa.sa_flags = SA_RESTART; // readline() continua
     sigemptyset(&sa.sa_mask);
     sigaction(SIGINT, &sa, NULL);
 

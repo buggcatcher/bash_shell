@@ -49,22 +49,24 @@ t_token	*ft_redred(t_token **new, char **input)
 	return (*new);
 }
 
-t_token	*ft_squote(t_token *token, t_token **new, char **input)
+t_token *ft_squote(t_shell_state *state, t_token **new, char **input) // MODIFICATO
 {
-	 char	*start;
+    char *start;
 
-	(*input)++;
-	start = *input;
-	while (**input && **input != '\'')
-		(*input)++;
-	if (**input != '\'')
-	{
-		(*input)++;
-		return (ft_error(token, "Unclosed single quote"), NULL);
-	}
-	*new = ft_create_token(TK_S_QUOTE_6, start, *input - start);
-	(*input)++;
-	return (*new);
+    (*input)++;
+    start = *input;
+    while (**input && **input != '\'')
+        (*input)++;
+    if (**input != '\'')
+    {
+        (*input)++;
+        state->last_status = 2;  // Syntax error code
+        ft_putstr_stderr("Error: unclosed single quote\n");
+        return NULL;
+    }
+    *new = ft_create_token(TK_S_QUOTE_6, start, *input - start);
+    (*input)++;
+    return (*new);
 }
 
 

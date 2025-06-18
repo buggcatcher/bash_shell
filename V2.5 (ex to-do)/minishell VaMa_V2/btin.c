@@ -29,7 +29,20 @@ void set_env_var(t_env **env,  char *key,  char *value)
 }
 
 
-//accorcia
+char	*get_cd_target(char **args, t_env *env)
+{
+	if (args[1])
+		return (args[1]);
+
+	char *home = get_env_value("HOME", env);
+	if (!home)
+	{
+		ft_putstr_stderr("cd: HOME not set\n");
+		return (NULL);
+	}
+	return (home);
+}
+
 int	exe_cd(char **args, t_env **env)
 {
 	char	oldpwd[PATH_MAX]; 
@@ -41,16 +54,9 @@ int	exe_cd(char **args, t_env **env)
 		perror("cd getcwd (OLDPWD)");
 		return (1);
 	}
-	target = args[1];
+	target = get_cd_target(args, *env);
 	if (!target)
-	{
-		target = get_env_value("HOME", *env);
-		if (!target)
-		{
-			write(2, "cd: HOME not set\n", 18);
-			return (1);
-		}
-	}
+		return (1);
 	if (chdir(target) != 0)
 	{
 		perror("cd");
@@ -63,7 +69,6 @@ int	exe_cd(char **args, t_env **env)
 	}
 	set_env_var(env, "OLDPWD", oldpwd);
 	set_env_var(env, "PWD", newpwd);
-
 	return (0);
 }
 

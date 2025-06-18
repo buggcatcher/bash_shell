@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-t_token	*ft_tokenize(t_token *token, char *input)
+t_token	*ft_tokenize(t_shell_state *state, char *input)  // MODIFICATO: aggiunto state come parametro
 {
 	t_token	*head;
 	t_token	*tail;
@@ -26,7 +26,7 @@ t_token	*ft_tokenize(t_token *token, char *input)
 			input++;
 		if (*input == '\0')
 			break ;
-		if (!ft_get_token(token, &input, &new))
+		if (!ft_get_token(state, &input, &new))  // MODIFICATO: passato state a ft_get_token
 			return (NULL);
 		if (!head)
 			head = new;
@@ -37,7 +37,7 @@ t_token	*ft_tokenize(t_token *token, char *input)
 	return (head);
 }
 
-t_token	*ft_get_token(t_token *token, char **input, t_token **new)
+t_token	*ft_get_token(t_shell_state *state, char **input, t_token **new)  // MODIFICATO
 {
 	*new = NULL;
 	if (**input == '|')
@@ -47,15 +47,15 @@ t_token	*ft_get_token(t_token *token, char **input, t_token **new)
 	else if (**input == '>')
 		*new = ft_redred(new, input);
 	else if (**input == '\'')
-		*new = ft_squote(token, new, input);
+		*new = ft_squote(state, new, input);  // MODIFICATO
 	else if (**input == '"')
-		*new = ft_dquote(token, new, input);
+		*new = ft_dquote(state, new, input);  // MODIFICATO
 	else
-		*new = ft_word(new, input);
+		*new = ft_word(state, new, input);    // MODIFICATO
 	return (*new);
 }
 
-t_token *ft_word(t_token **new, char **input)
+t_token *ft_word(t_shell_state *state, t_token **new, char **input)  // MODIFICATO
 {
 	 char	*start;
 	char		*buffer;
@@ -69,7 +69,7 @@ t_token *ft_word(t_token **new, char **input)
 	{
 		if (var != 2)
 			var = ft_check_var(input);			
-		buffer = ft_create_var(buffer, input);
+		buffer = ft_create_var(buffer, input, state);  // MODIFICATO
 	}
 	if (var == 1)
 		*new = ft_create_token(TK_WORD_0, start, *input - start);

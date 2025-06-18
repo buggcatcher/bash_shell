@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-bool	exit_status = false; //Lo aggiorni dopo l'esecuzione di un comando.
+//bool	exit_status = false; //Lo aggiorni dopo l'esecuzione di un comando.
 // per exit questo gia lo faccio con la struct. la globale serve per i segnali.
 // ovvero questa:
 volatile sig_atomic_t g_sigint = 0; 
@@ -99,26 +99,34 @@ int main(int argc, char **argv, char **envp)
     {
 		setup_signals();
         input = readline("minishell$ ");
-					     // ⚠️ da rivedere!
-		// if (g_sigint) // senza questo se premo invio dopo ctrl + C
-    	// {		     // non mi esce dal programma
-        // 	free(input); // peró se lo aggiungo poi non prende piu i comandi
-        // 	continue;
-    	// }
 
-        if (!input) // ctrl + d
-        {
-            printf("exit\n");
-            break;
-        }
+		// Gestione SIGINT dopo readline
+		if (g_sigint)
+		{
+			g_sigint = 0;
+			if (input)
+				free(input);
+			continue;  // Ignora input vuoto generato da Ctrl-C
+		}
+		if (!input) // ctrl + d
+		{
+			printf("exit\n");
+			break;
+		}
+		if (input[0] == '\0')  // linea vuota: solo invio
+		{
+			free(input);
+			continue;
+		}
+
         if (input && *input)
             add_history(input);
             
-        token = ft_tokenize(token, input);
+        token = ft_tokenize(&state, input);  // MODIFICATO: aggiunto &state
         if (!token)
         {
             ft_free_token(token);
-            rl_clear_history();
+            //rl_clear_history(); non cancellare la history qui! (vediamo se leekka se lo commento)
             exit(1);
         }
         // ft_print_token(token);
@@ -137,5 +145,5 @@ int main(int argc, char **argv, char **envp)
     cleanup_shell_state(&state); // controlla double free
     rl_clear_history();
     
-    return state.exit_code;
+    return state.exit_code;  // MODIFICATO: usato state.exit_code invece di exit_status
 }

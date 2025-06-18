@@ -30,7 +30,7 @@
 
 #define PATH_MAX 4096
 
-extern bool	exit_status; // da rimuovere. gestita modularmente con struct t_shell_state nel suo contesto
+//extern bool	exit_status; // da rimuovere. gestita modularmente con struct t_shell_state nel suo contesto
 
 extern volatile sig_atomic_t g_sigint;
 
@@ -90,23 +90,28 @@ void	ft_print_token(t_token *token);
 void	ft_print_nodes(t_node *node);
 
 // tokenize_mini.c
-t_token	*ft_tokenize(t_token *token, char *input);
-t_token *ft_get_token(t_token *token, char **input, t_token **new);
+t_token	*ft_tokenize(t_shell_state *state, char *input);
+t_token	*ft_get_token(t_shell_state *state, char **input, t_token **new);
 t_token	*ft_create_token(t_token_type type, char *start, int len);
-t_token *ft_word(t_token **new, char **input);
+t_token *ft_word(t_shell_state *state, t_token **new, char **input);
 
 // dollar_mini.c
-t_token	*ft_dquote(t_token *token, t_token **new, char **input);
-void	ft_check_dquote(t_token *token, char *start);
+t_token *ft_dquote(t_shell_state *state, t_token **new, char **input);
+
+// token non utilizzato nella logica
+//void	ft_check_dquote(t_token *token, char *start);
+// sostituito con:
+void ft_check_dquote(t_shell_state *state, char *start);
+
 int		ft_check_var(char **input);
-char	*ft_create_var(char *buffer, char **input);
-char	*ft_expand_var(char **input);
+char	*ft_create_var(char *buffer, char **input, t_shell_state *state);
+char	*ft_expand_var(char **input, t_shell_state *state);
 
 // token_type_mini.c
 t_token	*ft_pipe(t_token **new, char **input);
 t_token	*ft_redher(t_token **new, char **input);
 t_token	*ft_redred(t_token **new, char **input);
-t_token	*ft_squote(t_token *token, t_token **new, char **input);
+t_token *ft_squote(t_shell_state *state, t_token **new, char **input);
 
 // syntax_check.c
 void	ft_check_syntax(t_token *token);
@@ -172,6 +177,7 @@ int		executor_loop(t_node *node, t_shell_state *state);
 
 // === btin.c === //
 void	set_env_var(t_env **env,  char *key,  char *value);
+char	*get_cd_target(char **args, t_env *env);
 int		exe_cd(char **args, t_env **env);
 int		exe_pwd(char **args, t_env **env);
 int		exe_echo(char **args);
