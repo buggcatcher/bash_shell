@@ -31,7 +31,7 @@
 
 #define PATH_MAX 4096
 
-extern bool	exit_status; // da rimuovere. gestita modularmente con struct t_shell_state nel suo contesto
+// extern bool	exit_status; // da rimuovere. gestita modularmente con struct t_shell_state nel suo contesto
 
 extern volatile sig_atomic_t g_sigint;
 
