@@ -49,6 +49,24 @@ t_token	*ft_redred(t_token **new, char **input)
 	return (*new);
 }
 
+// t_token	*ft_squote(t_token *token, t_token **new, char **input)
+// {
+// 	 char	*start;
+
+// 	(*input)++;
+// 	start = *input;
+// 	while (**input && **input != '\'')
+// 		(*input)++;
+// 	if (**input != '\'')
+// 	{
+// 		(*input)++;
+// 		return (ft_error(token, "Unclosed single quote"), NULL);
+// 	}
+// 	*new = ft_create_token(TK_S_QUOTE_6, start, *input - start);
+// 	(*input)++;
+// 	return (*new);
+// }
+
 t_token	*ft_squote(t_token *token, t_token **new, char **input)
 {
 	 char	*start;
@@ -60,11 +78,12 @@ t_token	*ft_squote(t_token *token, t_token **new, char **input)
 	if (**input != '\'')
 	{
 		(*input)++;
-		return (ft_error(token, "Unclosed single quote"), NULL);
+		return (ft_putstr_stderr("Unclosed single quote\n"), NULL);
 	}
 	*new = ft_create_token(TK_S_QUOTE_6, start, *input - start);
 	(*input)++;
 	return (*new);
+	ft_error(token, "Unclosed single quote");
 }
 
 t_token	*ft_dquote(t_shell_state *state, t_token *token, t_token **new, char **input)

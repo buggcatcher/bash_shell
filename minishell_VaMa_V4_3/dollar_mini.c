@@ -12,6 +12,23 @@
 
 #include "minishell.h"
 
+// int	ft_check_dquote(t_shell_state *state, t_token *token, char *start) // MODIFICATO NUOVO
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (start[i] && start[i] != '"')
+// 		i++;
+// 	if (start[i] != '"')
+// 	{
+// 		state->last_status = 2;
+// 		//state->syntax_error = true; si potrebbe implementare
+// 		ft_error(token, "Unclosed double quote");
+// 		return (1);
+// 	}
+// 	return (0);
+// }
+
 int	ft_check_dquote(t_shell_state *state, t_token *token, char *start) // MODIFICATO NUOVO
 {
 	int	i;
@@ -23,10 +40,11 @@ int	ft_check_dquote(t_shell_state *state, t_token *token, char *start) // MODIFI
 	{
 		state->last_status = 2;
 		//state->syntax_error = true; si potrebbe implementare
-		ft_error(token, "Unclosed double quote");
+		ft_putstr_stderr("Unclosed double quote\n");
 		return (1);
 	}
 	return (0);
+	ft_error(token, "Unclosed double quote");
 }
 
 int	ft_check_var(char **input)
