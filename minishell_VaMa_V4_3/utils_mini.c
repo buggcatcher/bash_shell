@@ -29,6 +29,8 @@ char	*ft_strndup(char *s, size_t n)
 	char	*dup;
 	size_t	i;
 
+	if (!s)
+		return (NULL);
 	dup = (char *)malloc(n + 1);
 	if (!dup)
 		return (NULL);

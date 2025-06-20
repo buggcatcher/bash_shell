@@ -15,7 +15,14 @@ char *resolve_path(char *cmd, t_env *env)
 
 	//debug_path_resolution(cmd, env);
 	
-    // Se contiene '/' è già un path assoluto o relativo
+   // risolve le quote NULL
+    if (cmd[0] == '\0')
+    {
+        printf("command not found\n");
+        return (NULL); // nessun comando trovato
+
+    }
+     // Se contiene '/' è già un path assoluto o relativo
     if (ft_strchr(cmd, '/')) 
         return (ft_strdup(cmd));
 

@@ -91,4 +91,3 @@ t_token	*ft_create_token(t_token_type type, char *start, int len)
 	new->next = NULL;
 	return (new);
 }
-

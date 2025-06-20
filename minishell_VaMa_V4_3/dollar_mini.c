@@ -32,6 +32,7 @@
 int	ft_check_dquote(t_shell_state *state, t_token *token, char *start) // MODIFICATO NUOVO
 {
 	int	i;
+	(void)token;
 
 	i = 0;
 	while (start[i] && start[i] != '"')
@@ -44,7 +45,7 @@ int	ft_check_dquote(t_shell_state *state, t_token *token, char *start) // MODIFI
 		return (1);
 	}
 	return (0);
-	ft_error(token, "Unclosed double quote");
+	//ft_error(token, "Unclosed double quote");
 }
 
 int	ft_check_var(char **input)

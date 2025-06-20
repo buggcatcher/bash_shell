@@ -69,7 +69,8 @@ t_token	*ft_redred(t_token **new, char **input)
 
 t_token	*ft_squote(t_token *token, t_token **new, char **input)
 {
-	 char	*start;
+	char	*start;
+	(void)token;
 
 	(*input)++;
 	start = *input;
@@ -83,7 +84,7 @@ t_token	*ft_squote(t_token *token, t_token **new, char **input)
 	*new = ft_create_token(TK_S_QUOTE_6, start, *input - start);
 	(*input)++;
 	return (*new);
-	ft_error(token, "Unclosed single quote");
+	//ft_error(token, "Unclosed single quote");
 }
 
 t_token	*ft_dquote(t_shell_state *state, t_token *token, t_token **new, char **input)
@@ -114,5 +115,3 @@ t_token	*ft_dquote(t_shell_state *state, t_token *token, t_token **new, char **i
 	(*input)++;
 	return (*new);
 }
-
-
