@@ -84,8 +84,8 @@ typedef struct s_shell_state
     int last_status;        // Exit code dell'ultimo comando (per $?)
     int should_exit;        // Flag per uscire dal main loop
     int exit_code;          // Codice di uscita finale per exit()
-	t_env	*myenv;			// puntatore alla lista env per cercare le nuove variabili AGGIUNTO DA VALE
-} t_shell_state;
+	//t_env	*myenv;			// puntatore alla lista env per cercare le nuove variabili AGGIUNTO DA VALE
+} t_shell_state;			// serviva per esportare? bho comunque punta alla stessa cosa e ora non ce n'é bisogno.
 
 // minishell.c
 void	ft_print_token(t_token *token);
@@ -200,17 +200,17 @@ int		exe_env(t_env *env);
 int		exe_exit(char **args, t_shell_state *state);
 
 
-/// == utils.c == ///
-// --- fd 
+/// === utils.c === ///
+/// --- fd 
 int		switch_fd(int from, int to);
 int		save_fd(int fd);
 int		save_stdout(void);
 int		open_outfile( char *filename);
-// --- memory 
+/// --- memory 
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t n_elem, size_t size);
 void	*safe_alloc(size_t n_elem, size_t size,  char *desc);
-// --- libfx 
+/// --- libfx 
 char	*ft_strchr( char *s, int c);
 char	*ft_strjoin_m( char *s1,  char *s2);
 char	*ft_strdup_m( char *s);
@@ -222,9 +222,11 @@ int		ft_strcmp(char *s1, char *s2);
 int		is_numeric(const char *str);
 long	ft_strtol(const char *str, char **endptr);
 void	ft_putstr_stderr(char *s);
+/// --- signals
 void	handle_sigint(int sig);
 void	setup_signals(void);
-
+void disable_signals(void);
+void free_env_list(t_env *env);
 
 
 /// debug.c ///

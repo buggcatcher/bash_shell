@@ -341,6 +341,11 @@ void handle_sigint(int sig)
 	rl_redisplay();                 // riscrive il prompt
 }
 
+void disable_signals(void)
+{
+    signal(SIGINT, SIG_DFL);
+    signal(SIGQUIT, SIG_DFL);
+}
 
 // Setup handler per SIGINT e ignora SIGQUIT
 void setup_signals(void)
@@ -348,13 +353,32 @@ void setup_signals(void)
     struct sigaction sa;
 
     // Handler SIGINT
-    memset(&sa, 0, sizeof(sa));
-    sa.sa_handler = handle_sigint;
-    sa.sa_flags = SA_RESTART; // readline() continua
     sigemptyset(&sa.sa_mask);
+    sa.sa_handler = handle_sigint;
+    sa.sa_flags = 0;
     sigaction(SIGINT, &sa, NULL);
 
     // Ignora SIGQUIT
+    sigemptyset(&sa.sa_mask);
     sa.sa_handler = SIG_IGN;
+    sa.sa_flags = 0;
     sigaction(SIGQUIT, &sa, NULL);
+}
+
+///-- free
+void free_env_list(t_env *env)
+{
+    t_env *current = env;
+    t_env *next;
+    
+    while (current)
+    {
+        next = current->next;
+        if (current->key)
+            free(current->key);
+        if (current->value)
+            free(current->value);
+        free(current);
+        current = next;
+    }
 }

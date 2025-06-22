@@ -94,35 +94,35 @@ int main(int argc, char **argv, char **envp)
 
 
     init_shell_state(&state, envp);
+	setup_signals();
     token = NULL;
     node = NULL;
     while (!state.should_exit)
     {
-		setup_signals();
-        input = readline("minishell$ ");
-
-		// Gestione SIGINT dopo readline
-		if (g_sigint) // NUOVO 
-		{
-			g_sigint = 0;
-			if (input)
-				free(input);
-			continue;  // Ignora input vuoto generato da Ctrl-C
-		}
-        if (!input) // ctrl + d
+        g_sigint = 0;
+        input = readline("minishell$ "); // prima controllo sull input poi controllo su readline
+		if (!input) // ctrl + d 
         {
             printf("exit\n");
             break;
         }
-
 		if (input[0] == '\0')  // linea vuota: solo invio NUOVO
 		{
 			free(input);
+			//input = NULL;
 			continue;
 		}
         if (input && *input)
             add_history(input);
-            
+        if (g_sigint) // Gestione SIGINT dopo readline
+		{
+			g_sigint = 0;
+			if (input && *input == '\0') {
+				free(input);
+				input = NULL;
+			}
+			continue;
+		}
         token = ft_tokenize(&state, token, input);
         if (!token)
         {
@@ -135,21 +135,22 @@ int main(int argc, char **argv, char **envp)
         //ft_print_token(token);
         if(ft_check_syntax(token)) // AGGIUNTO DA VALE
 		{
+			ft_free_token(token); // free nel caso di sintassi errata
 			free(input);         // // token ed history è già stato liberato dentro ft_error libero input
 			continue;
 		}
         node = ft_node(token);
         //ft_print_nodes(node);
-        
+        disable_signals();
         executor_loop(node, &state);  // cambiato &env e &status in &state
-        // debug_print_env(state.env);
+        setup_signals();
+		// debug_print_env(state.env);
         // debug_status(state.last_status);
         free(input);
-		ft_print_token(token);
+		//ft_print_token(token);
         ft_free_token(token);
         ft_free_nodes(node);
     }
-    
     cleanup_shell_state(&state); // controlla double free
     rl_clear_history();
     

@@ -430,6 +430,17 @@ t_env *init_env_from_system(char **envp)
             *equals_pos = '\0'; // Temporarily split the string
             new_node->key = ft_strdup_m(envp[i]);
             new_node->value = ft_strdup_m(equals_pos + 1);
+
+            if (!new_node->key || !new_node->value) // free se strdup fallisce
+            {
+                if (new_node->key) free(new_node->key);
+                if (new_node->value) free(new_node->value);
+                free(new_node);
+                free_env_list(env);
+                *equals_pos = '='; // Restore before returning
+                return NULL;
+            }
+
             new_node->exported = 1; // Le variabili di sistema sono esportate
             *equals_pos = '='; // Restore the string
             
@@ -455,7 +466,8 @@ void cleanup_shell_state(t_shell_state *state)
     t_env *current = state->env;
     t_env *next;
     
-    while (current) {
+    while (current)
+    {
         next = current->next;
         free(current->key);
         free(current->value);
