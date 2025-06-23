@@ -31,7 +31,7 @@ bool process_input(char *input, t_shell_state *state)
 	if (!token)
 		return false;
 
-	if (ft_check_syntax(token))
+	if (ft_check_syntax(token) == 1)
 	{
 		ft_free_token(token);
 		return false;

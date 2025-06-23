@@ -19,16 +19,16 @@ int	ft_check_syntax(t_token *token)
 	if (!token)
 		return (1);
 	if (ft_is_operator(token))
-		return (ft_error(token, "bash: syntax error"));
+		return (perror("bash: syntax error"), 1);
 	tmp = token;
 	while (tmp && tmp->next)
 	{
 		if (ft_is_operator(tmp) && ft_is_operator(tmp->next))
-			return (ft_error(token, "bash: syntax error"));
+			return (perror("bash: syntax error"), 1);
 		tmp = tmp->next;
 	}
 	if (ft_is_operator(tmp))
-		return (ft_error(token, "bash: syntax error"));
+		return (perror("bash: syntax error"), 1);
 	return (0);
 }
 
@@ -44,7 +44,7 @@ int	ft_is_operator(t_token *token)
 		return (1);
 	if (token->type == TK_REDIR_APPEND_4)
 		return (1);
-	if (token->type == TK_HEREDOC_5)
-		return (1);
+	// if (token->type == TK_HEREDOC_5)
+	// 	return (1);
 	return (0);
 }
