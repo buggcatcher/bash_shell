@@ -12,58 +12,48 @@
 
 #include "minishell.h"
 
-void	ft_free_token(t_token *token)
+int	get_cwd_or_error(char *buf, const char *context)
 {
-	t_token	*tmp;
-
-	while (token)
+	if (!getcwd(buf, PATH_MAX))
 	{
-		tmp = token;
-		token = token->next;
-		free(tmp->value);
-		free(tmp);
+		perror(context);
+		return (1);
 	}
+	return (0);
 }
 
-t_node	*ft_free_nodes(t_node *head)
+char	*resolve_cd_target(char **args, t_env *env)
 {
-	t_node	*tmp;
-
-	while (head)
+	if (args[1])
+		return (args[1]);
+	char *home = get_env_value("HOME", env);
+	if (!home)
 	{
-		tmp = head;
-		head = head->next;
-		ft_free_argv(tmp->argv);
-		ft_free_redirs(tmp->redirs);
-		free(tmp);
+		write(2, "cd: HOME not set\n", 18);
+		return (NULL);
 	}
-	return (NULL);
+	return (home);
 }
 
-void	ft_free_argv(char **argv)
+int	exe_cd(char **args, t_env **env)
 {
-	int	i;
+	char	oldpwd[PATH_MAX];
+	char	newpwd[PATH_MAX];
+	char	*target;
 
-	if (!argv)
-		return ;
-	i = 0;
-	while (argv[i])
+	if (get_cwd_or_error(oldpwd, "cd getcwd (OLDPWD)"))
+		return (1);
+	target = resolve_cd_target(args, *env);
+	if (!target)
+		return (1);
+	if (chdir(target) != 0)
 	{
-		free(argv[i]);
-		i++;
+		perror("cd");
+		return (1);
 	}
-	free(argv);
-}
-
-void	ft_free_redirs(t_redir *redir)
-{
-	t_redir	*next_redir;
-
-	while (redir)
-	{
-		next_redir = redir->next;
-		free(redir->filename);
-		free(redir);
-		redir = next_redir;
-	}
+	if (get_cwd_or_error(newpwd, "cd getcwd (PWD)"))
+		return (1);
+	set_env_var(env, "OLDPWD", oldpwd);
+	set_env_var(env, "PWD", newpwd);
+	return (0);
 }

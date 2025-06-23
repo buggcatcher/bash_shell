@@ -12,22 +12,12 @@
 
 #include "minishell.h"
 
-// void	ft_error(t_token *token, char *msg)
-// {
-// 	ft_putstr(msg);
-// 	ft_free_token(token);
-// 	rl_clear_history();
-// 	exit(1);
-// }
-
 int	ft_error(t_token *token, char *msg)
 {
 	ft_putstr(msg);
 	ft_free_token(token);
-	//rl_clear_history();
 	return(1);
 }
-
 
 void	ft_putstr(char *str)
 {

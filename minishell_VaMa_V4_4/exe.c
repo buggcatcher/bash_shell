@@ -15,7 +15,7 @@
 char	*resolve_path(char *cmd, t_env *env)
 {
 	char	**paths;
-    char	*path_var;
+	char	*path_var;
 	char	*full_path;
 	size_t	i;
 
@@ -128,7 +128,7 @@ void	exec_child(t_node *node, int pipe_out[2], int pipe_in, t_env *env)
 		bin = resolve_path(node->argv[0], env);
 	if (!bin)
 		exit(127);
-	*env_arr = env_to_array(env);
+	env_arr = env_to_array(env);
 	execve(bin, node->argv, env_arr);
 	perror("execve");
 	free_array(env_arr);
@@ -157,7 +157,7 @@ char	**env_to_array(t_env *env)
 	int	i;
 
 	count = env_size(env);
-	*arr = safe_alloc(count + 1, sizeof(char *), "env_to_array");
+	arr = safe_alloc(count + 1, sizeof(char *), "env_to_array");
 	if (!arr)
 		return (NULL);
 	i = 0;

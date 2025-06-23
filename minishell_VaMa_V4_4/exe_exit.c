@@ -12,58 +12,44 @@
 
 #include "minishell.h"
 
-void	ft_free_token(t_token *token)
+int	exit_numeric_error(char *arg, t_shell_state *state)
 {
-	t_token	*tmp;
-
-	while (token)
-	{
-		tmp = token;
-		token = token->next;
-		free(tmp->value);
-		free(tmp);
-	}
+	ft_putstr_stderr("exit: ");
+	ft_putstr_stderr(arg);
+	ft_putstr_stderr(": numeric argument required\n");
+	printf("exit\n");
+	state->should_exit = 1;
+	state->exit_code = 2;
+	return (2);
 }
 
-t_node	*ft_free_nodes(t_node *head)
+int	exit_too_many_args(t_shell_state *state)
 {
-	t_node	*tmp;
-
-	while (head)
-	{
-		tmp = head;
-		head = head->next;
-		ft_free_argv(tmp->argv);
-		ft_free_redirs(tmp->redirs);
-		free(tmp);
-	}
-	return (NULL);
+	ft_putstr_stderr("exit: too many arguments\n");
+	state->last_status = 1;
+	return (1);
 }
 
-void	ft_free_argv(char **argv)
+int	exe_exit(char **args, t_shell_state *state)
 {
-	int	i;
+	int		exit_code;
+	long	val;
+	char	*endptr;
 
-	if (!argv)
-		return ;
-	i = 0;
-	while (argv[i])
+	exit_code = state->last_status;
+	if (args[1])
 	{
-		free(argv[i]);
-		i++;
+		errno = 0;
+		val = ft_strtol(args[1], &endptr);
+		if (*endptr != '\0' || errno == ERANGE)
+			return (exit_numeric_error(args[1], state));
+		else if (args[2])
+			return (exit_too_many_args(state));
+		else
+			exit_code = (int)(val & 0xFF);
 	}
-	free(argv);
-}
-
-void	ft_free_redirs(t_redir *redir)
-{
-	t_redir	*next_redir;
-
-	while (redir)
-	{
-		next_redir = redir->next;
-		free(redir->filename);
-		free(redir);
-		redir = next_redir;
-	}
+	printf("exit\n");
+	state->should_exit = 1;
+	state->exit_code = exit_code;
+	return (0);
 }

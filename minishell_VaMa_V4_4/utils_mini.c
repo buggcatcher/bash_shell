@@ -106,7 +106,7 @@ char	*ft_append_char(char *s, char c)
 	len = ft_strlen_v(s);
 	new = (char *)malloc(sizeof(char) * (len + 2));
 	if (!new)
-		return NULL;
+		return (NULL);
 	i = 0;
 	while (i < len)
 	{

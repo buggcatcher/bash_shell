@@ -49,49 +49,11 @@ t_token	*ft_redred(t_token **new, char **input)
 	return (*new);
 }
 
-// t_token	*ft_squote(t_token *token, t_token **new, char **input)
-// {
-// 	 char	*start;
-
-// 	(*input)++;
-// 	start = *input;
-// 	while (**input && **input != '\'')
-// 		(*input)++;
-// 	if (**input != '\'')
-// 	{
-// 		(*input)++;
-// 		return (ft_error(token, "Unclosed single quote"), NULL);
-// 	}
-// 	*new = ft_create_token(TK_S_QUOTE_6, start, *input - start);
-// 	(*input)++;
-// 	return (*new);
-// }
-
-// t_token	*ft_squote(t_token *token, t_token **new, char **input)
-// {
-// 	char	*start;
-// 	(void)token;
-
-// 	(*input)++;
-// 	start = *input;
-// 	while (**input && **input != '\'')
-// 		(*input)++;
-// 	if (**input != '\'')
-// 	{
-// 		(*input)++;
-// 		return (ft_putstr_stderr("Unclosed single quote\n"), NULL);
-// 	}
-// 	*new = ft_create_token(TK_S_QUOTE_6, start, *input - start);
-// 	(*input)++;
-// 	return (*new);
-// 	//ft_error(token, "Unclosed single quote");
-// }
-
 t_token	*ft_squote(t_token *token, t_token **new, char **input)
 {
 	char	*start;
-	(void)token;
 
+	(void)token;
 	(*input)++;
 	start = *input;
 	while (**input && **input != '\'')
@@ -109,60 +71,31 @@ t_token	*ft_squote(t_token *token, t_token **new, char **input)
 	return (*new);
 }
 
-// t_token	*ft_dquote(t_shell_state *state, t_token *token, t_token **new, char **input)
-// {
-// 	char	*start;
-// 	char	*buffer;
-// 	int		var;
-
-// 	start = *input;
-// 	buffer = NULL;
-// 	var = 1;
-// 	(*input)++;
-// 	start = *input;
-// 	if (ft_check_dquote(state, token, start) == 1)
-// 		return (NULL); // MODIFICATO NUOVO
-// 	while (**input && **input != '"')
-// 	{
-// 		if (var != 2)
-// 			var = ft_check_var(input);
-// 		buffer = ft_create_var(buffer, input, state); // MODIFICATO NUOVO
-// 	}
-// 	if (var == 1)
-// 		*new = ft_create_token(TK_D_QUOTE_7, start, *input - start);
-// 	else if (var == 2)
-// 		*new = ft_create_token(TK_DOLLAR_8, buffer, ft_strlen_v(buffer));
-// 	if (buffer)
-// 		free(buffer);
-// 	(*input)++;
-// 	return (*new);
-// }
-
-t_token	*ft_dquote(t_shell_state *state, t_token *token, t_token **new, char **input)
+t_token	*ft_dquote(t_shell_state *s, t_token *t, t_token **n, char **i)
 {
 	char	*start;
 	char	*buffer;
 	int		var;
 
-	start = *input;
+	start = *i;
 	buffer = NULL;
 	var = 1;
-	start = ++(*input);
-	if (ft_check_dquote(state, token, start) == 1)
-		return (NULL); // MODIFICATO NUOVO
-	while (**input && **input != ' ')
+	start = ++(*i);
+	if (ft_check_dquote(s, t, start) == 1)
+		return (NULL);
+	while (**i && **i != ' ')
 	{
 		if (var != 2)
-			var = ft_check_var(input);
-		buffer = ft_create_var(buffer, input, state); // MODIFICATO NUOVO
+			var = ft_check_var(i);
+		buffer = ft_create_var(buffer, i, s);
 	}
-	(*input)--;
+	(*i)--;
 	if (var == 1)
-		*new = ft_create_token(TK_D_QUOTE_7, start, *input - start);
+		*n = ft_create_token(TK_D_QUOTE_7, start, *i - start);
 	else if (var == 2)
-		*new = ft_create_token(TK_DOLLAR_8, buffer, ft_strlen_v(buffer));
+		*n = ft_create_token(TK_DOLLAR_8, buffer, ft_strlen_v(buffer));
 	if (buffer)
 		free(buffer);
-	(*input)++;
-	return (*new);
+	(*i)++;
+	return (*n);
 }

@@ -12,58 +12,72 @@
 
 #include "minishell.h"
 
-void	ft_free_token(t_token *token)
+int	exe_pwd(char **args, t_env **env)
 {
-	t_token	*tmp;
+	char	cwd[PATH_MAX + 1];
 
-	while (token)
+	(void)args;
+	(void)env;
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
-		tmp = token;
-		token = token->next;
-		free(tmp->value);
-		free(tmp);
+		printf("%s\n", cwd);
+		return (0);
 	}
+	perror("pwd");
+	return (1);
 }
 
-t_node	*ft_free_nodes(t_node *head)
-{
-	t_node	*tmp;
-
-	while (head)
-	{
-		tmp = head;
-		head = head->next;
-		ft_free_argv(tmp->argv);
-		ft_free_redirs(tmp->redirs);
-		free(tmp);
-	}
-	return (NULL);
-}
-
-void	ft_free_argv(char **argv)
+int	exe_unset(char **args, t_env **env)
 {
 	int	i;
+	int	exit_status;
 
-	if (!argv)
-		return ;
-	i = 0;
-	while (argv[i])
+	i = 1;
+	exit_status = 0;
+	if (!args[1])
+		return (write(2, "unset: not enough arguments\n", 28), 1);
+	while (args[i])
 	{
-		free(argv[i]);
+		if (remove_env_node(env, args[i]) != 0)
+			printf("nodo non rimosso\n");
 		i++;
 	}
-	free(argv);
+	return (exit_status);
 }
 
-void	ft_free_redirs(t_redir *redir)
+int	exe_env(t_env *env)
 {
-	t_redir	*next_redir;
-
-	while (redir)
+	while (env)
 	{
-		next_redir = redir->next;
-		free(redir->filename);
-		free(redir);
-		redir = next_redir;
+		if (env->exported)
+			printf("%s=%s\n", env->key, env->value);
+		env = env->next;
 	}
+	return (0);
 }
+
+int	exe_echo(char **args)
+{
+	int	i;
+	int	no_newline;
+
+	i = 1;
+	no_newline = 0;
+	if (args[1] && ft_strcmp(args[1], "-n") == 0)
+	{
+		no_newline = 1;
+		i = 2;
+	}
+	while (args[i])
+	{
+		printf("%s", args[i]);
+		if (args[i + 1])
+			printf(" ");
+		i++;
+	}
+	if (!no_newline)
+		printf("\n");
+	return (0);
+}
+
+

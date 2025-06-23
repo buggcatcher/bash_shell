@@ -26,9 +26,9 @@ t_token	*ft_tokenize(t_shell_state *state, t_token *token, char *input)
 			input++;
 		if (*input == '\0')
 			break ;
-		if (!ft_get_token(state, token, &input, &new)) // MODIFICATO: passato state a ft_get_token NUOVO
+		if (!ft_get_token(state, token, &input, &new))
 		{
-			ft_free_token(head); // se fallisce a metá deve comunque liberare
+			ft_free_token(head);
 			return (NULL);
 		}
 		if (!head)
@@ -40,47 +40,49 @@ t_token	*ft_tokenize(t_shell_state *state, t_token *token, char *input)
 	return (head);
 }
 
-t_token	*ft_get_token(t_shell_state *state, t_token *token, char **input, t_token **new)
+t_token	*ft_get_token(t_shell_state *s, t_token *t, char **i, t_token **n)
 {
-	*new = NULL;
-	if (**input == '|')
-		*new = ft_pipe(new, input);
-	else if (**input == '<')
-		*new = ft_redher(new, input);
-	else if (**input == '>')
-		*new = ft_redred(new, input);
-	else if (**input == '\'')
-		*new = ft_squote(token, new, input); // MODIFICATO NUOVO
-	else if (**input == '"')
-		*new = ft_dquote(state, token, new, input); // MODIFICATO NUOVO
+	*n = NULL;
+	if (**i == '|')
+		*n = ft_pipe(n, i);
+	else if (**i == '<')
+		*n = ft_redher(n, i);
+	else if (**i == '>')
+		*n = ft_redred(n, i);
+	else if (**i == '\'')
+		*n = ft_squote(t, n, i);
+	else if (**i == '"')
+		*n = ft_dquote(s, t, n, i);
 	else
-		*new = ft_word(state, new, input); // MODIFICATO NUOVO
-	return (*new);
+		*n = ft_word(s, n, i);
+	return (*n);
 }
 
-t_token *ft_word(t_shell_state *state, t_token **new, char **input)
+t_token	*ft_word(t_shell_state *state, t_token **new, char **input)
 {
-    char *start = *input;
-    char *buffer = NULL;
-    int var = 1;
-    t_token *result = NULL;
+	char	*start;
+	char	*buffer;
+	int		var;
+	t_token	*result;
 
-    while (**input && **input != ' ' && **input != '|' && **input != '<' && 
-           **input != '>' && **input != '\'' && **input != '"')  
-    {
-        if (var != 2)
-            var = ft_check_var(input);            
-        buffer = ft_create_var(buffer, input, state);
-    }
-
-    if (var == 1)
-        result = ft_create_token(TK_WORD_0, start, *input - start);
-    else if (var == 2)
-        result = ft_create_token(TK_DOLLAR_8, buffer, ft_strlen_v(buffer));
-
-    free(buffer);
-    *new = result;
-    return (result);
+	start = *input;
+	buffer = NULL;
+	var = 1;
+	result = NULL;
+	while (**input && **input != ' ' && **input != '|' && **input != '<' && \
+			**input != '>' && **input != '\'' && **input != '"')
+	{
+		if (var != 2)
+			var = ft_check_var(input);
+		buffer = ft_create_var(buffer, input, state);
+	}
+	if (var == 1)
+		result = ft_create_token(TK_WORD_0, start, *input - start);
+	else if (var == 2)
+		result = ft_create_token(TK_DOLLAR_8, buffer, ft_strlen_v(buffer));
+	free(buffer);
+	*new = result;
+	return (result);
 }
 
 t_token	*ft_create_token(t_token_type type, char *start, int len)

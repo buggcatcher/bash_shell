@@ -12,27 +12,7 @@
 
 #include "minishell.h"
 
-// void	ft_check_syntax(t_token *token)
-// {
-// 	t_token	*tmp;
-
-// 	if (!token)
-// 		return ;
-// 	if (ft_is_operator(token))
-// 		return (ft_error(token, "bash: syntax error"));
-
-// 	tmp = token;
-// 	while (tmp && tmp->next)
-// 	{
-// 		if (ft_is_operator(tmp) && ft_is_operator(tmp->next))
-// 			return (ft_error(token, "bash: syntax error"));
-// 		tmp = tmp->next;
-// 	}
-// 	if (ft_is_operator(tmp))
-// 		return (ft_error(token, "bash: syntax error"));
-// }
-
-int	ft_check_syntax(t_token *token) // cambiato in modo che il programma non esce ma segnali l'errore e liberi la memoria
+int	ft_check_syntax(t_token *token)
 {
 	t_token	*tmp;
 
@@ -40,7 +20,6 @@ int	ft_check_syntax(t_token *token) // cambiato in modo che il programma non esc
 		return (1);
 	if (ft_is_operator(token))
 		return (ft_error(token, "bash: syntax error"));
-
 	tmp = token;
 	while (tmp && tmp->next)
 	{
@@ -52,7 +31,6 @@ int	ft_check_syntax(t_token *token) // cambiato in modo che il programma non esc
 		return (ft_error(token, "bash: syntax error"));
 	return (0);
 }
-
 
 int	ft_is_operator(t_token *token)
 {
@@ -70,4 +48,3 @@ int	ft_is_operator(t_token *token)
 		return (1);
 	return (0);
 }
-
