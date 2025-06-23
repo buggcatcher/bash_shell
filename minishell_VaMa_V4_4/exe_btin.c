@@ -79,5 +79,3 @@ int	exe_echo(char **args)
 		printf("\n");
 	return (0);
 }
-
-

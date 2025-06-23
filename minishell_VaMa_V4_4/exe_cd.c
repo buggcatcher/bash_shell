@@ -24,9 +24,11 @@ int	get_cwd_or_error(char *buf, const char *context)
 
 char	*resolve_cd_target(char **args, t_env *env)
 {
+	char	*home;
+
 	if (args[1])
 		return (args[1]);
-	char *home = get_env_value("HOME", env);
+	home = get_env_value("HOME", env);
 	if (!home)
 	{
 		write(2, "cd: HOME not set\n", 18);

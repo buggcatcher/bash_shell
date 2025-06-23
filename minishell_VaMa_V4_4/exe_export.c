@@ -1,10 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vloddo <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
+/*   Updated: 2025/05/28 12:50:15 by vloddo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	handle_export_without_value(char *arg, t_env **env)
 {
-	t_env	*existing = find_env_node(*env, arg);
+	t_env	*existing;
 	t_env	*new_node;
 
+	existing = find_env_node(*env, arg);
 	if (existing)
 		existing->exported = 1;
 	else
@@ -49,8 +62,9 @@ void	handle_key_value_export(char *arg, char *equals, t_env **env)
 
 void	handle_single_export(char *arg, t_env **env)
 {
-	char	*equals = strchr(arg, '=');
+	char	*equals;
 
+	equals = strchr(arg, '=');
 	if (equals)
 		handle_key_value_export(arg, equals, env);
 	else

@@ -42,5 +42,3 @@ int	is_builtin(char *cmd)
 		return (0);
 	return (is_parent_builtin(cmd) || is_child_builtin(cmd));
 }
-
-

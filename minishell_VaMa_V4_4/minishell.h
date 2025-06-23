@@ -203,7 +203,6 @@ int		exit_numeric_error(char *arg, t_shell_state *state);
 int		exit_too_many_args(t_shell_state *state);
 int		exe_exit(char **args, t_shell_state *state);
 
-
 /// === utils.c === ///
 /// --- fd 
 int		switch_fd(int from, int to);

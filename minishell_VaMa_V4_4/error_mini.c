@@ -16,7 +16,7 @@ int	ft_error(t_token *token, char *msg)
 {
 	ft_putstr(msg);
 	ft_free_token(token);
-	return(1);
+	return (1);
 }
 
 void	ft_putstr(char *str)
