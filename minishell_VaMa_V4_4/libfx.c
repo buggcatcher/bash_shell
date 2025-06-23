@@ -12,73 +12,63 @@
 
 #include "minishell.h"
 
-void	ft_free_token(t_token *token)
+int	env_size(t_env *env)
 {
-	t_token	*tmp;
+	int	count;
 
-	while (token)
+	count = 0;
+	while (env)
 	{
-		tmp = token;
-		token = token->next;
-		free(tmp->value);
-		free(tmp);
+		if (env->exported)
+			count++;
+		env = env->next;
 	}
+	return (count);
 }
 
-t_node	*ft_free_nodes(t_node *head)
+int	is_numeric(const char *str)
 {
-	t_node	*tmp;
-
-	while (head)
+	if (!str || *str == '\0')
+		return (0);
+	if (*str == '-' || *str == '+')
+		str++;
+	while (*str)
 	{
-		tmp = head;
-		head = head->next;
-		ft_free_argv(tmp->argv);
-		ft_free_redirs(tmp->redirs);
-		free(tmp);
+		if (*str < '0' || *str > '9')
+			return (0);
+		str++;
 	}
-	return (NULL);
+	return (1);
 }
 
-void	ft_free_argv(char **argv)
+long	ft_strtol(const char *str, char **endptr)
 {
-	int	i;
+	int		sign;
+	long	result;
 
-	if (!argv)
+	sign = 1;
+	result = 0;
+	while ((*str >= 9 && *str <= 13) || *str == ' ')
+		str++;
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			sign = -1;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		result = result * 10 + (*str - '0');
+		str++;
+	}
+	if (endptr)
+		*endptr = (char *)str;
+	return (sign * result);
+}
+
+void	ft_putstr_stderr(char *s)
+{
+	if (!s)
 		return ;
-	i = 0;
-	while (argv[i])
-	{
-		free(argv[i]);
-		i++;
-	}
-	free(argv);
-}
-
-void	ft_free_redirs(t_redir *redir)
-{
-	t_redir	*next_redir;
-
-	while (redir)
-	{
-		next_redir = redir->next;
-		free(redir->filename);
-		free(redir);
-		redir = next_redir;
-	}
-}
-
-void	free_array(char **arr)
-{
-	int	i;
-
-	i = 0;
-	if (!arr)
-		return ;
-	while (arr[i])
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
+	write(2, s, ft_strlen(s));
 }

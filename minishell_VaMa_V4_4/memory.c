@@ -12,73 +12,37 @@
 
 #include "minishell.h"
 
-void	ft_free_token(t_token *token)
+void	ft_bzero(void *s, size_t n)
 {
-	t_token	*tmp;
-
-	while (token)
-	{
-		tmp = token;
-		token = token->next;
-		free(tmp->value);
-		free(tmp);
-	}
-}
-
-t_node	*ft_free_nodes(t_node *head)
-{
-	t_node	*tmp;
-
-	while (head)
-	{
-		tmp = head;
-		head = head->next;
-		ft_free_argv(tmp->argv);
-		ft_free_redirs(tmp->redirs);
-		free(tmp);
-	}
-	return (NULL);
-}
-
-void	ft_free_argv(char **argv)
-{
-	int	i;
-
-	if (!argv)
-		return ;
-	i = 0;
-	while (argv[i])
-	{
-		free(argv[i]);
-		i++;
-	}
-	free(argv);
-}
-
-void	ft_free_redirs(t_redir *redir)
-{
-	t_redir	*next_redir;
-
-	while (redir)
-	{
-		next_redir = redir->next;
-		free(redir->filename);
-		free(redir);
-		redir = next_redir;
-	}
-}
-
-void	free_array(char **arr)
-{
-	int	i;
+	size_t	i;
+	char	*str;
 
 	i = 0;
-	if (!arr)
-		return ;
-	while (arr[i])
+	str = s;
+	while (i < n)
+		str[i++] = '\0';
+}
+
+void	*ft_calloc(size_t n_elem, size_t size)
+{
+	void	*array;
+
+	array = malloc(n_elem * size);
+	if (!array)
+		return (NULL);
+	ft_bzero(array, n_elem * size);
+	return (array);
+}
+
+void	*safe_alloc(size_t n_elem, size_t bytes, char *description)
+{
+	void	*ptr;
+
+	ptr = ft_calloc(n_elem, bytes);
+	if (!ptr)
 	{
-		free(arr[i]);
-		i++;
+		printf("Error: memory allocation for [%s] failed\n", description);
+		return (NULL);
 	}
-	free(arr);
+	return (ptr);
 }

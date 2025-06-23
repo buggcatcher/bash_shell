@@ -12,73 +12,54 @@
 
 #include "minishell.h"
 
-void	ft_free_token(t_token *token)
+int	switch_fd(int from, int to)
 {
-	t_token	*tmp;
-
-	while (token)
+	if (from != to)
 	{
-		tmp = token;
-		token = token->next;
-		free(tmp->value);
-		free(tmp);
+		if (dup2(from, to) == -1)
+		{
+			perror("dup2");
+			return (1);
+		}
 	}
+	return (0);
 }
 
-t_node	*ft_free_nodes(t_node *head)
+int	save_fd(int fd)
 {
-	t_node	*tmp;
+	int	clone;
 
-	while (head)
+	clone = dup(fd);
+	if (clone == -1)
 	{
-		tmp = head;
-		head = head->next;
-		ft_free_argv(tmp->argv);
-		ft_free_redirs(tmp->redirs);
-		free(tmp);
+		perror("dup");
+		exit(EXIT_FAILURE);
 	}
-	return (NULL);
+	return (clone);
 }
 
-void	ft_free_argv(char **argv)
+int	save_stdout(void)
 {
-	int	i;
+	int	clone;
 
-	if (!argv)
-		return ;
-	i = 0;
-	while (argv[i])
+	clone = dup(1);
+	if (clone == -1)
 	{
-		free(argv[i]);
-		i++;
+		perror("dup stdout");
+		exit(EXIT_FAILURE);
 	}
-	free(argv);
+	return (clone);
 }
 
-void	ft_free_redirs(t_redir *redir)
+int	open_outfile( char *filename)
 {
-	t_redir	*next_redir;
+	int	fd;
 
-	while (redir)
+	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd == -1)
 	{
-		next_redir = redir->next;
-		free(redir->filename);
-		free(redir);
-		redir = next_redir;
+		perror("error opening outfile");
+		return (-1);
 	}
-}
-
-void	free_array(char **arr)
-{
-	int	i;
-
-	i = 0;
-	if (!arr)
-		return ;
-	while (arr[i])
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
+	return (fd);
 }

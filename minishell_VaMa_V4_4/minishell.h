@@ -140,6 +140,7 @@ void	ft_free_token(t_token *token);
 t_node	*ft_free_nodes(t_node *head);
 void	ft_free_argv(char **argv);
 void	ft_free_redirs(t_redir *redir);
+void	free_array(char **arr);
 
 // error_mini.c
 int		ft_error(t_token *token, char *msg);
@@ -204,28 +205,33 @@ int		exit_too_many_args(t_shell_state *state);
 int		exe_exit(char **args, t_shell_state *state);
 
 /// === utils.c === ///
-/// --- fd 
+char	*ft_strchr(char *s, int c);
+char	*ft_strjoin_m(char *s1, char *s2);
+char	*ft_strdup_m(char *s);
+size_t	ft_strlen(char *s);
+int		ft_strcmp(char *s1, char *s2);
+
+/// === split.c === ///
+char	**ft_split(char *s, char c);
+
+/// === libfx.c === ///
+int		env_size(t_env *env);
+int		is_numeric(const char *str);
+long	ft_strtol(const char *str, char **endptr);
+void	ft_putstr_stderr(char *s);
+
+/// === fd.c === ///
 int		switch_fd(int from, int to);
 int		save_fd(int fd);
 int		save_stdout(void);
 int		open_outfile( char *filename);
-/// --- memory 
+
+/// === memory.c === ///
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t n_elem, size_t size);
 void	*safe_alloc(size_t n_elem, size_t size, char *desc);
-/// --- libfx 
-char	*ft_strchr(char *s, int c);
-char	*ft_strjoin_m(char *s1, char *s2);
-char	*ft_strdup_m(char *s);
-char	**ft_split(char *s, char c);
-size_t	ft_strlen(char *s);
-void	free_array(char **arr);
-int		env_size(t_env *env);
-int		ft_strcmp(char *s1, char *s2);
-int		is_numeric(const char *str);
-long	ft_strtol(const char *str, char **endptr);
-void	ft_putstr_stderr(char *s);
-/// --- signals
+
+/// === signals.c === ///
 void	handle_sigint(int sig);
 void	setup_signals(void);
 void	disable_signals(void);

@@ -12,73 +12,50 @@
 
 #include "minishell.h"
 
-void	ft_free_token(t_token *token)
+void	handle_sigint(int sig)
 {
-	t_token	*tmp;
-
-	while (token)
-	{
-		tmp = token;
-		token = token->next;
-		free(tmp->value);
-		free(tmp);
-	}
+	(void)sig;
+	g_sigint = 1;
+	write(1, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 }
 
-t_node	*ft_free_nodes(t_node *head)
+void	setup_signals(void)
 {
-	t_node	*tmp;
+	struct sigaction	sa;
 
-	while (head)
-	{
-		tmp = head;
-		head = head->next;
-		ft_free_argv(tmp->argv);
-		ft_free_redirs(tmp->redirs);
-		free(tmp);
-	}
-	return (NULL);
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = handle_sigint;
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = SIG_IGN;
+	sa.sa_flags = 0;
+	sigaction(SIGQUIT, &sa, NULL);
 }
 
-void	ft_free_argv(char **argv)
+void	disable_signals(void)
 {
-	int	i;
-
-	if (!argv)
-		return ;
-	i = 0;
-	while (argv[i])
-	{
-		free(argv[i]);
-		i++;
-	}
-	free(argv);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }
 
-void	ft_free_redirs(t_redir *redir)
+void	free_env_list(t_env *env)
 {
-	t_redir	*next_redir;
+	t_env	*current;
+	t_env	*next;
 
-	while (redir)
+	current = env;
+	while (current)
 	{
-		next_redir = redir->next;
-		free(redir->filename);
-		free(redir);
-		redir = next_redir;
+		next = current->next;
+		if (current->key)
+			free(current->key);
+		if (current->value)
+			free(current->value);
+		free(current);
+		current = next;
 	}
-}
-
-void	free_array(char **arr)
-{
-	int	i;
-
-	i = 0;
-	if (!arr)
-		return ;
-	while (arr[i])
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
 }

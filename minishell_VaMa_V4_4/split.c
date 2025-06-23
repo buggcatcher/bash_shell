@@ -12,81 +12,87 @@
 
 #include "minishell.h"
 
-char	*ft_strchr( char *s, int c)
+static size_t	count_words( char *s, char c)
 {
-	char	ch;
-
-	ch = (char)c;
-	while (*s)
-	{
-		if (*s == ch)
-			return ((char *)s);
-		s++;
-	}
-	if (ch == '\0')
-		return ((char *)s);
-	return (NULL);
-}
-
-char	*ft_strjoin_m( char *s1, char *s2)
-{
-	size_t	len1;
-	size_t	len2;
 	size_t	i;
-	char	*joined;
+	size_t	words;
 
-	if (!s1 || !s2)
-		return (NULL);
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	joined = safe_alloc(len1 + len2 + 1, sizeof(char), "ft_strjoin");
-	if (!joined)
-		return (NULL);
 	i = 0;
-	while (*s1)
-		joined[i++] = *s1++;
-	while (*s2)
-		joined[i++] = *s2++;
-	joined[i] = '\0';
-	return (joined);
+	words = 0;
+	while (s && s[i])
+	{
+		while (s[i] == c)
+			i++;
+		if (s[i])
+			words++;
+		while (s[i] && s[i] != c)
+			i++;
+	}
+	return (words);
 }
 
-char	*ft_strdup_m(char *s)
+static char	*dup_word(char *s, char c)
 {
 	size_t	len;
-	char	*dup;
+	char	*word;
 	size_t	i;
 
-	len = ft_strlen(s);
-	dup = safe_alloc(len + 1, sizeof(char), "ft_strdup");
-	i = 0;
-	if (!dup)
+	len = 0;
+	while (s[len] && s[len] != c)
+		len++;
+	word = safe_alloc(len + 1, sizeof(char), "dup_word");
+	if (!word)
 		return (NULL);
+	i = 0;
 	while (i < len)
 	{
-		dup[i] = s[i];
+		word[i] = s[i];
 		i++;
 	}
-	dup[len] = '\0';
-	return (dup);
+	word[len] = '\0';
+	return (word);
 }
 
-size_t	ft_strlen( char *s)
+static int	fill_split(char **res, char *s, char c)
 {
 	size_t	i;
+	size_t	j;
 
 	i = 0;
-	while (s && s[i])
-		i++;
-	return (i);
+	j = 0;
+	while (s[i])
+	{
+		while (s[i] == c)
+			i++;
+		if (s[i])
+		{
+			res[j] = dup_word(&s[i], c);
+			if (!res[j])
+			{
+				free_split_all(res);
+				return (0);
+			}
+			j++;
+			while (s[i] && s[i] != c)
+				i++;
+		}
+	}
+	res[j] = NULL;
+	return (1);
 }
 
-int	ft_strcmp(char *s1, char *s2)
+char	**ft_split(char *s, char c)
 {
-	while (*s1 && (*s1 == *s2))
-	{
-		s1++;
-		s2++;
-	}
-	return ((char)*s1 - (char)*s2);
+	size_t	words;
+	char	**res;
+
+	if (!s)
+		return (NULL);
+	words = count_words(s, c);
+	res = safe_alloc(words + 1, sizeof(char *), "ft_split");
+	if (!res)
+		return (NULL);
+	if (!fill_split(res, s, c))
+		return (NULL);
+	return (res);
 }
