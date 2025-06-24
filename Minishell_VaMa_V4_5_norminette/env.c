@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/23 17:59:21 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/06/24 19:24:35 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_env	*find_env_node(t_env *env, char *key)
 	return (NULL);
 }
 
-t_env	*create_env_node( char *key, char *value, int exported)
+t_env	*create_env_node(char *key, char *value, int exported)
 {
 	t_env	*new_node;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/23 19:24:49 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/06/24 19:32:44 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,7 @@ int	wait_for_last(pid_t last_pid, int *exit_status)
 	int		status;
 	pid_t	pid;
 
-	pid = wait(&status);
-	while (pid > 0)
+	while ((pid = wait(&status)) > 0)
 	{
 		if (pid == last_pid)
 		{

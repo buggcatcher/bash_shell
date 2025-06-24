@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   btin_apply.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/23 19:21:24 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/06/24 19:16:52 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*join_key_value(char *key, char *value)
 	return (str);
 }
 
-int	spawn_forked_command(t_node *n, int pipe_fd[2], int prev_fd, t_env *e)
+int	spawn_forked_command(t_node *node, int pipe_fd[2], int prev_fd, t_env *env)
 {
 	pid_t	pid;
 
@@ -43,7 +43,7 @@ int	spawn_forked_command(t_node *n, int pipe_fd[2], int prev_fd, t_env *e)
 		return (1);
 	}
 	if (pid == 0)
-		exec_child(n, pipe_fd, prev_fd, e);
+		exec_child(node, pipe_fd, prev_fd, env);
 	return (0);
 }
 
@@ -66,19 +66,19 @@ int	exec_builtin(char **args, t_env **env)
 	return (1);
 }
 
-int	handle_builtin_if_applicable(t_node *n, t_env **e, int *last_status)
+int	handle_builtin_if_applicable(t_node *node, t_env **env, int *last_status)
 {
 	int	save_out;
 	int	save_in;
 
-	if (is_builtin(n->argv[0]) && !n->next)
+	if (is_builtin(node->argv[0]) && !node->next)
 	{
 		save_out = save_fd(STDOUT_FILENO);
 		save_in = save_fd(STDIN_FILENO);
-		if (n->redirs && apply_redirects(n->redirs))
+		if (node->redirs && apply_redirects(node->redirs))
 			*last_status = 1;
 		else
-			*last_status = exec_builtin(n->argv, e);
+			*last_status = exec_builtin(node->argv, env);
 		switch_fd(save_out, STDOUT_FILENO);
 		switch_fd(save_in, STDIN_FILENO);
 		close(save_out);

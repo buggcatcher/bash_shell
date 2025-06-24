@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check_mini.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/23 19:18:01 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/06/24 19:39:20 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ int	ft_check_syntax(t_token *token)
 	if (!token)
 		return (1);
 	if (ft_is_operator(token))
-		return (ft_error(token, "bash: syntax error"));
+		return (perror("bash: syntax error"), 1);
 	tmp = token;
 	while (tmp && tmp->next)
 	{
 		if (ft_is_operator(tmp) && ft_is_operator(tmp->next))
-			return (ft_error(token, "bash: syntax error"));
+			return (perror("bash: syntax error"), 1);
 		tmp = tmp->next;
 	}
 	if (ft_is_operator(tmp))
-		return (ft_error(token, "bash: syntax error"));
+		return (perror("bash: syntax error"), 1);
 	return (0);
 }
 
@@ -44,7 +44,7 @@ int	ft_is_operator(t_token *token)
 		return (1);
 	if (token->type == TK_REDIR_APPEND_4)
 		return (1);
-	if (token->type == TK_HEREDOC_5)
-		return (1);
+	// if (token->type == TK_HEREDOC_5)
+	// 	return (1);
 	return (0);
 }

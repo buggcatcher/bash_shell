@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/23 19:30:08 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/06/24 19:37:37 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ bool	process_input(char *input, t_shell_state *state)
 	token = ft_tokenize(state, NULL, input);
 	if (!token)
 		return (false);
-	if (ft_check_syntax(token))
+	if (ft_check_syntax(token) == 1)
 	{
 		ft_free_token(token);
 		return (false);

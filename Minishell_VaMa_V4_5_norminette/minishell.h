@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vloddo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/23 19:36:38 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/05/28 12:50:15 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,9 @@ typedef struct s_shell_state
 	int		exit_code;
 }	t_shell_state;
 
-// main.c
-char	*read_user_input(t_shell_state *state);
-bool	process_input(char *input, t_shell_state *state);
-void	shell_loop(t_shell_state *state);
+// minishell.c
+void	ft_print_token(t_token *token);
+void	ft_print_nodes(t_node *node);
 
 // tokenize_mini.c
 t_token	*ft_tokenize(t_shell_state *state, t_token *token, char *input);
@@ -141,7 +140,6 @@ void	ft_free_token(t_token *token);
 t_node	*ft_free_nodes(t_node *head);
 void	ft_free_argv(char **argv);
 void	ft_free_redirs(t_redir *redir);
-void	free_array(char **arr);
 
 // error_mini.c
 int		ft_error(t_token *token, char *msg);
@@ -159,47 +157,32 @@ char	*ft_char(char *s, unsigned int number, long int len);
 int		ft_nlen(int n);
 char	*ft_itoa(int n);
 
-// === btin_apply.c === //
+// === exe.c === //
+int		exe_pipeline(t_node *head, t_env **env);
+int		exe_single_cmd(t_node *node, t_env **env);
+int		exec_bin(char **argv, t_env **env);
+int		exec_builtin(char **argv, t_env **env);
+char	*join_path(char *dir, char *cmd);
+char	*get_env_value(char *key, t_env *env);
+void	free_split_all(char **arr);
+int		apply_redirects(t_redir *redirs);
+char	**env_to_array(t_env *env);
+char	*resolve_path(char *cmd, t_env *env);
+t_env	*init_env_from_system(char **envp);
+void	init_shell_state(t_shell_state *state, char **envp);
+void	cleanup_shell_state(t_shell_state *state);
+int		executor_loop(t_node *node, t_shell_state *state);
+int	create_pipe_if_needed(t_node *node, int pipe_fd[2]);
+void	exec_child(t_node *node, int pipe_out[2], int pipe_in, t_env *env);
 char	*join_key_value(char *key, char *value);
-int		spawn_forked_command(t_node *n, int pipe_fd[2], int prev_fd, t_env *e);
-int		exec_builtin(char **args, t_env **env);
-int		handle_builtin_if_applicable(t_node *n, t_env **e, int *last_status);
-int		create_pipe_if_needed(t_node *node, int pipe_fd[2]);
 
-// === btin_search.c === //
+// === btin.c === //
 int		is_parent_builtin(char *cmd);
 int		is_child_builtin(char *cmd);
 int		should_execute_in_parent(t_node *node);
 int		is_builtin(char *cmd);
 
-// === executor_loop.c === //
-int		exec_in_parent(t_node *node, t_shell_state *state);
-void	update_fds_for_next_cmd(t_node *node, int pipe_fd[2], int *prev_fd);
-int		wait_for_last(pid_t last_pid, int *exit_status);
-int		executor_loop(t_node *node, t_shell_state *state);
-
-// === redirect.c === //
-int		apply_redirects(t_redir *redirs);
-
-// === resolve_path.c === //
-char	*resolve_path(char *cmd, t_env *env);
-
-// === child.c === //
-void	exec_child(t_node *node, int pipe_out[2], int pipe_in, t_env *env);
-
-// === vaious.c === //
-void	free_split_all(char **arr);
-char	*join_path(char *dir, char *cmd);
-char	*get_env_value(char *key, t_env *env);
-void	init_shell_state(t_shell_state *state, char **envp);
-void	cleanup_shell_state(t_shell_state *state);
-
-// === system_env.c === //
-void	cleanup_node(t_env *node);
-t_env	*create_env_node_m(char *env_entry);
-t_env	*process_env_entry(char *env_entry, t_env *env);
-t_env	*init_env_from_system(char **envp);
-char	**env_to_array(t_env *env);
+int		exe_export(char **args, t_env **env);
 
 // === env.c === //
 void	set_env_var(t_env **env, char *key, char *value);
@@ -223,41 +206,30 @@ int		exit_numeric_error(char *arg, t_shell_state *state);
 int		exit_too_many_args(t_shell_state *state);
 int		exe_exit(char **args, t_shell_state *state);
 
-// === exe_export.c === //
-void	handle_export_without_value(char *arg, t_env **env);
-void	handle_key_value_export(char *arg, char *equals, t_env **env);
-void	handle_single_export(char *arg, t_env **env);
-int		print_exported_env(t_env *env);
-int		exe_export(char **args, t_env **env);
 
 /// === utils.c === ///
-char	*ft_strchr(char *s, int c);
-char	*ft_strjoin_m(char *s1, char *s2);
-char	*ft_strdup_m(char *s);
-size_t	ft_strlen(char *s);
-int		ft_strcmp(char *s1, char *s2);
-
-/// === split.c === ///
-char	**ft_split(char *s, char c);
-
-/// === libfx.c === ///
-int		env_size(t_env *env);
-int		is_numeric(const char *str);
-long	ft_strtol(const char *str, char **endptr);
-void	ft_putstr_stderr(char *s);
-
-/// === fd.c === ///
+/// --- fd 
 int		switch_fd(int from, int to);
 int		save_fd(int fd);
 int		save_stdout(void);
 int		open_outfile( char *filename);
-
-/// === memory.c === ///
+/// --- memory 
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t n_elem, size_t size);
 void	*safe_alloc(size_t n_elem, size_t size, char *desc);
-
-/// === signals.c === ///
+/// --- libfx 
+char	*ft_strchr(char *s, int c);
+char	*ft_strjoin_m(char *s1, char *s2);
+char	*ft_strdup_m(char *s);
+char	**ft_split(char *s, char c);
+size_t	ft_strlen(char *s);
+void	free_array(char **arr);
+int		env_size(t_env *env);
+int		ft_strcmp(char *s1, char *s2);
+int		is_numeric(const char *str);
+long	ft_strtol(const char *str, char **endptr);
+void	ft_putstr_stderr(char *s);
+/// --- signals
 void	handle_sigint(int sig);
 void	setup_signals(void);
 void	disable_signals(void);
