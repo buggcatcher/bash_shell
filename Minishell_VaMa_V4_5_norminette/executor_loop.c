@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/24 19:32:44 by marvin           ###   ########.fr       */
+/*   Updated: 2025/06/26 16:22:54 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,13 @@ int	wait_for_last(pid_t last_pid, int *exit_status)
 	int		status;
 	pid_t	pid;
 
-	while ((pid = wait(&status)) > 0)
+	while (1)
 	{
+		pid = wait(&status);
+		if (pid == -1)
+			break ;
+		if (pid == 0)
+			continue ;
 		if (pid == last_pid)
 		{
 			if (WIFEXITED(status))

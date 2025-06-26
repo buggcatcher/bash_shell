@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check_mini.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/24 19:39:20 by marvin           ###   ########.fr       */
+/*   Updated: 2025/06/26 16:25:02 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	ft_is_operator(t_token *token)
 		return (1);
 	if (token->type == TK_REDIR_APPEND_4)
 		return (1);
-	// if (token->type == TK_HEREDOC_5)
-	// 	return (1);
+	if (token->type == TK_HEREDOC_5 && token->next == NULL) 
+		return (1);
 	return (0);
 }
