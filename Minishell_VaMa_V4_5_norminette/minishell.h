@@ -261,6 +261,7 @@ void	*safe_alloc(size_t n_elem, size_t size, char *desc);
 void	handle_sigint(int sig);
 void	setup_signals(void);
 void	disable_signals(void);
+void	ignore_signals(void);
 void	free_env_list(t_env *env);
 
 #endif

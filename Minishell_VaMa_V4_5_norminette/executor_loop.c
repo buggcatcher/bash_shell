@@ -50,6 +50,7 @@ int	wait_for_last(pid_t last_pid, int *exit_status)
 {
 	int		status;
 	pid_t	pid;
+	int		signal;
 
 	while (1)
 	{
@@ -63,7 +64,12 @@ int	wait_for_last(pid_t last_pid, int *exit_status)
 			if (WIFEXITED(status))
 				*exit_status = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
-				*exit_status = 128 + WTERMSIG(status);
+			{
+				signal = WTERMSIG(status);
+				*exit_status = 128 + signal;
+				if (signal == SIGINT || signal == SIGQUIT)
+					ft_putstr_stderr("\n");
+			}
 		}
 	}
 	return (*exit_status);

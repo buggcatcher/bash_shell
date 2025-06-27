@@ -50,7 +50,7 @@ bool	process_input(char *input, t_shell_state *state)
 		return (false);
 	}
 	node = ft_node(token);
-	disable_signals();
+	ignore_signals();
 	executor_loop(node, state);
 	setup_signals();
 	ft_free_token(token);

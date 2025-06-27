@@ -56,6 +56,7 @@ static void	execute_command(t_node *node, t_env *env)
 
 void	exec_child(t_node *node, int pipe_out[2], int pipe_in, t_env *env)
 {
+	disable_signals();
 	if (node->next)
 		switch_fd(pipe_out[1], STDOUT_FILENO);
 	handle_pipes(pipe_in, pipe_out);
