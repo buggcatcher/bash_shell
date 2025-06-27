@@ -39,7 +39,7 @@ int	ft_handle_heredoc(t_redir *redirs)
 	return (0);
 }
 
-int ft_handle_heredoc(t_redir *redirs)
+/*int ft_handle_heredoc(t_redir *redirs)
 {
     int last_fd = -1;
     t_redir *current = redirs;
@@ -108,7 +108,7 @@ int ft_handle_heredoc(t_redir *redirs)
     }
     
     return (0);
-}
+}*/
 
 void	ft_handle_fail_heredoc_child(int pipefd[2])
 {
