@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/28 17:30:45 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/06/28 19:12:13 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,69 +56,44 @@ int	exe_env(t_env *env)
 	return (0);
 }
 
-// int	exe_echo(char **args)
-// {
-// 	int	i;
-// 	int	no_newline;
-
-// 	i = 1;
-// 	no_newline = 0;
-// 	if (args[1] && ft_strcmp(args[1], "-n") == 0)
-// 	{
-// 		no_newline = 1;
-// 		i = 2;
-// 	}
-// 	while (args[i])
-// 	{
-// 		printf("%s", args[i]);
-// 		if (args[i + 1])
-// 			printf(" ");
-// 		i++;
-// 	}
-// 	if (!no_newline)
-// 		printf("\n");
-// 	return (0);
-// }
-
-static int	ft_echo_flag(char **str)
+static int	ft_echo_flag(char **arg)
 {
 	int	i;
+	int	j;
 
-	i = 0;
-	if (str == NULL || str[0] != '-')
-		return (1);
-	int i = 1;
-	if (str[i] == '\0')
-		return (1);
-	while (str[i]) 
+	i = 1;
+	while (arg[i])
 	{
-		if (str[i] != 'n')
-			return (1);
+		j = 1;
+		if (arg[i][0] != '-' || arg[i][1] == '\0')
+			return (i);
+		while (arg[i][j] == 'n')
+			j++;
+		if (arg[i][j] != '\0')
+			return (i);
 		i++;
 	}
-	return (0);
+	return (i);
 }
 
 int	exe_echo(char **args)
 {
 	int	i;
-	int	no_newline;
+	int	new_line;
 
-	i = 1;
-	no_newline = 0;
-	if (args[1] && ft_echo_flag(args[1]) == 0)
-	{
-		no_newline = 1;
-		i = 2;
-	}
+	new_line = ft_echo_flag(args);
+	if (new_line > 1)
+		i = new_line;
+	else
+		i = 1;
 	while (args[i])
 	{
 		printf("%s", args[i]);
 		if (args[i + 1])
 			printf(" ");
+		if (args[i + 1] == NULL)
+			printf("\n");
 		i++;
 	}
-	if (!no_newline)
-		printf("\n");
 	return (0);
 }
