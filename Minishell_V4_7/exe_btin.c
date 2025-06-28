@@ -39,7 +39,7 @@ int	exe_unset(char **args, t_env **env)
 	while (args[i])
 	{
 		if (remove_env_node(env, args[i]) != 0)
-			printf("nodo non rimosso\n");
+			write(2, "unset: remove node failed\n", 27);
 		i++;
 	}
 	return (exit_status);
