@@ -3,14 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   free_mini.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/26 20:18:11 by marvin           ###   ########.fr       */
+/*   Updated: 2025/06/28 20:51:50 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// NEW
+void	ft_free_env(t_env *env)
+{
+	t_env	*tmp;
+
+	while (env)
+	{
+		tmp = env;
+		env = env->next;
+		free(tmp->key);
+		free(tmp->value);
+		free(tmp);
+	}
+}
+// NEW
+t_node	*ft_free_nodes(t_node *head)
+{
+	t_node	*tmp;
+
+	while (head)
+	{
+		tmp = head;
+		head = head->next;
+		ft_free_token(tmp->token);
+		ft_free_argv(tmp->argv);
+		ft_free_redirs(tmp->redirs);
+		free(tmp);
+	}
+	return (NULL);
+}
+
 
 void	ft_free_token(t_token *token)
 {
@@ -20,25 +52,26 @@ void	ft_free_token(t_token *token)
 	{
 		tmp = token;
 		token = token->next;
-		free(tmp->value);
+		if (tmp->value)
+			free(tmp->value);
 		free(tmp);
 	}
 }
 
-t_node	*ft_free_nodes(t_node *head)
-{
-	t_node	*tmp;
+// t_node	*ft_free_nodes(t_node *head)
+// {
+// 	t_node	*tmp;
 
-	while (head)
-	{
-		tmp = head;
-		head = head->next;
-		ft_free_argv(tmp->argv);
-		ft_free_redirs(tmp->redirs);
-		free(tmp);
-	}
-	return (NULL);
-}
+// 	while (head)
+// 	{
+// 		tmp = head;
+// 		head = head->next;
+// 		ft_free_argv(tmp->argv);
+// 		ft_free_redirs(tmp->redirs);
+// 		free(tmp);
+// 	}
+// 	return (NULL);
+// }
 
 void	ft_free_argv(char **argv)
 {

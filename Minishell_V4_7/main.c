@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/28 15:58:44 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/06/28 20:53:09 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,38 @@ char	*read_user_input(t_shell_state *state)
 	return (input);
 }
 
+// bool	process_input(char *input, t_shell_state *state)
+// {
+// 	t_token	*token;
+// 	t_node	*node;
+
+// 	token = NULL;
+// 	node = NULL;
+// 	token = ft_tokenize(state, NULL, input);
+// 	if (!token)
+// 		return (false);
+// 	if (ft_check_syntax(token) == 1)
+// 	{
+// 		ft_free_token(token);
+// 		return (false);
+// 	}
+// 	node = ft_node(token);
+// 	ignore_signals();
+// 	executor_loop(node, state);
+// 	setup_signals();
+// 	//ft_free_token(token);
+// 	ft_free_nodes(node);
+// 	return (true);
+// }
+
+// NEW
 bool	process_input(char *input, t_shell_state *state)
 {
 	t_token	*token;
 	t_node	*node;
 
+	token = NULL;
+	node = NULL;
 	token = ft_tokenize(state, NULL, input);
 	if (!token)
 		return (false);
@@ -53,7 +80,6 @@ bool	process_input(char *input, t_shell_state *state)
 	ignore_signals();
 	executor_loop(node, state);
 	setup_signals();
-	ft_free_token(token);
 	ft_free_nodes(node);
 	return (true);
 }

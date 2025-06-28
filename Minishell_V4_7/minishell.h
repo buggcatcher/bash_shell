@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/28 15:29:26 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/06/28 21:33:24 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,11 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
+typedef struct s_node t_node;
+
 typedef struct s_redir
 {
+	t_node			*node;
 	int				type;
 	char			*filename;
 	int				fd;
@@ -61,8 +64,9 @@ typedef struct s_redir
 
 typedef struct s_node
 {
-	char			**argv;
 	t_redir			*redirs;
+	t_token			*token;
+	char			**argv;
 	struct s_node	*next;
 }	t_node;
 
@@ -132,13 +136,16 @@ int		ft_handle_in(t_node *node);
 // heredoc_mini.c
 int		ft_handle_heredoc(t_redir *redirs);
 void	ft_handle_fail_heredoc_child(int pipefd[2]);
-void	ft_handle_heredoc_child(int pipefd[2], char *delimiter);
-int		ft_heredoc_child_process(char *delimiter, int write_fd);
+//void	ft_handle_heredoc_child(int pipefd[2], char *delimiter);
+void	ft_handle_heredoc_child(int pipefd[2], char *delimiter, t_redir *redirs);
+//int		ft_heredoc_child_process(char *delimiter, int write_fd);
+int	ft_heredoc_child_process(char *delimiter, int write_fd, t_redir *redirs);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 // free_mini.c
-void	ft_free_token(t_token *token);
+void	ft_free_env(t_env *env);
 t_node	*ft_free_nodes(t_node *head);
+void	ft_free_token(t_token *token);
 void	ft_free_argv(char **argv);
 void	ft_free_redirs(t_redir *redir);
 void	free_array(char **arr);

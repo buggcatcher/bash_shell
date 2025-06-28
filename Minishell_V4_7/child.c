@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/28 15:38:10 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/06/28 20:17:02 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,61 @@ static void	handle_pipes(int pipe_in, int pipe_out[2])
 		close(pipe_in);
 }
 
+// static void	handle_redirections(t_node *node)
+// {
+// 	if (node->redirs && apply_redirects(node->redirs))
+// 		exit(1);
+// }
+
+// NEW
 static void	handle_redirections(t_node *node)
 {
 	if (node->redirs && apply_redirects(node->redirs))
+	{
+		ft_free_nodes(node);
 		exit(1);
+	}
 }
 
+// static void	handle_builtin(t_node *node, t_env **env)
+// {
+// 	if (is_builtin(node->argv[0]))
+// 		exit(exec_builtin(node->argv, env));
+// }
+
+// NEW
 static void	handle_builtin(t_node *node, t_env **env)
 {
+	int	i;
+	
+	i = exec_builtin(node->argv, env);
 	if (is_builtin(node->argv[0]))
-		exit(exec_builtin(node->argv, env));
+	{
+		ft_free_nodes(node);
+		ft_free_env(*env);
+		exit(i);
+	}
 }
 
+// static void	execute_command(t_node *node, t_env *env)
+// {
+// 	char	*bin;
+// 	char	**env_arr;
+
+// 	if (ft_strchr(node->argv[0], '/'))
+// 		bin = node->argv[0];
+// 	else
+// 		bin = resolve_path(node->argv[0], env);
+// 	if (!bin)
+// 		exit(127);
+// 	env_arr = env_to_array(env);
+// 	execve(bin, node->argv, env_arr);
+// 	write(2, "Execve\n", 8);
+// 	free_array(env_arr);
+// 	exit(127);
+// }
+
+// NEW
 static void	execute_command(t_node *node, t_env *env)
 {
 	char	*bin;
@@ -46,11 +89,17 @@ static void	execute_command(t_node *node, t_env *env)
 	else
 		bin = resolve_path(node->argv[0], env);
 	if (!bin)
+	{
+		ft_free_nodes(node);
+		ft_free_env(env);
 		exit(127);
+	}
 	env_arr = env_to_array(env);
 	execve(bin, node->argv, env_arr);
 	write(2, "Execve\n", 8);
 	free_array(env_arr);
+	ft_free_nodes(node);
+	ft_free_env(env);
 	exit(127);
 }
 
