@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/29 17:06:30 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/06/29 21:12:52 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_redir
 	int				type;
 	char			*filename;
 	int				fd;
+	struct s_redir	*last;
 	struct s_redir	*next;
 }	t_redir;
 
@@ -187,7 +188,8 @@ int		executor_loop(t_node *node, t_shell_state *state);
 int		apply_redirects(t_redir *redirs);
 
 // === resolve_path.c === //
-char	*resolve_path(char *cmd, t_env *env);
+//char	*resolve_path(char *cmd, t_env *env);
+char	*resolve_path(char *cmd, t_env *env, t_node *node);
 
 // === child.c === //
 void	exec_child(t_node *node, int pipe_out[2], int pipe_in, t_env *env);

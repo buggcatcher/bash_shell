@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/29 16:54:51 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/06/29 21:11:45 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static void	execute_command(t_node *node, t_env *env)
 	if (ft_strchr(node->argv[0], '/'))
 		bin = node->argv[0];
 	else
-		bin = resolve_path(node->argv[0], env);
+		bin = resolve_path(node->argv[0], env, node);
 	if (!bin)
 		exit(127);
 	env_arr = env_to_array(env);
