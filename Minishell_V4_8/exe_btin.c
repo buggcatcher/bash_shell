@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/28 19:12:13 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/06/29 18:02:19 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	exe_env(t_env *env)
 {
 	while (env)
 	{
-		if (env->exported)
+		if (env->exported && env->value != NULL)
 			printf("%s=%s\n", env->key, env->value);
 		env = env->next;
 	}
@@ -97,3 +97,4 @@ int	exe_echo(char **args)
 	}
 	return (0);
 }
+
