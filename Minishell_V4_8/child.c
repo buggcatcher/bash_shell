@@ -94,7 +94,7 @@ static void	execute_command(t_node *node, t_env *env)
 		exit(127);
 	env_arr = env_to_array(env);
 	execve(bin, node->argv, env_arr);
-	write(2, "Execve\n", 8);
+	write(2, "Error\n", 7);
 	free_array(env_arr);
 	exit(127);
 }
