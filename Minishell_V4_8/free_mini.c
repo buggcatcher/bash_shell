@@ -26,16 +26,17 @@ void	ft_free_env(t_env *env)
 		free(tmp);
 	}
 }
-// NEW
+// NEW new meow new
 t_node	*ft_free_nodes(t_node *head)
 {
 	t_node	*tmp;
+	tmp = head;
+	ft_free_token(tmp->token);
 
 	while (head)
 	{
 		tmp = head;
 		head = head->next;
-		ft_free_token(tmp->token);
 		ft_free_argv(tmp->argv);
 		ft_free_redirs(tmp->redirs);
 		free(tmp);
