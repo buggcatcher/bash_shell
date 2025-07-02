@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/28 17:32:56 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/02 19:10:25 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,20 @@ char	*join_key_value(char *key, char *value)
 	return (str);
 }
 
-int	spawn_forked_command(t_node *node, int pipe_fd[2], int prev_fd, t_env *env)
-{
-	pid_t	pid;
+// int	spawn_forked_command(t_node *node, int pipe_fd[2], int prev_fd, t_env *env)
+// {
+// 	pid_t	pid;
 
-	pid = fork();
-	if (pid == -1)
-	{
-		write(2, "Fork\n", 6);
-		return (1);
-	}
-	if (pid == 0)
-		exec_child(node, pipe_fd, prev_fd, env);
-	return (0);
-}
+// 	pid = fork();
+// 	if (pid == -1)
+// 	{
+// 		write(2, "Fork\n", 6);
+// 		return (1);
+// 	}
+// 	if (pid == 0)
+// 		exec_child(node, pipe_fd, prev_fd, env);
+// 	return (0);
+// }
 
 int	exec_builtin(char **args, t_env **env)
 {

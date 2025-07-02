@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/29 21:11:45 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/02 19:55:46 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,13 @@ static void	execute_command(t_node *node, t_env *env)
 		exit(127);
 	if (ft_strchr(node->argv[0], '/'))
 		bin = node->argv[0];
+	else if (ft_strchr(node->argv[0], '.'))
+	{
+		write(2, "Error\n", 7);
+		ft_free_nodes(node);
+		ft_free_env(env);
+		exit(127);
+	}
 	else
 		bin = resolve_path(node->argv[0], env, node);
 	if (!bin)
@@ -96,6 +103,8 @@ static void	execute_command(t_node *node, t_env *env)
 	execve(bin, node->argv, env_arr);
 	write(2, "Error\n", 7);
 	free_array(env_arr);
+	ft_free_nodes(node);
+	ft_free_env(env);
 	exit(127);
 }
 
