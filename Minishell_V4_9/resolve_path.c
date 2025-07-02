@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/02 17:48:57 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/02 20:12:36 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,23 @@ static char	*search_in_paths(char **paths, char *cmd)
 // 	return (full_path);
 // }
 
+// static int	has_heredoc_before_redirect_out(t_redir *redir_list)
+// {
+// 	t_redir	*current;
+// 	int		seen_heredoc = 0;
+
+// 	current = redir_list;
+// 	while (current)
+// 	{
+// 		if (current->type == TK_HEREDOC_5)
+// 			seen_heredoc = 1;
+// 		else if ((current->type == TK_REDIR_OUT_3 || current->type == TK_REDIR_OUT_3) && seen_heredoc)
+// 			return (1);
+// 		current = current->next;
+// 	}
+// 	return (0);
+// }
+
 static int	has_heredoc_before_redirect_out(t_redir *redir_list)
 {
 	t_redir	*current;
@@ -83,10 +100,11 @@ static int	has_heredoc_before_redirect_out(t_redir *redir_list)
 	current = redir_list;
 	while (current)
 	{
-		if (current->type == TK_HEREDOC_5)
+		if (current->type == TK_HEREDOC_5 && current->next != NULL)
+		{
 			seen_heredoc = 1;
-		else if ((current->type == TK_REDIR_OUT_3 || current->type == TK_REDIR_OUT_3) && seen_heredoc)
 			return (1);
+		}
 		current = current->next;
 	}
 	return (0);

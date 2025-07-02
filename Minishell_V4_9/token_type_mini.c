@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/02 17:40:55 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/02 22:16:47 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ t_token	*ft_redred(t_token **new, char **input)
 // 	return (new);
 // }
 
-static t_token	*ft_create_token_dquote(t_token_type type, char *start, int len, int wspace)
+static t_token	*ft_create_token_quote(t_token_type type, char *start, int len, int wspace)
 {
 	t_token	*new;
 
@@ -169,6 +169,7 @@ int	ft_check_token_space(char **input)
 	return (wspace);
 }
 
+//FUNZIONANTE PER LE DQUOTE ORIGINALI
 // t_token	*ft_dquote(t_shell_state *state, t_token *token, t_token **new, char **input)
 // {
 // 	char	*start;
@@ -198,6 +199,78 @@ int	ft_check_token_space(char **input)
 // 	return (*new);
 // }
 
+// NEW FUNZIONANTE CON GLI SPAZI
+// t_token	*ft_dquote(t_shell_state *state, t_token *token, t_token **new, char **input)
+// {
+// 	char	*start;
+// 	char	*buffer;
+// 	int		var;
+// 	int		wspace;
+
+// 	var = 1;
+// 	start = *input;
+// 	buffer = NULL;
+// 	(*input)++;
+// 	start = *input;
+// 	if (ft_check_dquote(state, token, start) == 1)
+// 		return (NULL);
+// 	while (**input && **input != '"')
+// 	{
+// 		if (var != 2)
+// 			var = ft_check_var(input);
+// 		buffer = ft_create_var(buffer, input, state);
+// 	}
+// 	wspace = ft_check_token_space(input);
+// 	if (var == 1)
+// 		*new = ft_create_token_quote(TK_D_QUOTE_7, start, *input - start, wspace);
+// 	else if (var == 2)
+// 		*new = ft_create_token_dollar(TK_DOLLAR_8, buffer, ft_strlen_v(buffer), start);
+// 	if (buffer)
+// 		free(buffer);
+// 	(*input)++;
+// 	return (*new);
+// }
+
+static t_token *ft_create_token_dollar(t_token_type type, char *buffer, int len, char *start)
+{
+    t_token *new;
+    char *wspaceptr;
+
+    new = malloc(sizeof(t_token));
+    if (!new) return (NULL);
+    
+    new->type = type;
+    new->value = ft_strndup(buffer, len);
+    new->wspace = 0;
+	wspaceptr = start;
+	while (*wspaceptr && \
+			((*wspaceptr >= '0' && *wspaceptr <= '9') || \
+			(*wspaceptr >= 'A' && *wspaceptr <= 'Z') || \
+			(*wspaceptr >= 'a' && *wspaceptr <= 'z') || \
+			*wspaceptr == '_' || *wspaceptr == '$'))
+			wspaceptr++;
+    if (*wspaceptr == ' ')
+	{
+        new->wspace = 1;
+    }
+    new->next = NULL;
+    return (new);
+}
+
+static char *ft_process_dquote_content(t_shell_state *state, char **input, int *var)
+{
+    char *buffer;
+
+    buffer = NULL;
+    while (**input && **input != '"')
+    {
+        if (*var != 2)
+            *var = ft_check_var(input);
+        buffer = ft_create_var(buffer, input, state);
+    }
+    return (buffer);
+}
+
 t_token	*ft_dquote(t_shell_state *state, t_token *token, t_token **new, char **input)
 {
 	char	*start;
@@ -212,17 +285,12 @@ t_token	*ft_dquote(t_shell_state *state, t_token *token, t_token **new, char **i
 	start = *input;
 	if (ft_check_dquote(state, token, start) == 1)
 		return (NULL);
-	while (**input && **input != '"')
-	{
-		if (var != 2)
-			var = ft_check_var(input);
-		buffer = ft_create_var(buffer, input, state);
-	}
+	buffer = ft_process_dquote_content(state, input, &var);
 	wspace = ft_check_token_space(input);
 	if (var == 1)
-		*new = ft_create_token_dquote(TK_D_QUOTE_7, start, *input - start, wspace);
+		*new = ft_create_token_quote(TK_D_QUOTE_7, start, *input - start, wspace);
 	else if (var == 2)
-		*new = ft_create_token_dquote(TK_DOLLAR_8, buffer, ft_strlen_v(buffer), wspace);
+		*new = ft_create_token_dollar(TK_DOLLAR_8, buffer, ft_strlen_v(buffer), start);
 	if (buffer)
 		free(buffer);
 	(*input)++;
@@ -242,7 +310,7 @@ t_token	*ft_squote(t_token *token, t_token **new, char **input)
 	if (**input != '\'')
 		return (ft_putstr_stderr("Unclosed single quote\n"), NULL);
 	wspace = ft_check_token_space(input);
-	*new = ft_create_token_dquote(TK_S_QUOTE_6, start, *input - start, wspace);
+	*new = ft_create_token_quote(TK_S_QUOTE_6, start, *input - start, wspace);
 	(*input)++;
 	return (*new);
 }
@@ -272,6 +340,7 @@ static t_token	*ft_create_token_word(t_token_type type, char *start, int len)
 	return (new);
 }
 
+
 t_token	*ft_word(t_shell_state *state, t_token **new, char **input)
 {
 	char	*start;
@@ -293,7 +362,7 @@ t_token	*ft_word(t_shell_state *state, t_token **new, char **input)
 	if (var == 1)
 		result = ft_create_token_word(TK_WORD_0, start, *input - start);
 	else if (var == 2)
-		result = ft_create_token(TK_DOLLAR_8, buffer, ft_strlen_v(buffer));
+		result = ft_create_token_dollar(TK_DOLLAR_8, buffer, ft_strlen_v(buffer), start);
 	free(buffer);
 	*new = result;
 	return (result);
