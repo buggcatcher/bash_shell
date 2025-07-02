@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/01 18:41:43 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/02 17:48:57 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,64 +75,21 @@ static char	*search_in_paths(char **paths, char *cmd)
 // 	return (full_path);
 // }
 
-// static int	has_heredoc_before_redirect_out(t_redir *redir_list)
-// {
-// 	t_redir	*current;
-// 	int		seen_heredoc = 0;
-
-// 	current = redir_list;
-// 	while (current)
-// 	{
-// 		if (current->type == TK_HEREDOC_5)
-// 			seen_heredoc = 1;
-// 		else if ((current->type == TK_REDIR_OUT_3 || current->type == TK_REDIR_OUT_3) && seen_heredoc)
-// 			return (1);
-// 		current = current->next;
-// 	}
-// 	return (0);
-// }
-
-static int	has_heredoc_before_redirect(t_redir *redir_list)
+static int	has_heredoc_before_redirect_out(t_redir *redir_list)
 {
 	t_redir	*current;
-	t_redir	*last;
+	int		seen_heredoc = 0;
 
 	current = redir_list;
-	last = NULL;
 	while (current)
 	{
-		last->type = current->type;
+		if (current->type == TK_HEREDOC_5)
+			seen_heredoc = 1;
+		else if ((current->type == TK_REDIR_OUT_3 || current->type == TK_REDIR_OUT_3) && seen_heredoc)
+			return (1);
 		current = current->next;
 	}
-	if (last->type == TK_HEREDOC_5)
-		return (1);
 	return (0);
-}
-
-// char	*resolve_path(char *cmd, t_env *env, t_node *node)
-// {
-// 	char	**paths;
-// 	char	*full_path;
-
-// 	if (is_invalid_cmd(cmd))
-// 		return (NULL);
-// 	if (is_absolute_path(cmd))
-// 		return (ft_strdup(cmd));
-// 	paths = get_paths(env);
-// 	if (!paths)
-// 		return (NULL);
-// 	full_path = search_in_paths(paths, cmd);
-// 	free_split_all(paths);
-// 	if (!full_path && !has_heredoc_before_redirect_out(node->redirs))
-// 		write(2, "command not found\n", 19);
-// 	return (full_path);
-// }
-
-static void ft_free_cmd_not_found(t_env *env, t_node *node)
-{
-	ft_free_nodes(node);
-	ft_free_env(env);
-	
 }
 
 char	*resolve_path(char *cmd, t_env *env, t_node *node)
@@ -141,7 +98,11 @@ char	*resolve_path(char *cmd, t_env *env, t_node *node)
 	char	*full_path;
 
 	if (is_invalid_cmd(cmd))
-		return (ft_free_cmd_not_found(env, node), NULL);
+	{
+		ft_free_env(env);
+		ft_free_nodes(node);
+		return (NULL);
+	}
 	if (is_absolute_path(cmd))
 		return (ft_strdup(cmd));
 	paths = get_paths(env);
@@ -149,10 +110,11 @@ char	*resolve_path(char *cmd, t_env *env, t_node *node)
 		return (NULL);
 	full_path = search_in_paths(paths, cmd);
 	free_split_all(paths);
-	if (!full_path && !has_heredoc_before_redirect(node->redirs))
+	if (!full_path && !has_heredoc_before_redirect_out(node->redirs))
 	{
-		ft_free_cmd_not_found(env, node);
+		ft_free_nodes(node);
+		ft_free_env(env);
 		write(2, "command not found\n", 19);
 	}
-		return (full_path);
+	return (full_path);
 }

@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/29 18:02:19 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/02 16:41:40 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ int	exe_echo(char **args)
 	while (args[i])
 	{
 		printf("%s", args[i]);
-		if (args[i + 1])
-			printf(" ");
+		// if (args[i + 1])
+		// 	printf(" ");
 		if (args[i + 1] == NULL)
 			printf("\n");
 		i++;

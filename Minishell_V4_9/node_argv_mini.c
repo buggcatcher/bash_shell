@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   node_argv_mini.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/24 19:38:14 by marvin           ###   ########.fr       */
+/*   Updated: 2025/07/02 17:57:05 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,15 +81,67 @@ t_token	*skip_redirection_tokens(t_token *tmp)
 	return (tmp);
 }
 
+// int	ft_argv(t_token *tmp, char **argv, int i)
+// {
+// 	argv[i] = ft_strdup(tmp->value);
+// 	if (!argv[i])
+// 	{
+// 		while (i-- > 0)
+// 			free(argv[i]);
+// 		free(argv);
+// 		return (-1);
+// 	}
+// 	return (0);
+// }
+
+static char	*ft_strcpy(char *s1, const char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s2[i] != '\0')
+	{
+		s1[i] = s2[i];
+		i++;
+	}
+	s1[i] = '\0';
+	return (s1);
+}
+
 int	ft_argv(t_token *tmp, char **argv, int i)
 {
-	argv[i] = ft_strdup(tmp->value);
-	if (!argv[i])
-	{
-		while (i-- > 0)
-			free(argv[i]);
-		free(argv);
+	char	*str;
+	size_t	len;
+
+	if (!tmp || !tmp->value)
 		return (-1);
+	len = ft_strlen(tmp->value);
+
+	if (i > 0 && tmp->wspace == 1)
+	{
+		str = malloc(len + 2);
+		if (!str)
+		{
+			while (i-- > 0)
+				free(argv[i]);
+			free(argv);
+			return (-1);
+		}
+		ft_strcpy(str, tmp->value);
+		str[len] = ' ';
+		str[len + 1] = '\0';
+		argv[i] = str;
+	}
+	else
+	{
+		argv[i] = ft_strdup(tmp->value);
+		if (!argv[i])
+		{
+			while (i-- > 0)
+				free(argv[i]);
+			free(argv);
+			return (-1);
+		}
 	}
 	return (0);
 }

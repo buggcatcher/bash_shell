@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_mini.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/24 19:40:50 by marvin           ###   ########.fr       */
+/*   Updated: 2025/07/02 18:24:16 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,4 +117,19 @@ char	*ft_append_char(char *s, char c)
 	new[i] = '\0';
 	free(s);
 	return (new);
+}
+
+void	*ft_memcpy(void *dst, const void *src, size_t n)
+{
+	unsigned char	i;
+
+	i = 0;
+	if (!dst && !src)
+		return (NULL);
+	while (i < n)
+	{
+		((unsigned char *)dst)[i] = ((const char *)src)[i];
+		i++;
+	}
+	return (dst);
 }

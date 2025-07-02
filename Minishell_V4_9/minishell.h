@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/29 21:12:52 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/02 18:57:37 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_token
 {
 	t_token_type	type;
 	char			*value;
+	int				wspace;
 	struct s_token	*next;
 }	t_token;
 
