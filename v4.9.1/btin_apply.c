@@ -58,7 +58,7 @@ int	exec_builtin(char **args, t_env **env)
 	}
 	else if (!ft_strcmp(args[0], "export"))
 	{
-		printf("executing export built-in\n");
+		printf("executing export built-in\n"); 
 		return (exe_export(args, env));
 	}
 	else if (!ft_strcmp(args[0], "unset"))
