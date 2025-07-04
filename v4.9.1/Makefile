@@ -1,4 +1,4 @@
-# Nome della libreria statica
+# Nome della libreria statica 
 NAME = minishell
 
 # Compilatore e flag, -c compila i filename .c e crea i filename oggetto singolarmente
