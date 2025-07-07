@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/04 21:33:52 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/07 20:48:02 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,26 @@ int	exe_env(t_env *env)
 	return (0);
 }
 
+// static int	ft_echo_flag(char **arg)
+// {
+// 	int	i;
+// 	int	j;
+
+// 	i = 1;
+// 	while (arg[i])
+// 	{
+// 		j = 1;
+// 		if (arg[i][0] != '-' || arg[i][1] == '\0')
+// 			return (i);
+// 		while (arg[i][j] == 'n')
+// 			j++;
+// 		if (arg[i][j] != '\0')
+// 			return (i);
+// 		i++;
+// 	}
+// 	return (i);
+// }
+
 static int	ft_echo_flag(char **arg)
 {
 	int	i;
@@ -69,12 +89,15 @@ static int	ft_echo_flag(char **arg)
 			return (i);
 		while (arg[i][j] == 'n')
 			j++;
+		while (arg[i][j] == ' ')
+			j++;
 		if (arg[i][j] != '\0')
 			return (i);
 		i++;
 	}
 	return (i);
 }
+
 
 //NEW
 // static int	ft_echo_flag(char **arg)
@@ -109,6 +132,49 @@ static int	ft_echo_flag(char **arg)
 // 			return (i);
 // 		i++;
 // 		x++;
+// 	}
+// 	return (i);
+// }
+
+// static int	ft_echo_flag(char **arg)
+// {
+// 	int	i;
+// 	int	j;
+// 	int	k;
+// 	int	h;
+// 	int	x;
+
+// 	i = 1;
+// 	x = 1;
+// 	while (arg[i])
+// 	{
+// 		j = 1;
+// 		if ((x = i && arg[i][0] != '-') || (x = i && arg[i][1] == '\0'))
+// 			return (i);
+// 		while (arg[i][j] == 'n')
+// 			j++;
+// 		k = 0;
+// 		h = i + 1;
+// 		if (arg[i][j] == '\0' && arg[h] && arg[h][k] != 'n')
+// 			return (i);
+// 		if (arg[i][j] == '\0' && arg[h] && arg[h][k] == 'n')
+// 		{
+// 			while (arg[h][k] == 'n')
+// 			{
+// 				x++;
+// 				k++;
+// 			}
+// 			if (arg[h][k] == ' ')
+// 				k++;
+// 			if (arg[h][k] != '\0' )
+// 				return(i);
+// 		}
+// 		if (arg[i][j] == ' ')
+// 			j++;
+// 		if (arg[i][j] != '\0')
+// 			return(i);
+// 		i++;
+// 		//x++;
 // 	}
 // 	return (i);
 // }

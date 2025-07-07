@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/04 20:53:51 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/07 19:01:47 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ char	*resolve_path(char *cmd, t_env *env, t_node *node)
 	{
 		ft_free_cmd_not_found(env, node);
 		write(2, "command not found\n", 19);
+		exit(1); // NEW aggiunto exit per evitare double leack in caso di command not found 
 	}
 		return (full_path);
 }

@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/04 21:01:26 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/07 19:04:56 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	handle_redirections(t_node *node)
 	{
 		//    printf("Primo redir: type=%d, fd=%d\n", node->redirs->type, node->redirs->fd);
 		// mai freeare nel child! biogna aspettare il padre
-		//ft_free_nodes(node);
+		// ft_free_nodes(node);
 		printf("Error in redirections\n");
 		exit(1);
 	}
@@ -88,7 +88,7 @@ static void	execute_command(t_node *node, t_env *env)
 		bin = node->argv[0];
 	else if (ft_strchr(node->argv[0], '.'))
 	{
-		write(2, "Error\n", 7);
+		write(2, "Error_2\n", 9);
 		ft_free_nodes(node);
 		ft_free_env(env);
 		exit(127);
@@ -96,10 +96,14 @@ static void	execute_command(t_node *node, t_env *env)
 	else
 		bin = resolve_path(node->argv[0], env, node);
 	if (!bin)
+	{
+		ft_free_nodes(node);
+		ft_free_env(env);
 		exit(127);
+	}
 	env_arr = env_to_array(env);
 	execve(bin, node->argv, env_arr);
-	write(2, "Error\n", 7);
+	write(2, "Error_1\n", 9);
 	free_array(env_arr);
 	ft_free_nodes(node);
 	ft_free_env(env);
@@ -115,6 +119,8 @@ void	exec_child(t_node *node, int pipe_out[2], int pipe_in, t_env *env)
 	handle_redirections(node); // qui
 	if (!node->argv || !node->argv[0])
     {
+		ft_free_nodes(node);
+		ft_free_env(env);
         //printf("nessun comando da eseguire\n");
         exit(0);  // exit pulito
     }

@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/04 20:29:27 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/07 19:56:14 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ void	ft_add_redirection(t_node *node, t_token *token);
 char	**ft_build_argv(t_token *start, t_token *end);
 int		ft_count_tokens(t_token *start, t_token *end);
 char	**populate_argv(char **argv, t_token *start, t_token *end);
-t_token	*skip_redirection_tokens(t_token *tmp);
+//t_token	*skip_redirection_tokens(t_token *tmp);
 int		ft_argv(t_token *tmp, char **argv, int i);
 
 // redirections_mini.c
