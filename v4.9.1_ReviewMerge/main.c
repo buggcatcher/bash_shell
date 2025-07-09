@@ -46,17 +46,20 @@ bool	process_input(char *input, t_shell_state *state)
 	token = ft_tokenize(state, NULL, input);
 	if (!token)
 		return (false);
+	node = ft_node(token);
+	if (token->type == TK_HEREDOC_5 && token->next != NULL)
+	{
+		if (preprocess_heredocs(node) != 0)
+		{
+			ft_free_nodes(node);
+			return (false);
+		}
+	}
 	if (ft_check_syntax(token) == 1)
 	{
-		ft_free_token(token);
+		ft_free_nodes(node);
 		return (false);
 	}
-	node = ft_node(token);
-	if (preprocess_heredocs(node) != 0)
-    {
-        ft_free_nodes(node);
-        return (false);
-    }
 	//debug_print_nodes(node);
 	//printf("Before executor_loop\n");
     ignore_signals();

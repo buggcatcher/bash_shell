@@ -57,7 +57,7 @@
 // 		tmp = skip_redirection_tokens(tmp);
 // 		if (!tmp || tmp == end)
 // 			break ;
-// 		if (tmp->type == TK_WORD_0 || tmp->type == TK_S_QUOTE_6 || \
+// 		if (tmp->type == TK_WORD_0 || tmp->type == TK_S_QUOTE_6 ||
 // 			tmp->type == TK_D_QUOTE_7 || tmp->type == TK_DOLLAR_8)
 // 		{
 // 			if (ft_argv(tmp, argv, i) == -1)

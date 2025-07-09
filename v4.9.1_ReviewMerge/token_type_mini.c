@@ -246,7 +246,7 @@ static t_token	*ft_create_token_word(t_token_type type, char *start, int len)
 {
 	t_token	*new;
 	char	*wspaceptr;
-	int		i;
+	//int		i;
 
 	new = malloc(sizeof(t_token));
 	if (!new)
@@ -254,7 +254,7 @@ static t_token	*ft_create_token_word(t_token_type type, char *start, int len)
 	new->type = type;
 	new->value = ft_strndup(start, len);
 	new->wspace = 0;
-	i = 0;
+	//i = 0;
 	wspaceptr = start;
 	while (len > 0)
 	{

@@ -29,13 +29,36 @@ int	ft_check_dquote(t_shell_state *state, t_token *token, char *start)
 	return (0);
 }
 
-int	ft_check_var(char **input)
+/*int	ft_check_var(char **input)
 {
 	char	*tmp;
 	int		start_pos;
 
 	if (**input != '$')
 		return (1);
+	tmp = *input + 1;
+	start_pos = 0;
+	if (tmp[start_pos] == '?')
+		return (2);
+	while (tmp[start_pos] && \
+			((tmp[start_pos] >= '0' && tmp[start_pos] <= '9') || \
+			(tmp[start_pos] >= 'A' && tmp[start_pos] <= 'Z') || \
+			(tmp[start_pos] >= 'a' && tmp[start_pos] <= 'z') || \
+			tmp[start_pos] == '_'))
+		start_pos++;
+	if (start_pos == 0)
+		return (1);
+	else
+		return (2);
+}*/
+
+int	ft_check_var(char **input)
+{
+	char	*tmp;
+	int		start_pos;
+
+	if (**input != '$')
+		return (1);	
 	tmp = *input + 1;
 	start_pos = 0;
 	if (tmp[start_pos] == '?')

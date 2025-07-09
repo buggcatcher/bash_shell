@@ -70,7 +70,7 @@ t_token	*ft_get_token(t_shell_state *s, t_token *t, char **i, t_token **n)
 // 	buffer = NULL;
 // 	var = 1;
 // 	result = NULL;
-// 	while (**input && **input != ' ' && **input != '|' && **input != '<' && \
+// 	while (**input && **input != ' ' && **input != '|' && **input != '<' && 
 // 			**input != '>' && **input != '\'' && **input != '"')
 // 	{
 // 		if (var != 2)

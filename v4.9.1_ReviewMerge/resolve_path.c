@@ -132,14 +132,14 @@ static char	*search_in_paths(char **paths, char *cmd)
 static int	has_heredoc_before_redirect_out(t_redir *redir_list)
 {
 	t_redir	*current;
-	int		seen_heredoc = 0;
+	//int		seen_heredoc = 0;
 
 	current = redir_list;
 	while (current)
 	{
 		if (current->type == TK_HEREDOC_5 && current->next != NULL)
 		{
-			seen_heredoc = 1;
+			//seen_heredoc = 1;
 			return (1);
 		}
 		current = current->next;

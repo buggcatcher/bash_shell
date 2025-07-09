@@ -50,12 +50,30 @@ redirezione di tipo heredoc che non è ancora stata processata (fd == -1),
 chiama handle_heredoc_sequence per gestirla. 
 Se una qualsiasi di queste chiamate fallisce, interrompe l’esecuzione e segnala l’errore.
 */
+/*static int process_node_heredocs(t_node *node)
+{
+    t_redir *redir = node->redirs;
+    
+    while (redir)
+    {
+        if (redir->type == TK_HEREDOC_5 && redir->fd == -1)
+        {
+            if (handle_heredoc_sequence(redir) != 0)
+                return (1);
+        }
+        redir = redir->next;
+    }
+    return (0);
+}*/
+
 static int process_node_heredocs(t_node *node)
 {
     t_redir *redir = node->redirs;
     
     while (redir)
     {
+        if (redir->type == TK_HEREDOC_5 && ft_is_operator(redir->node->token->next))
+			return (write(2, "bash: syntax error\n", 20), 1);
         if (redir->type == TK_HEREDOC_5 && redir->fd == -1)
         {
             if (handle_heredoc_sequence(redir) != 0)
@@ -89,12 +107,29 @@ La funzione fill_heredoc_buffer legge sequenzialmente tutti gli heredoc consecut
 a partire da una redirezione, leggendo l’input fino al delimitatore e accumulandolo nel buffer.
 Se la lettura fallisce in qualsiasi punto, ritorna un errore.
 */
+/*int fill_heredoc_buffer(t_redir *start, t_heredoc_buffer *buffer)
+{
+    t_redir *current = start;
+
+    while (current && current->type == TK_HEREDOC_5)
+    {
+        if (read_heredoc_input(current->filename, buffer) != 0)
+            return (1);
+        current = current->next;
+    }
+    return (0);
+}*/
+
 int fill_heredoc_buffer(t_redir *start, t_heredoc_buffer *buffer)
 {
     t_redir *current = start;
 
     while (current && current->type == TK_HEREDOC_5)
     {
+        buffer->size = 0; // RESET del buffer prima di ogni nuovo heredoc
+        if (buffer->capacity > 0 && buffer->content) {
+            buffer->content[0] = '\0';
+        }
         if (read_heredoc_input(current->filename, buffer) != 0)
             return (1);
         current = current->next;
