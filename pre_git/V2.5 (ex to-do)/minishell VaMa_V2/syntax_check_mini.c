@@ -1,36 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   syntax_check_mini.c                                :+:      :+:    :+:   */
+/*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vloddo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/28 15:34:08 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/05/28 12:50:15 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_check_syntax(t_token *token)
+void	ft_check_syntax(t_token *token)
 {
 	t_token	*tmp;
 
 	if (!token)
-		return (1);
+		return ;
 	if (ft_is_operator(token))
-		return (write(2, "bash: syntax error\n", 20), 1);
+		return (ft_error(token, "bash: syntax error"));
+
 	tmp = token;
 	while (tmp && tmp->next)
 	{
 		if (ft_is_operator(tmp) && ft_is_operator(tmp->next))
-			return (write(2, "bash: syntax error\n", 20), 1);
+			return (ft_error(token, "bash: syntax error"));
 		tmp = tmp->next;
 	}
 	if (ft_is_operator(tmp))
-		return (write(2, "bash: syntax error\n", 20), 1);
-	return (0);
+		return (ft_error(token, "bash: syntax error"));
 }
+
 
 int	ft_is_operator(t_token *token)
 {
@@ -40,11 +41,12 @@ int	ft_is_operator(t_token *token)
 		return (1);
 	if (token->type == TK_REDIR_IN_2)
 		return (1);
-	if (token->type == TK_REDIR_OUT_3 && token->next == NULL)
+	if (token->type == TK_REDIR_OUT_3)
 		return (1);
-	if (token->type == TK_REDIR_APPEND_4 && token->next == NULL)
+	if (token->type == TK_REDIR_APPEND_4)
 		return (1);
-	if (token->type == TK_HEREDOC_5 && token->next == NULL)
+	if (token->type == TK_HEREDOC_5)
 		return (1);
 	return (0);
 }
+

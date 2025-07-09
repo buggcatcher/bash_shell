@@ -1,97 +1,59 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   node_mini.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vloddo <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/05/28 12:50:15 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/06/29 21:03:34 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-t_node	*ft_node(t_token *token, t_node *node)
-{
-	t_node *head;
-	t_node *tail;
-	t_token *cmd_start;
-	t_token *tmp;
-	t_node *new;
-
-	head = NULL;
-	tail = NULL;
-	cmd_start = token;
-	tmp = token;
-	while (tmp)
-    {
-		while (tmp && tmp->type != TK_PIPE_1)
-			tmp = tmp->next;
-		new = ft_create_node(cmd_start);
-		if (!new)
-			return (ft_free_nodes(head));
-		new->argv = ft_build_argv(cmd_start, tmp);
-		if (!new->argv)
-		{
-			free(new);
-			return (ft_free_nodes(head));
-		}
-		if (!head)
-			head = new;
-		else
-			tail->next = new;
-		tail = new;
-		if (tmp && tmp->type == TK_PIPE_1)
-		{
-			cmd_start = tmp->next;
-			tmp = tmp->next;
-		}
-	}
-	return (head);
-} */
-
-
 t_node	*ft_node(t_token *token)
 {
-	t_token *cmd_start;
-	t_token *tmp;
-	t_node *new;
-	t_node *head;
+	t_token	*start;
+	t_token	*tmp;
+	t_node	*new;
+	t_node	*head;
 
 	head = NULL;
-	cmd_start = token;
+	start = token;
 	tmp = token;
 	while (tmp)
-    {
+	{
 		while (tmp && tmp->type != TK_PIPE_1)
 			tmp = tmp->next;
-		new = ft_get_node(cmd_start);
+		new = ft_get_node(start);
 		if (!new)
 			return (ft_free_nodes(head));
-		new->argv = ft_build_argv(cmd_start, tmp);
+			//head = null
+		new->argv = ft_build_argv(start, tmp);
 		if (!new->argv)
 		{
 			free(new);
+			//head = null
 			return (ft_free_nodes(head));
 		}
-		ft_create_node(&head,new);
-		ft_advance_tokens(&cmd_start, &tmp);
+		ft_create_node(&head, new);
+		ft_advance_tokens(&start, &tmp);
 	}
 	return (head);
 }
 
 t_node	*ft_get_node(t_token *token)
 {
-	t_node *new;
-	t_token *tmp;
+	t_node	*new;
+	t_token	*tmp;
 
 	new = malloc(sizeof(t_node));
 	if (!new)
-		return NULL;
-	new->argv = NULL;
+		return (NULL);
 	new->redirs = NULL;
+	new->token = token;
+	new->argv = NULL;
 	new->next = NULL;
 	tmp = token;
 	while (tmp && tmp->type != TK_PIPE_1)
@@ -99,7 +61,7 @@ t_node	*ft_get_node(t_token *token)
 		if (tmp->type >= TK_REDIR_IN_2 && tmp->type <= TK_HEREDOC_5)
 		{
 			ft_add_redirection(new, tmp);
-			if (tmp->next) // Salta il token del filename dopo la redirezione
+			if (tmp->next)
 				tmp = tmp->next;
 		}
 		tmp = tmp->next;
@@ -109,7 +71,7 @@ t_node	*ft_get_node(t_token *token)
 
 void	ft_create_node(t_node **head, t_node *new)
 {
-	t_node *tail;
+	t_node	*tail;
 
 	if (!*head)
 	{
@@ -124,31 +86,34 @@ void	ft_create_node(t_node **head, t_node *new)
 	}
 }
 
-void	ft_advance_tokens(t_token **cmd_start, t_token **tmp)
+void	ft_advance_tokens(t_token **start, t_token **tmp)
 {
 	if (*tmp && (*tmp)->type == TK_PIPE_1)
 	{
-		*cmd_start = (*tmp)->next;
+		*start = (*tmp)->next;
 		*tmp = (*tmp)->next;
 	}
 }
 
 // void	ft_add_redirection(t_node *node, t_token *token)
 // {
-// 	t_redir *new_redir; //t_node fd in base a cosa c'e nella redir del nodo
-// 	t_redir *last;
+// 	t_redir	*new_redir;
+// 	t_redir	*last;
 
 // 	new_redir = malloc(sizeof(t_redir));
 // 	if (!new_redir)
-// 		return; 
+// 		return ;
 // 	new_redir->type = token->type;
-// 	new_redir->fd = -1; //di default
+// 	new_redir->fd = -1;
 // 	new_redir->next = NULL;
-// 	if (token->next && (token->next->type == TK_WORD_0 || token->next->type == TK_S_QUOTE_6 || token->next->type == TK_D_QUOTE_7 || token->next->type == TK_DOLLAR_8)) // Imposta il filename (se presente)
-// 			new_redir->filename = ft_strdup(token->next->value);
+// 	if (token->next && (token->next->type == TK_WORD_0 || 
+// 			token->next->type == TK_S_QUOTE_6 || 
+// 			token->next->type == TK_D_QUOTE_7 || 
+// 			token->next->type == TK_DOLLAR_8))
+// 		new_redir->filename = ft_strdup(token->next->value);
 // 	else
 // 		new_redir->filename = NULL;
-// 	if (!node->redirs) // Aggiungi alla lista delle redirezioni
+// 	if (!node->redirs)
 // 		node->redirs = new_redir;
 // 	else
 // 	{
@@ -159,24 +124,73 @@ void	ft_advance_tokens(t_token **cmd_start, t_token **tmp)
 // 	}
 // }
 
+// NEW
+
+static void init_redir(t_redir *redir, int type, t_node *node)
+{
+    redir->node = node;
+    redir->type = type;
+    redir->fd = -1;
+    redir->next = NULL;
+    redir->last = NULL;
+    redir->heredoc_buffer = NULL;
+}
+
+// void	ft_add_redirection(t_node *node, t_token *token)
+// {
+// 	t_redir	*new_redir;
+// 	t_redir	*last;
+
+// 	new_redir = malloc(sizeof(t_redir));
+// 	if (!new_redir)
+// 		return ;
+//     init_redir(new_redir, token->type, node);
+// 	if (token->next && (token->next->type == TK_WORD_0 || 
+// 			token->next->type == TK_S_QUOTE_6 || 
+// 			token->next->type == TK_D_QUOTE_7 || 
+// 			token->next->type == TK_DOLLAR_8))
+// 		new_redir->filename = ft_strdup(token->next->value);
+// 	else
+// 		new_redir->filename = NULL;
+// 	if (!node->redirs)
+// 		node->redirs = new_redir;
+// 	else
+// 	{
+// 		last = node->redirs;
+// 		while (last->next)
+// 			last = last->next;
+// 		last->next = new_redir;
+// 	}
+// }
+
+
+// =====================================
+// AGGIORNAMENTI PER ft_add_redirection()
+// =====================================
+
+// Assicurati che quando crei una nuova redirezione, 
+// il campo heredoc_buffer sia inizializzato a NULL
+
+// Nella funzione dove crei le redirezioni:
+// new_redir->heredoc_buffer = NULL;
+
 void	ft_add_redirection(t_node *node, t_token *token)
 {
-	t_redir *new_redir;
-	t_redir *last;
+	t_redir	*new_redir;
+	t_redir	*last;
 
 	new_redir = malloc(sizeof(t_redir));
 	if (!new_redir)
-		return; 
-	new_redir->type = token->type;
-	new_redir->next = NULL;
-	if (token->next && (token->next->type == TK_WORD_0 || token->next->type == TK_S_QUOTE_6 || token->next->type == TK_D_QUOTE_7 || token->next->type == TK_DOLLAR_8)) // Imposta il filename (se presente)
-		{
-			new_redir->filename = ft_strdup(token->next->value);
-			new_redir->fd = open(new_redir->filename, O_RDONLY);
-		}
+		return ;
+    init_redir(new_redir, token->type, node);
+	if (token->next && (token->next->type == TK_WORD_0 || \
+			token->next->type == TK_S_QUOTE_6 || \
+			token->next->type == TK_D_QUOTE_7 || \
+			token->next->type == TK_DOLLAR_8))
+		new_redir->filename = ft_strdup(token->next->value);
 	else
 		new_redir->filename = NULL;
-	if (!node->redirs) // Aggiungi alla lista delle redirezioni
+	if (!node->redirs)
 		node->redirs = new_redir;
 	else
 	{
@@ -184,5 +198,6 @@ void	ft_add_redirection(t_node *node, t_token *token)
 		while (last->next)
 			last = last->next;
 		last->next = new_redir;
+		new_redir->last = last;
 	}
 }

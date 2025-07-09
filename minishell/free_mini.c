@@ -1,68 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   free_mini.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vloddo <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/05/28 12:50:15 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/06/28 20:51:50 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_free_token(t_token *token)
+// NEW
+void	ft_free_env(t_env *env)
 {
-	t_token	*tmp;
+	t_env	*tmp;
 
-	while (token)
+	while (env)
 	{
-		tmp = token;
-		token = token->next;
+		tmp = env;
+		env = env->next;
+		free(tmp->key);
 		free(tmp->value);
 		free(tmp);
 	}
 }
-
-/*
-t_node	*ft_free_nodes(t_node *head)
-{
-	t_node *tmp;
-	t_redir *redir;
-	t_redir *next_redir;
-	int		i;
-
-	while (head)
-	{
-		tmp = head;
-		head = head->next;
-		if (tmp->argv) // libera argv
-		{
-			i = 0;
-			while (tmp->argv[i])
-			{
-				free(tmp->argv[i]);
-				i++;
-			}
-			free(tmp->argv);
-		}
-		redir = tmp->redirs;
-		while (redir) // libera redirect
-		{
-			next_redir = redir->next;
-			free(redir->filename);
-			free(redir);
-			redir = next_redir;
-		}
-		free(tmp);
-	}
-	return (NULL);
-} */
-
+// NEW new meow new
 t_node	*ft_free_nodes(t_node *head)
 {
 	t_node	*tmp;
+	tmp = head;
+	ft_free_token(tmp->token);
 
 	while (head)
 	{
@@ -75,12 +44,43 @@ t_node	*ft_free_nodes(t_node *head)
 	return (NULL);
 }
 
+
+void	ft_free_token(t_token *token)
+{
+	t_token	*tmp;
+
+	while (token)
+	{
+		tmp = token;
+		token = token->next;
+		if (tmp->value)
+			free(tmp->value);
+
+		free(tmp);
+	}
+}
+
+// t_node	*ft_free_nodes(t_node *head)
+// {
+// 	t_node	*tmp;
+
+// 	while (head)
+// 	{
+// 		tmp = head;
+// 		head = head->next;
+// 		ft_free_argv(tmp->argv);
+// 		ft_free_redirs(tmp->redirs);
+// 		free(tmp);
+// 	}
+// 	return (NULL);
+// }
+
 void	ft_free_argv(char **argv)
 {
 	int	i;
 
 	if (!argv)
-		return;
+		return ;
 	i = 0;
 	while (argv[i])
 	{
@@ -90,15 +90,79 @@ void	ft_free_argv(char **argv)
 	free(argv);
 }
 
-void	ft_free_redirs(t_redir *redir)
-{
-	t_redir	*next_redir;
+// questa è buona, solo che sotto c'è la versione commentata
+// void ft_free_redirs(t_redir *redir)
+// {
+//     t_redir *next_redir;
+    
+//     while (redir)
+//     {
+//         next_redir = redir->next;
+//         free(redir->filename);
 
-	while (redir)
+//         if (redir->heredoc_buffer)
+//             ft_free_heredoc_buffer(redir->heredoc_buffer);
+    
+// 		if (redir->type == TK_HEREDOC_5 && redir->fd > 2)
+//         {
+//             close(redir->fd);
+//         }
+//         free(redir);
+//         redir = next_redir;
+//     }
+// }
+
+void ft_free_redirs(t_redir *redir)
+{
+    t_redir *next_redir;
+    
+    //printf("=== FT_FREE_REDIRS START ===\n");
+    while (redir)
+    {
+        //printf("Freeing redir: type=%d, fd=%d, filename=%s\n", 
+        //       redir->type, redir->fd, redir->filename ? redir->filename : "(null)");
+        //printf("redir->heredoc_buffer = %p\n", redir->heredoc_buffer);
+        
+        next_redir = redir->next;
+        //printf("About to free filename\n");
+        free(redir->filename);
+        //printf("Filename freed\n");
+
+        if (redir->heredoc_buffer)
+        {
+            //printf("About to free heredoc_buffer\n");
+            free_heredoc_buffer(redir->heredoc_buffer);
+            //printf("Heredoc buffer freed\n");
+        }
+        
+        //printf("About to free redir struct\n");
+        free(redir);
+        //printf("Redir struct freed\n");
+        redir = next_redir;
+    }
+    //printf("==== FT_FREE_REDIRS END ====\n");
+}
+
+void	free_array(char **arr)
+{
+	int	i;
+
+	i = 0;
+	if (!arr)
+		return ;
+	while (arr[i])
 	{
-		next_redir = redir->next;
-		free(redir->filename);
-		free(redir);
-		redir = next_redir;
+		free(arr[i]);
+		i++;
 	}
+	free(arr);
+}
+
+void free_heredoc_buffer(t_heredoc_buffer *buffer)
+{
+    if (!buffer)
+        return;
+    if (buffer->content)
+        free(buffer->content);
+    free(buffer);
 }

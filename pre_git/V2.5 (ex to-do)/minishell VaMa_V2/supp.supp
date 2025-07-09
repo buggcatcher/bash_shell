@@ -32,39 +32,3 @@
    ...
    obj:/usr/bin/*
 }
-
-{
-   readline_still_reachable
-   Memcheck:Leak
-   fun:malloc
-   ...
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
-}
-
-{
-   readline_leak
-   Memcheck:Leak
-   obj:*libreadline*.so*
-}
-{
-   tinfo_leak
-   Memcheck:Leak
-   obj:*libtinfo*.so*
-}
-
-{
-   readline_leak
-   Memcheck:Leak
-   obj:*libreadline*.so*
-}
-
-{
-   tinfo_leak
-   Memcheck:Leak
-   obj:*libtinfo*.so*
-}
-
-
-
-
-

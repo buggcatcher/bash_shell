@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_mini.c                                       :+:      :+:    :+:   */
+/*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vloddo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/24 19:25:32 by marvin           ###   ########.fr       */
+/*   Updated: 2025/05/28 12:50:15 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_error(t_token *token, char *msg)
+void	ft_error(t_token *token, char *msg)
 {
 	ft_putstr(msg);
 	ft_free_token(token);
-	return (1);
+	rl_clear_history();
+	exit(1);
 }
 
 void	ft_putstr(char *str)
