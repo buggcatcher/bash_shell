@@ -12,11 +12,11 @@
 
 #include "minishell.h"
 
-int	switch_fd(int from, int to)
+int	switch_fd(int src, int dest)
 {
-	if (from != to)
+	if (src != dest)
 	{
-		if (dup2(from, to) == -1)
+		if (dup2(src, dest) == -1)
 		{
 			write(2, "Dup2\n", 6);
 			return (1);

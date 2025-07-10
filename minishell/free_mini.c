@@ -21,28 +21,32 @@ void	ft_free_env(t_env *env)
 	{
 		tmp = env;
 		env = env->next;
-		free(tmp->key);
-		free(tmp->value);
+		if (tmp->key)
+            free(tmp->key);
+        if (tmp->value)
+            free(tmp->value);
 		free(tmp);
 	}
 }
-// NEW new meow new
-t_node	*ft_free_nodes(t_node *head)
-{
-	t_node	*tmp;
-	tmp = head;
-	ft_free_token(tmp->token);
 
-	while (head)
-	{
-		tmp = head;
-		head = head->next;
-		ft_free_argv(tmp->argv);
-		ft_free_redirs(tmp->redirs);
-		free(tmp);
-	}
-	return (NULL);
+
+// NEW new meow new
+t_node *ft_free_nodes(t_node *head)
+{
+    t_node *tmp;
+    
+    while (head)
+    {
+        tmp = head;
+        head = head->next;
+        
+        ft_free_argv(tmp->argv);
+        ft_free_redirs(tmp->redirs);
+        free(tmp);
+    }
+    return (NULL);
 }
+
 
 
 void	ft_free_token(t_token *token)
@@ -90,7 +94,7 @@ void	ft_free_argv(char **argv)
 	free(argv);
 }
 
-// questa è buona, solo che sotto c'è la versione commentata
+// questa è buona, solo che sotto c'è la versione commentata per debuggare
 // void ft_free_redirs(t_redir *redir)
 // {
 //     t_redir *next_redir;
@@ -165,4 +169,11 @@ void free_heredoc_buffer(t_heredoc_buffer *buffer)
     if (buffer->content)
         free(buffer->content);
     free(buffer);
+}
+
+void clean_exit(t_node *node, t_env *env, int status)
+{
+    ft_free_nodes(node);
+    ft_free_env(env);
+    exit(status);
 }

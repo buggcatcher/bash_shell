@@ -26,26 +26,26 @@ static void	handle_pipes(int pipe_in, int pipe_out[2])
 
 static void	handle_redirections(t_node *node)
 {
-	//free before exit
-	//printf("Prima di apply_redirects, redir=%p\n", node->redirs);
+	printf("Prima di apply_redirects, redir=%p\n", node->redirs);
 	int i = apply_redirects(node->redirs); // qui
 	if (node->redirs && i)
 	{
-		//    printf("Primo redir: type=%d, fd=%d\n", node->redirs->type, node->redirs->fd);
-		// mai freeare nel child! biogna aspettare il padre
-		// ft_free_nodes(node);
+		   printf("Primo redir: type=%d, fd=%d\n", node->redirs->type, node->redirs->fd);
 		printf("Error in redirections\n");
 		exit(1);
 	}
-	//printf("is %d\n", i);
+	printf("redirect is %d\n", i);
 }
 
 static void	handle_builtin(t_node *node, t_env **env)
 {
-	if (is_builtin(node->argv[0])) {
-		printf("is builtin\n");
-		exit(exec_builtin(node->argv, env));
-	}
+	int status;
+	
+    if (is_builtin(node->argv[0])) {
+        printf("is builtin\n");
+        status = exec_builtin(node->argv, env);
+        clean_exit(node, *env, status);
+    }
 }
 
 // static void	execute_command(t_node *node, t_env *env)
@@ -80,7 +80,7 @@ static void	execute_command(t_node *node, t_env *env)
 
 	if (!node->argv || !node->argv[0])
 	{
-		//printf("non ci arriva");
+		printf("free_nodes in execute_command\n");
 		ft_free_nodes(node);
 		exit(127);
 	}
@@ -121,11 +121,11 @@ void	exec_child(t_node *node, int pipe_out[2], int pipe_in, t_env *env)
     {
 		ft_free_nodes(node);
 		ft_free_env(env);
-        //printf("nessun comando da eseguire\n");
-        exit(0);  // exit pulito
+        printf("nessun comando da eseguire\n");
+        exit(0);
     }
-	//printf("exec_chiild: node->argv[0] = %s\n", node->argv[0]);
+	printf("exec_chiild: node->argv[0] = %s\n", node->argv[0]);
 	handle_builtin(node, &env);
 	execute_command(node, env);
-	//printf ("non ci arriva\n");
+	printf ("non ci arriva\n");
 }

@@ -158,6 +158,7 @@ void	ft_free_token(t_token *token);
 void	ft_free_argv(char **argv);
 void	ft_free_redirs(t_redir *redir);
 void	free_array(char **arr);
+void	clean_exit(t_node *node, t_env *env, int status);
 
 // error_mini.c
 int		ft_error(t_token *token, char *msg);
@@ -204,7 +205,7 @@ char	*resolve_path(char *cmd, t_env *env, t_node *node);
 // === child.c === //
 void	exec_child(t_node *node, int pipe_out[2], int pipe_in, t_env *env);
 
-// === vaious.c === //
+// === various.c === //
 void	free_split_all(char **arr);
 char	*join_path(char *dir, char *cmd);
 char	*get_env_value(char *key, t_env *env);
@@ -270,7 +271,7 @@ void	*ft_memcpy(void *dst, const void *src, size_t n);
 char	*ft_strcpy(char *dst, const char *src);
 
 /// === fd.c === ///
-int		switch_fd(int from, int to);
+int	switch_fd(int src, int dest);
 int		save_fd(int fd);
 int		save_stdout(void);
 int		open_outfile( char *filename);

@@ -39,7 +39,11 @@ void debug_print_nodes(t_node *node)
     printf("node is equal to: %p\n", (void *)node);
 
 	if (node->next)
+	{
 		printf("Has next: Yes\n");
+		printf("token type: %d\n", node->next->token->type);
+		printf("Next node cmd: %s\n", node->next->argv[0]);
+	}
 	else
 		printf("Has next: No\n");
 

@@ -54,18 +54,21 @@ bool	process_input(char *input, t_shell_state *state)
 	node = ft_node(token);
 	if (preprocess_heredocs(node) != 0)
     {
+		ft_free_token(token);
         ft_free_nodes(node);
         return (false);
     }
-	//debug_print_nodes(node);
-	//printf("Before executor_loop\n");
+	debug_print_nodes(node);
+		printf("+ Before executor_loop\n");
     ignore_signals();
     executor_loop(node, state);
-    //printf("After executor_loop\n");
+    	printf("+ After executor_loop\n");
     setup_signals();
-    //printf("After setup_signals\n");
+    	printf("+ After setup_signals\n");
     ft_free_nodes(node);
-    //printf("After ft_free_nodes\n");
+    	printf("+ After ft_free_nodes\n");
+	ft_free_token(token);
+		printf("+ After ft_free_token\n");
 	return (true);
 }
 

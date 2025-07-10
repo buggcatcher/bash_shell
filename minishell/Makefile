@@ -43,8 +43,10 @@ fclean: clean
 # Regola per ricompilare tutto
 re: fclean all
 
+# --track-fds=yes --trace-children=yes 
 val: all
-	@valgrind --suppressions=readline.supp --show-leak-kinds=all --leak-check=full --quiet ./$(NAME)
+	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes \
+	--suppressions=readline.supp --quiet ./$(NAME)
 
 # Evita errori nel caso i nomi delle regole coincidano con filename reali
 .PHONY: all clean fclean re
