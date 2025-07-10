@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/10 18:34:12 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/06/29 16:57:55 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	shell_loop(t_shell_state *state)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_shell_state	state;
+	t_shell_state	state; 
 
 	(void)argc;
 	(void)argv;

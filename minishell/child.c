@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/10 15:00:43 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/07 19:04:56 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ static void	handle_builtin(t_node *node, t_env **env)
 {
 	int status;
 	
-    if (is_builtin(node->argv[0]))
-	{
+    if (is_builtin(node->argv[0])) {
         printf("is builtin\n");
         status = exec_builtin(node->argv, env);
         clean_exit(node, *env, status);
@@ -87,7 +86,7 @@ static void	execute_command(t_node *node, t_env *env)
 	}
 	if (ft_strchr(node->argv[0], '/'))
 		bin = node->argv[0];
-	else if (node->argv[0][0] == '.' && node->argv[0][1] == '\0')
+	else if (ft_strchr(node->argv[0], '.'))
 	{
 		write(2, "Error_2\n", 9);
 		ft_free_nodes(node);

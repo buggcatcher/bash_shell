@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/10 15:32:09 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/06/28 20:51:50 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,16 +171,8 @@ void free_heredoc_buffer(t_heredoc_buffer *buffer)
     free(buffer);
 }
 
-// void clean_exit(t_node *node, t_env *env, int status)
-// {
-//     ft_free_nodes(node);
-//     ft_free_env(env);
-//     exit(status);
-// }
-
 void clean_exit(t_node *node, t_env *env, int status)
 {
-    ft_free_token(node->token);
     ft_free_nodes(node);
     ft_free_env(env);
     exit(status);

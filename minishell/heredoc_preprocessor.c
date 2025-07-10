@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc_preprocessor.c                             :+:      :+:    :+:   */
+/*   heredoc_mini.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/10 14:10:09 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/06/29 17:05:57 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,29 +89,12 @@ La funzione fill_heredoc_buffer legge sequenzialmente tutti gli heredoc consecut
 a partire da una redirezione, leggendo l’input fino al delimitatore e accumulandolo nel buffer.
 Se la lettura fallisce in qualsiasi punto, ritorna un errore.
 */
-// int fill_heredoc_buffer(t_redir *start, t_heredoc_buffer *buffer)
-// {
-//     t_redir *current = start;
-
-//     while (current && current->type == TK_HEREDOC_5)
-//     {
-//         if (read_heredoc_input(current->filename, buffer) != 0)
-//             return (1);
-//         current = current->next;
-//     }
-//     return (0);
-// }
-//NEW
 int fill_heredoc_buffer(t_redir *start, t_heredoc_buffer *buffer)
 {
     t_redir *current = start;
 
     while (current && current->type == TK_HEREDOC_5)
     {
-        buffer->size = 0; // RESET del buffer prima di ogni nuovo heredoc
-        if (buffer->capacity > 0 && buffer->content) {
-            buffer->content[0] = '\0';
-        }
         if (read_heredoc_input(current->filename, buffer) != 0)
             return (1);
         current = current->next;
