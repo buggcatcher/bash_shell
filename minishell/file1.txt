@@ -1,3 +1,0 @@
-executing echo built-in
-ciaofile1.txt
-About to switch_fd restore
