@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/04 20:46:56 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/10 18:30:44 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,6 +302,6 @@ t_token	*ft_create_token(t_token_type type, char *start, int len)
 	new->type = type;
 	new->value = ft_strndup(start, len);
 	new->next = NULL;
-	new->wspace = 1;
+	new->wspace = 0;
 	return (new);
 }

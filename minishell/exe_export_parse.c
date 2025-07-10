@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exe_export_parse.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
+/*   Updated: 2025/07/10 16:40:40 by vloddo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static bool	is_numeric_char(char c)
@@ -15,6 +27,22 @@ static bool	is_alpha_char(char c)
 	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
 }
 
+// bool	is_valid_variable_name(const char *str)
+// {
+// 	int	i;
+
+// 	if (!str || (!is_alpha_char(str[0]) && !is_underscore(str[0])))
+// 		return (false);
+// 	i = 1;
+// 	while (str[i])
+// 	{
+// 		if (!is_alpha_char(str[i]) && !is_numeric_char(str[i]) && !is_underscore(str[i]))
+// 			return (false);
+// 		i++;
+// 	}
+// 	return (true);
+// }
+
 bool	is_valid_variable_name(const char *str)
 {
 	int	i;
@@ -24,7 +52,7 @@ bool	is_valid_variable_name(const char *str)
 	i = 1;
 	while (str[i])
 	{
-		if (!is_alpha_char(str[i]) && !is_numeric_char(str[i]) && !is_underscore(str[i]))
+		if (!is_alpha_char(str[i]) && !is_numeric_char(str[i]) && !is_underscore(str[i]) && (str[i] >= ' ' && str[i] <= '\0'))
 			return (false);
 		i++;
 	}
