@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/07 19:56:14 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/10 15:27:25 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ void	free_array(char **arr);
 void	clean_exit(t_node *node, t_env *env, int status);
 
 // error_mini.c
-int		ft_error(t_token *token, char *msg);
+//int		ft_error(t_token *token, char *msg);
 void	ft_putstr(char *str);
 
 // utils_mini.c

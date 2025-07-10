@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/28 15:39:22 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/10 16:48:01 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int	executor_loop(t_node *node, t_shell_state *state)
     //original_node = node;
     while (node)
     {
-        printf("====== EXECUTOR DEBUG ======\n");
+        printf("====== 🟢 EXECUTOR DEBUG 🟢 ======\n");
         printf("node->argv[0] = %s\n", node->argv[0] ? node->argv[0] : "(null)");
         printf("node->redirs = %p\n", node->redirs);
         if (node->redirs)
