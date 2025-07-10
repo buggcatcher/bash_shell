@@ -92,7 +92,7 @@ void	shell_loop(t_shell_state *state)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_shell_state	state;
+	t_shell_state	state; 
 
 	(void)argc;
 	(void)argv;
