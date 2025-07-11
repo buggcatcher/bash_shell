@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/07 19:01:47 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/11 18:05:38 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ static int	has_heredoc_before_redirect_out(t_redir *redir_list)
 
 static void ft_free_cmd_not_found(t_env *env, t_node *node)
 {
+	ft_free_token(node->token);
 	ft_free_nodes(node);
 	ft_free_env(env);
 	
