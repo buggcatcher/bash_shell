@@ -6,12 +6,44 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/29 21:03:34 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/14 21:24:51 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// t_node	*ft_node(t_token *token)
+// {
+// 	t_token	*start;
+// 	t_token	*tmp;
+// 	t_node	*new;
+// 	t_node	*head;
+
+// 	head = NULL;
+// 	start = token;
+// 	tmp = token;
+// 	while (tmp)
+// 	{
+// 		while (tmp && tmp->type != TK_PIPE_1)
+// 			tmp = tmp->next;
+// 		new = ft_get_node(start);
+// 		if (!new)
+// 			return (ft_free_nodes(head));
+// 			//head = null
+// 		new->argv = ft_build_argv(start, tmp);
+// 		if (!new->argv)
+// 		{
+// 			free(new);
+// 			//head = null
+// 			return (ft_free_nodes(head));
+// 		}
+// 		ft_create_node(&head, new);
+// 		ft_advance_tokens(&start, &tmp);
+// 	}
+// 	return (head);
+// }
+
+//NEW
 t_node	*ft_node(t_token *token)
 {
 	t_token	*start;
@@ -29,12 +61,11 @@ t_node	*ft_node(t_token *token)
 		new = ft_get_node(start);
 		if (!new)
 			return (ft_free_nodes(head));
-			//head = null
-		new->argv = ft_build_argv(start, tmp);
-		if (!new->argv)
+		if ((new->token->type == TK_S_QUOTE_6 || new->token->type == TK_D_QUOTE_7 || new->token->type == TK_DOLLAR_8) || new->token->type == TK_WORD_0)
+			new->argv = ft_build_argv(start, tmp);
+		if (!new->argv && new->redirs == NULL)
 		{
 			free(new);
-			//head = null
 			return (ft_free_nodes(head));
 		}
 		ft_create_node(&head, new);
@@ -63,6 +94,7 @@ t_node	*ft_get_node(t_token *token)
 			ft_add_redirection(new, tmp);
 			if (tmp->next)
 				tmp = tmp->next;
+			printf("ADD REDIRECTION %s\n", tmp->value);
 		}
 		tmp = tmp->next;
 	}

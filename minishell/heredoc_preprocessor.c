@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/10 14:10:09 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/14 17:29:23 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int read_heredoc_input(char *delimiter, t_heredoc_buffer *buffer)
         if (!line)
             break;
         if (ft_strlen(line) == delimiter_len && 
-            strncmp(line, delimiter, delimiter_len) == 0)
+            ft_strncmp(line, delimiter, delimiter_len) == 0)
         {
             free(line);
             break;
@@ -71,10 +71,25 @@ Cicla su una lista di nodi, e per ciascuno di essi chiama process_node_heredocs,
 quindi gestisce gli heredoc per tutta la catena di nodi. 
 Se il processo fallisce per un nodo, ritorna l’errore immediatamente.
 */
+// int preprocess_heredocs(t_node *nodes)
+// {
+//     t_node *current = nodes;
+    
+//     current = nodes;
+//     while (current)
+//     {
+//         if (process_node_heredocs(current) != 0)
+//             return (1);
+//         current = current->next;
+//     }
+//     return (0);
+// }
+
 int preprocess_heredocs(t_node *nodes)
 {
     t_node *current = nodes;
     
+    current = nodes;
     while (current)
     {
         if (process_node_heredocs(current) != 0)
@@ -109,7 +124,8 @@ int fill_heredoc_buffer(t_redir *start, t_heredoc_buffer *buffer)
     while (current && current->type == TK_HEREDOC_5)
     {
         buffer->size = 0; // RESET del buffer prima di ogni nuovo heredoc
-        if (buffer->capacity > 0 && buffer->content) {
+        if (buffer->capacity > 0 && buffer->content)
+        {
             buffer->content[0] = '\0';
         }
         if (read_heredoc_input(current->filename, buffer) != 0)

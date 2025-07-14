@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/09 17:46:12 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/14 21:27:13 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,15 @@ static int	is_argument_token(t_token_type type)
 
 static t_token	*skip_redirection_tokens(t_token *tmp, t_token *end)
 {
-	if (tmp && tmp != end && tmp->type >= TK_REDIR_IN_2
-		&& tmp->type <= TK_HEREDOC_5)
+	while (tmp && tmp != end && (tmp->type >= TK_REDIR_IN_2
+		&& tmp->type <= TK_HEREDOC_5))
 	{
 		tmp = tmp->next;
 		if (tmp == end || !tmp)
 			return (NULL);
 		tmp = tmp->next;
 	}
+	//printf("SKIP REDIRECTION %s\n", tmp->value);
 	return (tmp);
 }
 
@@ -290,6 +291,7 @@ char	**populate_argv(char **argv, t_token *start, t_token *end)
 		else
 			break;
 	}
+	printf("[%d]\n", i);
 	argv[i] = NULL;
 	return (argv);
 }

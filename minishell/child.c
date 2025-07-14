@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/10 15:00:43 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/14 17:20:33 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	handle_redirections(t_node *node)
 	int i = apply_redirects(node->redirs); // qui
 	if (node->redirs && i)
 	{
-		   printf("Primo redir: type=%d, fd=%d\n", node->redirs->type, node->redirs->fd);
+		   //printf("Primo redir: type=%d, fd=%d\n", node->redirs->type, node->redirs->fd);
 		printf("Error in redirections\n");
 		exit(1);
 	}
@@ -130,7 +130,7 @@ void	exec_child(t_node *node, int pipe_out[2], int pipe_in, t_env *env)
         printf("nessun comando da eseguire\n");
         exit(0);
     }
-	printf("exec_chiild: node->argv[0] = %s\n", node->argv[0]);
+	//printf("exec_chiild: node->argv[0] = %s\n", node->argv[0]);
 	handle_builtin(node, &env);
 	execute_command(node, env);
 	printf ("non ci arriva\n");

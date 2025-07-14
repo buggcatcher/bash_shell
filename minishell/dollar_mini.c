@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/10 16:29:21 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/14 17:22:12 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ char	*ft_create_var(char *buffer, char **input, t_shell_state *state)
 
 	if (**input == '$')
 	{
-		//printf("❌ EXPAND VAR\n");
 		var = ft_expand_var(input, state);
 		if (!buffer)
 			buffer = var;
@@ -113,7 +112,6 @@ static char    *ft_expand_normal_var(char **input, t_shell_state *state, char *s
                       **input == '_'))
         (*input)++;
     var_name = ft_strndup(start, *input - start);
-	//printf("❌ EXPAND VAR GETENV\n");
     var_value = ft_my_getenv(var_name, state);
  
     free(var_name);
@@ -171,7 +169,6 @@ char	*ft_expand_var(char **input, t_shell_state *state)
 		(*input)++;
 		return (ft_strdup("minishell"));
 	}
-	//printf("❌ EXPAND NORMAL VAR\n");
 	return (ft_expand_normal_var(input, state, start));
 }
 

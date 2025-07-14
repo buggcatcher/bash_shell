@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/10 16:48:01 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/14 17:17:45 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,52 @@ int	wait_for_last(pid_t last_pid, int *exit_status)
 	return (*exit_status);
 }
 
+// int	executor_loop(t_node *node, t_shell_state *state)
+// {
+// 	pid_t	last_pid;
+// 	pid_t	pid = 0;
+//     //t_node  *original_node;
+// 	int		prev_fd;
+// 	int		pipe_fd[2];
+    
+// 	last_pid = -1;
+// 	prev_fd = -1;
+//     //original_node = node;
+//     printf("🟢 PRE EXECUTOR DEBUG 🟢\n");
+//     while (node)
+//     {
+//         printf("====== 🟢 EXECUTOR DEBUG 🟢 ======\n");
+//         printf("node->argv[0] = %s\n", node->argv[0] ? node->argv[0] : "(null)");
+//         printf("node->redirs = %p\n", node->redirs);
+//         if (node->redirs)
+//            printf("first redir type = %d, fd = %d\n", node->redirs->type, node->redirs->fd);
+//         debug_print_nodes(node);
+//         if (create_pipe_if_needed(node, pipe_fd))
+//             return (1);
+//         printf("should_execute_in_parent = %d\n", should_execute_in_parent(node));
+//         if (should_execute_in_parent(node))
+//         {
+//             printf("EXECUTING IN PARENT\n");
+//             return (exec_in_parent(node, state));
+//         }
+//         printf("FORKING...\n");
+// 		pid = fork();
+// 		if (pid == -1)
+// 			return (write(2, "Fork\n", 6), 1);
+// 		if (pid == 0) {
+// 			printf("EXECUTIN IN CHILD\n");
+// 			exec_child(node, pipe_fd, prev_fd, state->env); // qui
+// 		}
+// 		else
+// 			last_pid = pid;
+// 		update_fds_for_next_cmd(node, pipe_fd, &prev_fd);
+// 		node = node->next;
+// 	}
+// 	return (wait_for_last(last_pid, &state->last_status));
+// }
+
+
+//NEW
 int	executor_loop(t_node *node, t_shell_state *state)
 {
 	pid_t	last_pid;
@@ -115,17 +161,18 @@ int	executor_loop(t_node *node, t_shell_state *state)
 	last_pid = -1;
 	prev_fd = -1;
     //original_node = node;
+    printf("🟢 PRE EXECUTOR DEBUG 🟢\n");
     while (node)
     {
         printf("====== 🟢 EXECUTOR DEBUG 🟢 ======\n");
-        printf("node->argv[0] = %s\n", node->argv[0] ? node->argv[0] : "(null)");
-        printf("node->redirs = %p\n", node->redirs);
-        if (node->redirs)
-           printf("first redir type = %d, fd = %d\n", node->redirs->type, node->redirs->fd);
+        //printf("node->argv[0] = %s\n", node->argv[0] ? node->argv[0] : "(null)");
+        //printf("node->redirs = %p\n", node->redirs);
+        //if (node->redirs)
+           //printf("first redir type = %d, fd = %d\n", node->redirs->type, node->redirs->fd);
         debug_print_nodes(node);
         if (create_pipe_if_needed(node, pipe_fd))
             return (1);
-        printf("should_execute_in_parent = %d\n", should_execute_in_parent(node));
+        //printf("should_execute_in_parent = %d\n", should_execute_in_parent(node));
         if (should_execute_in_parent(node))
         {
             printf("EXECUTING IN PARENT\n");
