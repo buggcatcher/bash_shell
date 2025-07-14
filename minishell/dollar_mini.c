@@ -87,9 +87,9 @@ char	*ft_create_var(char *buffer, char **input, t_shell_state *state)
 //     // if (*input == start)
 //     //     return (ft_strdup("$"));
 
-//     while (**input && ((**input >= '0' && **input <= '9') || \
-//                       (**input >= 'A' && **input <= 'Z') || \
-//                       (**input >= 'a' && **input <= 'z') || \
+//     while (**input && ((**input >= '0' && **input <= '9') || 
+//                       (**input >= 'A' && **input <= 'Z') || 
+//                       (**input >= 'a' && **input <= 'z') || 
 //                       **input == '_'))
 //         (*input)++;
     

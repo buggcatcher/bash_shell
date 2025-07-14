@@ -82,6 +82,7 @@ static void	execute_command(t_node *node, t_env *env)
 	if (!node->argv || !node->argv[0])
 	{
 		printf("free_nodes in execute_command\n");
+		ft_free_token(node->token);
 		ft_free_nodes(node);
 		exit(127);
 	}
@@ -90,6 +91,7 @@ static void	execute_command(t_node *node, t_env *env)
 	else if (node->argv[0][0] == '.' && node->argv[0][1] == '\0')
 	{
 		write(2, "Error_2\n", 9);
+		ft_free_token(node->token);
 		ft_free_nodes(node);
 		ft_free_env(env);
 		exit(127);
@@ -98,6 +100,7 @@ static void	execute_command(t_node *node, t_env *env)
 		bin = resolve_path(node->argv[0], env, node);
 	if (!bin)
 	{
+		ft_free_token(node->token);
 		ft_free_nodes(node);
 		ft_free_env(env);
 		exit(127);
@@ -106,6 +109,7 @@ static void	execute_command(t_node *node, t_env *env)
 	execve(bin, node->argv, env_arr);
 	write(2, "Error_1\n", 9);
 	free_array(env_arr);
+	ft_free_token(node->token);
 	ft_free_nodes(node);
 	ft_free_env(env);
 	exit(127);
@@ -120,6 +124,7 @@ void	exec_child(t_node *node, int pipe_out[2], int pipe_in, t_env *env)
 	handle_redirections(node); // qui
 	if (!node->argv || !node->argv[0])
     {
+		ft_free_token(node->token);
 		ft_free_nodes(node);
 		ft_free_env(env);
         printf("nessun comando da eseguire\n");
