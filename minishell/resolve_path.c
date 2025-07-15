@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/11 18:05:38 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/15 17:20:32 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,8 +157,10 @@ char	*resolve_path(char *cmd, t_env *env, t_node *node)
 	char	**paths;
 	char	*full_path;
 
+	// if (is_invalid_cmd(cmd))
+	// 	return (ft_free_cmd_not_found(env, node), NULL);
 	if (is_invalid_cmd(cmd))
-		return (ft_free_cmd_not_found(env, node), NULL);
+		return (NULL);
 	if (is_absolute_path(cmd))
 		return (ft_strdup(cmd));
 	paths = get_paths(env);
@@ -170,7 +172,7 @@ char	*resolve_path(char *cmd, t_env *env, t_node *node)
 	{
 		ft_free_cmd_not_found(env, node);
 		write(2, "command not found\n", 19);
-		exit(1); // NEW aggiunto exit per evitare double leack in caso di command not found 
+		exit(2); // NEW aggiunto exit per evitare double leack in caso di command not found 
 	}
 		return (full_path);
 }

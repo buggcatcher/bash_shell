@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/04 21:20:37 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/15 16:20:31 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,32 +74,32 @@ int	exec_builtin(char **args, t_env **env)
 		return (1);
 	if (!ft_strcmp(args[0], "cd"))
 	{
-		printf("executing cd built-in\n");
+		printf("🔷 executing cd built-in\n");
 		return (exe_cd(args, env));
 	}
 	else if (!ft_strcmp(args[0], "export"))
 	{
-		printf("executing export built-in\n"); 
+		printf("🔷 executing export built-in\n"); 
 		return (exe_export(args, env));
 	}
 	else if (!ft_strcmp(args[0], "unset"))
 	{
-		printf("executing unset built-in\n");
+		printf("🔷 executing unset built-in\n");
 		return (exe_unset(args, env));
 	}
 	else if (!ft_strcmp(args[0], "pwd"))
 	{
-		printf("executing pwd built-in\n");
+		printf("🔷 executing pwd built-in\n");
 		return (exe_pwd(args, env));
 	}
 	else if (!ft_strcmp(args[0], "env"))
 	{
-		printf("executing env built-in\n");
+		printf("🔷 executing env built-in\n");
 		return (exe_env(*env));
 	}
 	else if (!ft_strcmp(args[0], "echo"))
 	{
-		printf("executing echo built-in\n");
+		printf("🔷 executing echo built-in\n");
 		return (exe_echo(args));
 	}
 	return (1);
