@@ -1,0 +1,10 @@
+redirect is 0
+ggg
+
+d
+🔷 executing echo built-in
+x
+About to switch_fd restore
+🔷 executing echo built-in
+y
+About to switch_fd restore

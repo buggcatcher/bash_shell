@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/14 17:22:12 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/15 20:12:26 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,11 @@ static char    *ft_expand_normal_var(char **input, t_shell_state *state, char *s
                       (**input >= 'A' && **input <= 'Z') || \
                       (**input >= 'a' && **input <= 'z') || \
                       **input == '_'))
-        (*input)++;
+        	(*input)++;
+	if (*input == start)
+		return (ft_strdup("$"));
     var_name = ft_strndup(start, *input - start);
     var_value = ft_my_getenv(var_name, state);
- 
     free(var_name);
     if (!var_value)
         var_value = "";

@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/14 17:20:33 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/15 19:49:37 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	handle_builtin(t_node *node, t_env **env)
 // }
 
 // NEW aggiunto il caso del punto e free node/env
-static void	execute_command(t_node *node, t_env *env)
+static void	execute_command(t_node *node, t_env *env, t_node *head)
 {
 	char	*bin;
 	char	**env_arr;
@@ -92,12 +92,12 @@ static void	execute_command(t_node *node, t_env *env)
 	{
 		write(2, "Error_2\n", 9);
 		ft_free_token(node->token);
-		ft_free_nodes(node);
+		ft_free_nodes(head);
 		ft_free_env(env);
 		exit(127);
 	}
 	else
-		bin = resolve_path(node->argv[0], env, node);
+		bin = resolve_path(node->argv[0], env, node, head);
 	if (!bin)
 	{
 		ft_free_token(node->token);
@@ -108,14 +108,14 @@ static void	execute_command(t_node *node, t_env *env)
 	env_arr = env_to_array(env);
 	execve(bin, node->argv, env_arr);
 	write(2, "Error_1\n", 9);
-	free_array(env_arr);
 	ft_free_token(node->token);
+	free_array(env_arr);
 	ft_free_nodes(node);
 	ft_free_env(env);
 	exit(127);
 }
 
-void	exec_child(t_node *node, int pipe_out[2], int pipe_in, t_env *env)
+void	exec_child(t_node *node, int pipe_out[2], int pipe_in, t_env *env, t_node *head)
 {
 	disable_signals();
 	if (node->next)
@@ -124,7 +124,6 @@ void	exec_child(t_node *node, int pipe_out[2], int pipe_in, t_env *env)
 	handle_redirections(node); // qui
 	if (!node->argv || !node->argv[0])
     {
-		ft_free_token(node->token);
 		ft_free_nodes(node);
 		ft_free_env(env);
         printf("nessun comando da eseguire\n");
@@ -132,6 +131,6 @@ void	exec_child(t_node *node, int pipe_out[2], int pipe_in, t_env *env)
     }
 	//printf("exec_chiild: node->argv[0] = %s\n", node->argv[0]);
 	handle_builtin(node, &env);
-	execute_command(node, env);
+	execute_command(node, env, head);
 	printf ("non ci arriva\n");
 }

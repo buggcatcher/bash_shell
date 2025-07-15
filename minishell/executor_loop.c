@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/14 17:17:45 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/15 19:37:56 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,13 +154,13 @@ int	executor_loop(t_node *node, t_shell_state *state)
 {
 	pid_t	last_pid;
 	pid_t	pid = 0;
-    //t_node  *original_node;
+    t_node  *head;
 	int		prev_fd;
 	int		pipe_fd[2];
     
 	last_pid = -1;
 	prev_fd = -1;
-    //original_node = node;
+    head = node;
     printf("🟢 PRE EXECUTOR DEBUG 🟢\n");
     while (node)
     {
@@ -184,7 +184,7 @@ int	executor_loop(t_node *node, t_shell_state *state)
 			return (write(2, "Fork\n", 6), 1);
 		if (pid == 0) {
 			printf("EXECUTIN IN CHILD\n");
-			exec_child(node, pipe_fd, prev_fd, state->env); // qui
+			exec_child(node, pipe_fd, prev_fd, state->env, head); // qui
 		}
 		else
 			last_pid = pid;

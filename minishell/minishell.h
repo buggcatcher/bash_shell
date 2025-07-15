@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/10 15:27:25 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/15 19:41:11 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,10 +200,10 @@ int		apply_redirects(t_redir *redirs);
 
 // === resolve_path.c === //
 //char	*resolve_path(char *cmd, t_env *env);
-char	*resolve_path(char *cmd, t_env *env, t_node *node);
+char	*resolve_path(char *cmd, t_env *env, t_node *node, t_node *head);
 
 // === child.c === //
-void	exec_child(t_node *node, int pipe_out[2], int pipe_in, t_env *env);
+void	exec_child(t_node *node, int pipe_out[2], int pipe_in, t_env *env, t_node *head);
 
 // === various.c === //
 void	free_split_all(char **arr);

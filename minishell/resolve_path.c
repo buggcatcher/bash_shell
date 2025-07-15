@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/15 17:20:32 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/15 19:58:04 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static bool	is_invalid_cmd(char *cmd)
 {
-	if (cmd[0] == '\0')
+	if (cmd == NULL || cmd[0] == '\0')
 	{
 		write(2, "command not found\n", 19);
 		return (true);
@@ -146,13 +146,13 @@ static int	has_heredoc_before_redirect_out(t_redir *redir_list)
 
 static void ft_free_cmd_not_found(t_env *env, t_node *node)
 {
-	ft_free_token(node->token);
+	if (node && node->token)
+		ft_free_token(node->token);
 	ft_free_nodes(node);
 	ft_free_env(env);
-	
 }
 
-char	*resolve_path(char *cmd, t_env *env, t_node *node)
+char	*resolve_path(char *cmd, t_env *env, t_node *node, t_node *head)
 {
 	char	**paths;
 	char	*full_path;
@@ -170,9 +170,13 @@ char	*resolve_path(char *cmd, t_env *env, t_node *node)
 	free_split_all(paths);
 	if (!full_path && !has_heredoc_before_redirect_out(node->redirs))
 	{
-		ft_free_cmd_not_found(env, node);
-		write(2, "command not found\n", 19);
-		exit(2); // NEW aggiunto exit per evitare double leack in caso di command not found 
+		ft_free_cmd_not_found(env, head);
+		write(2, "command not found100\n", 22);
+		write(2, "sono entrato in (!full_path && !has_heredoc_before_redirect_out(node->redirs))\n", 80);
+		//debug_print_nodes(node); // reverse ingeneerng
+		//argv[0] deve darti invalid read e invece con debug_print_nodes vedo che esiste ancora
+		exit(127); // NEW aggiunto exit per evitare double leack in caso di command not found 
 	}
 		return (full_path);
 }
+ 
