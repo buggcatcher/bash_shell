@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/14 17:32:18 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/15 20:54:25 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*read_user_input(t_shell_state *state)
 	char	*input;
 
 	g_sigint = 0;
-	input = readline("minishell$ ");
+	input = readline("🟥  minishell$ ");
 	if (!input)
 	{
 		printf("exit\n");

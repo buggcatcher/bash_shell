@@ -46,7 +46,7 @@ re: fclean all
 # --track-fds=yes --trace-children=yes 
 val: all
 	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes \
-	--suppressions=readline.supp --quiet ./$(NAME)
+	--suppressions=readline.supp --track-fds=yes --quiet ./$(NAME)
 
 # Evita errori nel caso i nomi delle regole coincidano con filename reali
 .PHONY: all clean fclean re
