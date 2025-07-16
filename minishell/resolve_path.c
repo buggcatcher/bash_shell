@@ -56,79 +56,6 @@ static char	*search_in_paths(char **paths, char *cmd)
 	return (NULL);
 }
 
-// char	*resolve_path(char *cmd, t_env *env)
-// {
-// 	char	**paths;
-// 	char	*full_path;
-
-// 	if (is_invalid_cmd(cmd))
-// 		return (NULL);
-// 	if (is_absolute_path(cmd))
-// 		return (ft_strdup(cmd));
-// 	paths = get_paths(env);
-// 	if (!paths)
-// 		return (NULL);
-// 	full_path = search_in_paths(paths, cmd);
-// 	free_split_all(paths);
-// 	if (!full_path)
-// 		write(2, "command not found\n", 19);
-// 	return (full_path);
-// }
-
-// static int	has_heredoc_before_redirect_out(t_redir *redir_list)
-// {
-// 	t_redir	*current;
-// 	int		seen_heredoc = 0;
-
-// 	current = redir_list;
-// 	while (current)
-// 	{
-// 		if (current->type == TK_HEREDOC_5)
-// 			seen_heredoc = 1;
-// 		else if ((current->type == TK_REDIR_OUT_3 || current->type == TK_REDIR_OUT_3) && seen_heredoc)
-// 			return (1);
-// 		current = current->next;
-// 	}
-// 	return (0);
-// }
-
-// static int	has_heredoc_before_redirect(t_redir *redir_list)
-// {
-// 	t_redir	*current;
-// 	t_redir	*last;
-
-// 	current = redir_list;
-// 	last = NULL;
-// 	while (current)
-// 	{
-// 		last->type = current->type;
-// 		current = current->next;
-// 	}
-// 	if (last->type == TK_HEREDOC_5)
-// 		return (1);
-// 	return (0);
-// }
-
-// char	*resolve_path(char *cmd, t_env *env, t_node *node)
-// {
-// 	char	**paths;
-// 	char	*full_path;
-
-// 	if (is_invalid_cmd(cmd))
-// 		return (NULL);
-// 	if (is_absolute_path(cmd))
-// 		return (ft_strdup(cmd));
-// 	paths = get_paths(env);
-// 	if (!paths)
-// 		return (NULL);
-// 	full_path = search_in_paths(paths, cmd);
-// 	free_split_all(paths);
-// 	if (!full_path && !has_heredoc_before_redirect_out(node->redirs))
-// 		write(2, "command not found\n", 19);
-// 	return (full_path);
-// }
-
-//NEW
 static int	has_heredoc_before_redirect_out(t_redir *redir_list)
 {
 	t_redir	*current;
@@ -171,8 +98,8 @@ char	*resolve_path(char *cmd, t_env *env, t_node *node, t_node *head)
 	if (!full_path && !has_heredoc_before_redirect_out(node->redirs))
 	{
 		ft_free_cmd_not_found(env, head);
-		write(2, "command not found100\n", 22);
-		write(2, "sono entrato in (!full_path && !has_heredoc_before_redirect_out(node->redirs))\n", 80);
+		write(2, "command not found\n", 19);
+		//write(2, "sono entrato in (!full_path && !has_heredoc_before_redirect_out(node->redirs))\n", 80);
 		//debug_print_nodes(node); // reverse ingeneerng
 		//argv[0] deve darti invalid read e invece con debug_print_nodes vedo che esiste ancora
 		exit(127); // NEW aggiunto exit per evitare double leack in caso di command not found 

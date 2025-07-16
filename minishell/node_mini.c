@@ -94,7 +94,7 @@ t_node	*ft_get_node(t_token *token)
 			ft_add_redirection(new, tmp);
 			if (tmp->next)
 				tmp = tmp->next;
-			printf("ADD REDIRECTION %s\n", tmp->value);
+			//printf("ADD REDIRECTION %s\n", tmp->value);
 		}
 		tmp = tmp->next;
 	}

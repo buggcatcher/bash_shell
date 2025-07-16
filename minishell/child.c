@@ -24,17 +24,20 @@ static void	handle_pipes(int pipe_in, int pipe_out[2])
 		close(pipe_in);
 }
 
-static void	handle_redirections(t_node *node)
+static void	handle_redirections(t_node *node, t_env *env, t_node *head)
 {
-	printf("Prima di apply_redirects, redir=%p\n", node->redirs);
+	//printf("Prima di apply_redirects, redir=%p\n", node->redirs);
 	int i = apply_redirects(node->redirs); // qui
 	if (node->redirs && i)
 	{
-		   //printf("Primo redir: type=%d, fd=%d\n", node->redirs->type, node->redirs->fd);
+		//printf("Primo redir: type=%d, fd=%d\n", node->redirs->type, node->redirs->fd);
+		ft_free_token(node->token);
+        ft_free_nodes(head);
+        ft_free_env(env);
 		printf("Error in redirections\n");
 		exit(1);
 	}
-	printf("redirect is %d\n", i);
+	//printf("redirect is %d\n", i);
 }
 
 static void	handle_builtin(t_node *node, t_env **env)
@@ -43,37 +46,12 @@ static void	handle_builtin(t_node *node, t_env **env)
 	
     if (is_builtin(node->argv[0]))
 	{
-        printf("is builtin\n");
+        //printf("is builtin\n");
         status = exec_builtin(node->argv, env);
         clean_exit(node, *env, status);
     }
 }
 
-// static void	execute_command(t_node *node, t_env *env)
-// {
-// 	char	*bin;
-// 	char	**env_arr;
-
-// 	if (!node->argv || !node->argv[0])
-// 	{
-// 		//printf("non ci arriva");
-// 		ft_free_nodes(node);
-// 		exit(127);
-// 	}
-// 	if (ft_strchr(node->argv[0], '/'))
-// 		bin = node->argv[0];
-// 	else
-// 		bin = resolve_path(node->argv[0], env, node);
-// 	if (!bin)
-// 		exit(127);
-// 	env_arr = env_to_array(env);
-// 	execve(bin, node->argv, env_arr);
-// 	write(2, "Error\n", 7);
-// 	free_array(env_arr);
-// 	exit(127);
-// }
-
-// NEW aggiunto il caso del punto e free node/env
 static void	execute_command(t_node *node, t_env *env, t_node *head)
 {
 	char	*bin;
@@ -81,7 +59,7 @@ static void	execute_command(t_node *node, t_env *env, t_node *head)
 
 	if (!node->argv || !node->argv[0])
 	{
-		printf("free_nodes in execute_command\n");
+		//printf("free_nodes in execute_command\n");
 		ft_free_token(node->token);
 		ft_free_nodes(node);
 		exit(127);
@@ -90,7 +68,7 @@ static void	execute_command(t_node *node, t_env *env, t_node *head)
 		bin = node->argv[0];
 	else if (node->argv[0][0] == '.' && node->argv[0][1] == '\0')
 	{
-		write(2, "Error_2\n", 9);
+		write(2, "Error_2 in execute_command\n", 28);
 		ft_free_token(node->token);
 		ft_free_nodes(head);
 		ft_free_env(env);
@@ -107,7 +85,7 @@ static void	execute_command(t_node *node, t_env *env, t_node *head)
 	}
 	env_arr = env_to_array(env);
 	execve(bin, node->argv, env_arr);
-	write(2, "Error_1\n", 9);
+	write(2, "Error_1 in execute_command\n", 28);
 	ft_free_token(node->token);
 	free_array(env_arr);
 	ft_free_nodes(node);
@@ -121,16 +99,16 @@ void	exec_child(t_node *node, int pipe_out[2], int pipe_in, t_env *env, t_node *
 	if (node->next)
 		switch_fd(pipe_out[1], STDOUT_FILENO);
 	handle_pipes(pipe_in, pipe_out);
-	handle_redirections(node); // qui
+	handle_redirections(node, env, head); // qui
 	if (!node->argv || !node->argv[0])
     {
 		ft_free_nodes(node);
 		ft_free_env(env);
-        printf("nessun comando da eseguire\n");
+        //printf("nessun comando da eseguire\n");
         exit(0);
     }
 	//printf("exec_chiild: node->argv[0] = %s\n", node->argv[0]);
 	handle_builtin(node, &env);
 	execute_command(node, env, head);
-	printf ("non ci arriva\n");
+	//printf ("non ci arriva\n");
 }

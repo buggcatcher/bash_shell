@@ -27,13 +27,6 @@ static int	open_redirection_file(t_redir *redir)
 	return (fd);
 }
 
-// static int	handle_heredoc(t_redir *redir)
-// {
-// 	if (ft_handle_heredoc(redir) != 0)
-// 		return (1);
-// 	return (0);
-// }
-
 static int	get_redirection_target(int type)
 {
 	if (type == TK_REDIR_IN_2 || type == TK_HEREDOC_5)
@@ -60,7 +53,7 @@ static int	process_redirection(t_redir *redir)
 	{
 		fd = open_redirection_file(redir);
 		if (fd < 0)
-			return (write(2, "Redirect open error\n", 21), 1);
+			return (1);
 	}
 	target = get_redirection_target(redir->type);
 	if (switch_fd(fd, target) != 0)
@@ -73,44 +66,6 @@ static int	process_redirection(t_redir *redir)
 	redir->fd = -1;
 	return (0);
 }
-
-// int process_redirection(t_redir *redir)
-// {
-//     int fd;
-//     int target;
-    
-//     if (redir->type == TK_HEREDOC_5)
-//     {
-//         // L'heredoc è già stato preprocessato
-//         if (redir->heredoc_buffer)
-//         {
-//             // Crea pipe dal buffer
-//             fd = create_fd_from_buffer(redir->heredoc_buffer);
-//             if (fd < 0)
-//                 return (write(2, "Heredoc buffer error\n", 22), 1);
-//         }
-//         else
-//         {
-//             // Heredoc già processato in una sequenza precedente - skip
-//             return (0);
-//         }
-//     }
-//     else
-//     {
-//         fd = open_redirection_file(redir);
-//         if (fd < 0)
-//             return (write(2, "Redirect open error\n", 21), 1);
-//     }
-    
-//     target = get_redirection_target(redir->type);
-//     if (switch_fd(fd, target) != 0)
-//     {
-//         close(fd);
-//         return (1);
-//     }
-//     close(fd);
-//     return (0);
-// }
 
 int	apply_redirects(t_redir *redirs)
 {

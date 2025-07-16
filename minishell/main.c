@@ -19,7 +19,7 @@ char	*read_user_input(t_shell_state *state)
 	char	*input;
 
 	g_sigint = 0;
-	input = readline("🟥  minishell$ ");
+	input = readline("🟩 minishell$ ");
 	if (!input)
 	{
 		printf("exit\n");
@@ -36,43 +36,6 @@ char	*read_user_input(t_shell_state *state)
 	return (input);
 }
 
-// bool	process_input(char *input, t_shell_state *state)
-// {
-// 	t_token	*token;
-// 	t_node	*node;
-
-// 	token = NULL;
-// 	node = NULL;
-// 	token = ft_tokenize(state, NULL, input);
-// 	if (!token)
-// 		return (false);
-// 	if (ft_check_syntax(token) == 1)
-// 	{
-// 		ft_free_token(token);
-// 		return (false);
-// 	}
-// 	node = ft_node(token);
-// 	if (preprocess_heredocs(node) != 0)
-//     {
-// 		ft_free_token(token);
-//         ft_free_nodes(node);
-//         return (false);
-//     }
-// 	debug_print_nodes(node);
-// 		printf("+ Before executor_loop\n");
-//     ignore_signals();
-//     executor_loop(node, state);
-//     	printf("+ After executor_loop\n");
-//     setup_signals();
-//     	printf("+ After setup_signals\n");
-//     ft_free_nodes(node);
-//     	printf("+ After ft_free_nodes\n");
-// 	ft_free_token(token);
-// 		printf("+ After ft_free_token\n");
-// 	return (true);
-// }
-
-// NEW
 bool	process_input(char *input, t_shell_state *state)
 {
 	t_token	*token;
@@ -89,14 +52,14 @@ bool	process_input(char *input, t_shell_state *state)
 		return (false);
 	}
 	node = ft_node(token);
-	printf("token %u\n", node->token->type);
+	//printf("token %u\n", node->token->type);
 	if (preprocess_heredocs(node) != 0)
     {
 		ft_free_token(token);
         ft_free_nodes(node);
         return (false);
     }
-	printf("token %u\n", node->token->type);
+	//printf("token %u\n", node->token->type);
 	// printf("token %u\n", node->token->type);
     // if (node->redirs->type == TK_HEREDOC_5)
     // {
@@ -108,17 +71,17 @@ bool	process_input(char *input, t_shell_state *state)
     //     }
 	// }
 	// printf("token %u\n", node->token->type);
-	debug_print_nodes(node);
-		printf("+ Before executor_loop\n");
+	//debug_print_nodes(node);
+		//printf("+ Before executor_loop\n");
     ignore_signals();
     executor_loop(node, state);
-    	printf("+ After executor_loop\n");
+    	//printf("+ After executor_loop\n");
     setup_signals();
-    	printf("+ After setup_signals\n");
+    	//printf("+ After setup_signals\n");
     ft_free_nodes(node);
-    	printf("+ After ft_free_nodes\n");
+    	//printf("+ After ft_free_nodes\n");
 	ft_free_token(token);
-		printf("+ After ft_free_token\n");
+		//printf("+ After ft_free_token\n");
 	return (true);
 }
 

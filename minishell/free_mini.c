@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-// NEW
 void	ft_free_env(t_env *env)
 {
 	t_env	*tmp;
@@ -29,8 +28,6 @@ void	ft_free_env(t_env *env)
 	}
 }
 
-
-// NEW new meow new
 t_node *ft_free_nodes(t_node *head)
 {
     t_node *tmp;
@@ -47,8 +44,6 @@ t_node *ft_free_nodes(t_node *head)
     return (NULL);
 }
 
-
-
 void	ft_free_token(t_token *token)
 {
 	t_token	*tmp;
@@ -64,21 +59,6 @@ void	ft_free_token(t_token *token)
 	}
 }
 
-// t_node	*ft_free_nodes(t_node *head)
-// {
-// 	t_node	*tmp;
-
-// 	while (head)
-// 	{
-// 		tmp = head;
-// 		head = head->next;
-// 		ft_free_argv(tmp->argv);
-// 		ft_free_redirs(tmp->redirs);
-// 		free(tmp);
-// 	}
-// 	return (NULL);
-// }
-
 void	ft_free_argv(char **argv)
 {
 	int	i;
@@ -93,28 +73,6 @@ void	ft_free_argv(char **argv)
 	}
 	free(argv);
 }
-
-// questa è buona, solo che sotto c'è la versione commentata per debuggare
-// void ft_free_redirs(t_redir *redir)
-// {
-//     t_redir *next_redir;
-    
-//     while (redir)
-//     {
-//         next_redir = redir->next;
-//         free(redir->filename);
-
-//         if (redir->heredoc_buffer)
-//             ft_free_heredoc_buffer(redir->heredoc_buffer);
-    
-// 		if (redir->type == TK_HEREDOC_5 && redir->fd > 2)
-//         {
-//             close(redir->fd);
-//         }
-//         free(redir);
-//         redir = next_redir;
-//     }
-// }
 
 void ft_free_redirs(t_redir *redir)
 {

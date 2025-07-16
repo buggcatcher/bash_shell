@@ -32,33 +32,6 @@ static t_token	*skip_redirection_tokens(t_token *tmp, t_token *end)
 	return (tmp);
 }
 
-/*int	ft_count_tokens(t_token *start, t_token *end)
-{
-	t_token	*cur;
-	int		count;
-
-	cur = start;
-	count = 0;
-	while (cur && cur != end)
-	{
-		cur = skip_redirection_tokens(cur, end);
-		if (!cur || cur == end)
-			break ;
-		if (is_argument_token(cur->type))
-		{
-			count++;
-			while (cur->wspace == 0 && cur->next != end)
-			{
-				cur = cur->next;
-				if (!is_argument_token(cur->type))
-					break ;
-			}
-		}
-		cur = cur->next;
-	}
-	return (count);
-}*/
-
 int	ft_count_tokens(t_token *start, t_token *end)
 {
 	t_token	*cur;
@@ -96,28 +69,6 @@ static char	**free_argv(char **argv, int i)
 	return (NULL);
 }
 
-/*static void		ft_concatenate_tokens(t_token *start, t_token *end, char *buffer, int first_arg)
-{
-	t_token	*current;
-	char	*ptr;
-
-	ptr = buffer;
-	current = start;
-	while (1)
-	{
-		ft_strcpy(ptr, current->value);
-		ptr += ft_strlen(current->value);
-		if (current == end)
-			break ;
-		current = current->next;
-	}
-	if (!first_arg && end->wspace == 1)
-	{
-		*ptr = ' ';
-		ptr++;
-	}
-	*ptr = '\0';
-}*/
 static void		ft_concatenate_tokens(t_token *start, t_token *end, char *buffer, int first_arg)
 {
 	t_token	*current;
@@ -140,30 +91,6 @@ static void		ft_concatenate_tokens(t_token *start, t_token *end, char *buffer, i
 	}
 	*ptr = '\0';
 }
-
-/*static char	*ft_strjoin_token_group(t_token *start, t_token *end, int first_arg)
-{
-	char	*result;
-	size_t	total_len;
-	t_token *current;
-
-	total_len = 0;
-	current = start;
-    while (1)
-	{
-		total_len += ft_strlen(current->value);
-		if (current == end)
-			break;
-		current = current->next;
-	}
-	if (!first_arg && end->wspace == 1)
-		total_len++;
-	result = malloc(total_len + 1);
-	if (!result)
-		return (NULL);
-	ft_concatenate_tokens(start, end, result, first_arg);
-	return (result);
-}*/
 
 static char	*ft_strjoin_token_group(t_token *start, t_token *end, int first_arg)
 {
@@ -188,24 +115,6 @@ static char	*ft_strjoin_token_group(t_token *start, t_token *end, int first_arg)
 	ft_concatenate_tokens(start, end, result, first_arg);
 	return (result);
 }
-
-/*static t_token	*process_token_group(t_token *cur, t_token *end, char **result_str, int first_arg)
-{
-	t_token *group_start;
-	t_token *group_end;
-
-	group_start = cur;
-	group_end = cur;
-	while (cur->wspace == 0 && cur->next != NULL && cur->next != end)
-	{
-		cur = cur->next;
-		if (!is_argument_token(cur->type))
-			break;
-		group_end = cur;
-	}
-	*result_str = ft_strjoin_token_group(group_start, group_end, first_arg);
-	return (cur);
-}*/
 
 static t_token	*process_token_group(t_token *cur, t_token *end, char **result_str, int first_arg)
 {
@@ -240,32 +149,6 @@ static int	process_argument_token(t_token **cur, t_token *end, char **argv, int 
 	return (1);
 }
 
-/*char	**populate_argv(char **argv, t_token *start, t_token *end)
-{
-	t_token *cur;
-	int i;
-
-	cur = start;
-	i = 0;
-	while (cur && cur != end)
-	{
-		cur = skip_redirection_tokens(cur, end);
-		if (!cur || cur == end)
-			break;
-		if (is_argument_token(cur->type))
-		{
-			if (!process_argument_token(&cur, end, argv, &i))
-				return (free_argv(argv, i));
-		}
-		if (cur->next)
-			cur = cur->next;
-		else
-			break;
-	}
-	argv[i] = NULL;
-	return (argv);
-}*/
-
 char	**populate_argv(char **argv, t_token *start, t_token *end)
 {
 	t_token *cur;
@@ -291,7 +174,7 @@ char	**populate_argv(char **argv, t_token *start, t_token *end)
 		else
 			break;
 	}
-	printf("[%d]\n", i);
+	//printf("[%d]\n", i);
 	argv[i] = NULL;
 	return (argv);
 }
