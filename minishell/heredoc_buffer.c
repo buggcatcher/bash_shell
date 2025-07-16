@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/10 14:07:00 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/16 17:11:00 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,15 @@ Copia il testo nel buffer e aggiunge manualmente il carattere di newline.
 */
 int append_to_buffer(t_heredoc_buffer *buffer, const char *line)
 {
-    size_t line_len = strlen(line);
-    size_t needed_size = buffer->size + line_len + 1;
+    size_t line_len;
+    size_t needed_size;
+    size_t new_capacity ;
     
+    line_len = strlen(line);
+    needed_size = buffer->size + line_len + 1;
     if (needed_size >= buffer->capacity)
     {
-        size_t new_capacity = buffer->capacity * 2;
+        new_capacity = buffer->capacity * 2;
         while (new_capacity < needed_size)
             new_capacity *= 2;
         

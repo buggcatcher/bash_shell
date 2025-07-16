@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/28 15:34:08 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/16 17:10:06 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_is_operator(t_token *token)
 		return (0);
 	if (token->type == TK_PIPE_1)
 		return (1);
-	if (token->type == TK_REDIR_IN_2)
+	if (token->type == TK_REDIR_IN_2 && token->next == NULL)
 		return (1);
 	if (token->type == TK_REDIR_OUT_3 && token->next == NULL)
 		return (1);
