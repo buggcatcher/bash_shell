@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/15 16:20:31 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/16 13:46:19 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	exec_builtin(char **args, t_env **env)
 	else if (!ft_strcmp(args[0], "env"))
 	{
 		printf("🔷 executing env built-in\n");
-		return (exe_env(*env));
+		return (exe_env(args, *env));
 	}
 	else if (!ft_strcmp(args[0], "echo"))
 	{

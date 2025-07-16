@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/15 19:41:11 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/16 13:46:03 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,7 +228,8 @@ int		remove_env_node(t_env **env, char *key);
 // === exe_btin.c === //
 int		exe_pwd(char **args, t_env **env);
 int		exe_unset(char **args, t_env **env);
-int		exe_env(t_env *env);
+//int		exe_env(t_env *env);
+int		exe_env(char **arg, t_env *env);
 int		exe_echo(char **args);
 
 // === exe_cd.c === //

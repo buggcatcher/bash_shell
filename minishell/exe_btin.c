@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/15 21:23:13 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/16 13:48:31 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,11 @@ int	exe_unset(char **args, t_env **env)
 	return (exit_status);
 }
 
-int	exe_env(t_env *env)
+int	exe_env(char **arg, t_env *env)
 {
+	
+	if (arg[1] != NULL)
+		return (printf("env: ‘%s’: no option or argument required\n", arg[1]), 0);
 	while (env)
 	{
 		if (env->exported && env->value != NULL)
