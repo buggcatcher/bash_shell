@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/15 19:37:56 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/16 15:06:46 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int exec_in_parent(t_node *node, t_shell_state *state)
     {
         printf("Executing exit\n");
         exe_exit(node->argv, state);
+        close(save_out);
+        close(save_in);
         return (state->last_status);
     }
     else

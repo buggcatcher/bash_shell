@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/16 14:25:00 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/16 15:03:31 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,8 @@ void ft_free_redirs(t_redir *redir)
         //printf("About to free filename\n");
         free(redir->filename);
         //printf("Filename freed\n");
-        if (redir->fd > 2)
-            close(redir->fd);
+        // if (redir->fd > 2)
+        //     close(redir->fd);
         if (redir->heredoc_buffer)
         {
             //printf("About to free heredoc_buffer\n");

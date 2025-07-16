@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/28 15:41:03 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/16 15:04:30 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,11 @@ static int	process_redirection(t_redir *redir)
 	if (switch_fd(fd, target) != 0)
 	{
 		close(fd);
+		redir->fd = -1;
 		return (1);
 	}
 	close(fd);
+	redir->fd = -1;
 	return (0);
 }
 
