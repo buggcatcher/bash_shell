@@ -176,10 +176,10 @@ static t_token *ft_create_token_dollar(t_token_type type, char *buffer, int len,
 			(*wspaceptr >= 'a' && *wspaceptr <= 'z') || \
 			*wspaceptr == '_' || *wspaceptr == '$'))
 			wspaceptr++;
+	if (*wspaceptr == '"' )
+		wspaceptr++;
     if (*wspaceptr == ' ')
-	{
         new->wspace = 1;
-    }
     new->next = NULL;
     return (new);
 }
