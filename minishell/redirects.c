@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/16 19:33:22 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/16 20:24:47 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	process_redirection(t_redir *redir)
 	{
 		fd = open_redirection_file(redir);
 		if (fd < 0)
-			return (1);
+			return (printf("bash: %s: No such file or directory\n", redir->filename), 1);
 	}
 	target = get_redirection_target(redir->type);
 	if (switch_fd(fd, target) != 0)
