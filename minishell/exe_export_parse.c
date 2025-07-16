@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/10 16:40:40 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/16 17:50:42 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ bool	is_valid_variable_name(const char *str)
 			return (false);
 		i++;
 	}
+	if ((str[i]) == '\0' && (str[i - 1]) == '+')
+		return (false);
 	return (true);
 }
 
