@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/16 13:48:31 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/16 19:11:47 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,25 +82,25 @@ static int	ft_echo_flag(char **arg)
 }
 
 
-int exe_echo(char **args)
+int	exe_echo(char **args)
 {
-   int i;
-   int new_line;
+	int i;
+	int new_line;
   
-   new_line = ft_echo_flag(args);
-   if (new_line > 1)
-       i = new_line;
-   else
-       i = 1;
-   while (args[i])
-   {
-       printf("%s", args[i]);
-       if (args[i + 1] != NULL)
-           printf(" ");
-       i++;
-   }
-   if (new_line <= 1)
-       printf("\n");
-   return (0);
+	new_line = ft_echo_flag(args);
+	if (new_line > 1)
+		i = new_line;
+	else
+		i = 1;
+	while (args[i])
+	{
+		printf("%s", args[i]);
+		if (args[i + 1] != NULL)
+			printf(" ");
+		i++;
+	}
+	if (new_line <= 1)
+		printf("\n");
+	return (0);
 }
 

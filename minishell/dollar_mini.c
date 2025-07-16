@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/15 21:09:12 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/16 19:08:50 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,50 +78,27 @@ char	*ft_create_var(char *buffer, char **input, t_shell_state *state)
 	return (buffer);
 }
 
-// static char    *ft_expand_normal_var(char **input, t_shell_state *state, char *start)
-// {
-//     char    *var_name;
-//     char    *var_value;
-
-//     // if (*input == start)
-//     //     return (ft_strdup("$"));
-
-//     while (**input && ((**input >= '0' && **input <= '9') || 
-//                       (**input >= 'A' && **input <= 'Z') || 
-//                       (**input >= 'a' && **input <= 'z') || 
-//                       **input == '_'))
-//         (*input)++;
-    
-//     var_name = ft_strndup(start, *input - start);
-// 	//printf("❌ EXPAND VAR GETENV\n");
-//     var_value = ft_my_getenv(var_name, state);
-//     free(var_name);
-//     if (!var_value)
-//         var_value = "";
-//     return (ft_strdup(var_value));
-// }
-
-static char    *ft_expand_normal_var(char **input, t_shell_state *state, char *start)
+static char	*ft_expand_normal_var(char **input, t_shell_state *state, char *start)
 {
-    char    *var_name;
-    char    *var_value;
+	char	*var_name;
+	char	*var_value;
 
-    while (**input && ((**input >= '0' && **input <= '9') || \
-                      (**input >= 'A' && **input <= 'Z') || \
-                      (**input >= 'a' && **input <= 'z') || \
-                      **input == '_'))
-        	(*input)++;
+	while (**input && ((**input >= '0' && **input <= '9') || \
+					(**input >= 'A' && **input <= 'Z') || \
+					(**input >= 'a' && **input <= 'z') || \
+					**input == '_'))
+			(*input)++;
 	if (*input == start)
 		return (ft_strdup("$"));
-    var_name = ft_strndup(start, *input - start);
-    var_value = ft_my_getenv(var_name, state);
-    free(var_name);
-    if (!var_value)
-        var_value = "";
-    return (ft_strdup(var_value));
+	var_name = ft_strndup(start, *input - start);
+	var_value = ft_my_getenv(var_name, state);
+	free(var_name);
+	if (!var_value)
+		var_value = "";
+	return (ft_strdup(var_value));
 }
 
-static int get_pid_from_proc_self(void)
+static int	get_pid_from_proc_self(void)
 {
 	char buffer[256];
 	int fd;
@@ -145,8 +122,6 @@ static int get_pid_from_proc_self(void)
 	}
 	return (pid);
 }
-
-
 
 char	*ft_expand_var(char **input, t_shell_state *state)
 {

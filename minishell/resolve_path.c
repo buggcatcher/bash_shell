@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/15 19:58:04 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/16 19:25:49 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,6 @@ char	*resolve_path(char *cmd, t_env *env, t_node *node, t_node *head)
 	char	**paths;
 	char	*full_path;
 
-	// if (is_invalid_cmd(cmd))
-	// 	return (ft_free_cmd_not_found(env, node), NULL);
 	if (is_invalid_cmd(cmd))
 		return (NULL);
 	if (is_absolute_path(cmd))

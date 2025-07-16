@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/16 15:04:30 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/16 19:33:22 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ static int	get_redirection_target(int type)
 	return (STDOUT_FILENO);
 }
 
-
-
 // Quando crei nuove redirezioni, assicurati che heredoc_buffer = NULL
 static int	process_redirection(t_redir *redir)
 {
@@ -46,10 +44,9 @@ static int	process_redirection(t_redir *redir)
 	{
 		if (redir->fd == -2)
 			return (0); // Skip, già processato
-		
 		fd = redir->fd; // Già preparato nel preprocessing
 	}
-	 else
+	else
 	{
 		fd = open_redirection_file(redir);
 		if (fd < 0)

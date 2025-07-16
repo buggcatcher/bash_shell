@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/06/29 16:12:40 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/16 19:12:37 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,14 @@
 void	handle_export_without_value(char *arg, t_env **env)
 {
 	t_env	*existing;
+	t_env	*new_node;
 
 	existing = find_env_node(*env, arg);
 	if (existing)
-		existing->exported = 1; // esportato
+		existing->exported = 1;
 	else
 	{
-		t_env *new_node = create_env_node(arg, NULL, 1);
+		new_node = create_env_node(arg, NULL, 1);
 		if (new_node)
 		{
 			new_node->next = *env;

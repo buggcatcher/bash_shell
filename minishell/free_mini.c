@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/16 15:03:31 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/16 19:15:34 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,27 +21,26 @@ void	ft_free_env(t_env *env)
 		tmp = env;
 		env = env->next;
 		if (tmp->key)
-            free(tmp->key);
-        if (tmp->value)
-            free(tmp->value);
+			free(tmp->key);
+		if (tmp->value)
+			free(tmp->value);
 		free(tmp);
 	}
 }
 
-t_node *ft_free_nodes(t_node *head)
+t_node	*ft_free_nodes(t_node *head)
 {
-    t_node *tmp;
-    
-    while (head)
-    {
-        tmp = head;
-        head = head->next;
-        
-        ft_free_argv(tmp->argv);
-        ft_free_redirs(tmp->redirs);
-        free(tmp);
-    }
-    return (NULL);
+	t_node	*tmp;
+
+	while (head)
+	{
+		tmp = head;
+		head = head->next;
+		ft_free_argv(tmp->argv);
+		ft_free_redirs(tmp->redirs);
+		free(tmp);
+	}
+	return (NULL);
 }
 
 void	ft_free_token(t_token *token)
@@ -121,13 +120,13 @@ void	free_array(char **arr)
 	free(arr);
 }
 
-void free_heredoc_buffer(t_heredoc_buffer *buffer)
+void	free_heredoc_buffer(t_heredoc_buffer *buffer)
 {
-    if (!buffer)
-        return;
-    if (buffer->content)
-        free(buffer->content);
-    free(buffer);
+	if (!buffer)
+		return;
+	if (buffer->content)
+		free(buffer->content);
+	free(buffer);
 }
 
 // void clean_exit(t_node *node, t_env *env, int status)
@@ -137,10 +136,10 @@ void free_heredoc_buffer(t_heredoc_buffer *buffer)
 //     exit(status);
 // }
 
-void clean_exit(t_node *node, t_env *env, int status)
+void	clean_exit(t_node *node, t_env *env, int status)
 {
-    ft_free_token(node->token);
-    ft_free_nodes(node);
-    ft_free_env(env);
-    exit(status);
+	ft_free_token(node->token);
+	ft_free_nodes(node);
+	ft_free_env(env);
+	exit(status);
 }
