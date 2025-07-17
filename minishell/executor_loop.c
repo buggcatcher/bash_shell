@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/16 16:05:06 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/17 14:59:15 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ int exec_in_parent(t_node *node, t_shell_state *state)
         }
         //printf("About to restore FDs\n");
     }
-    else if (!strcmp(node->argv[0], "exit"))
+    else if (!ft_strcmp(node->argv[0], "exit"))
     {
         //printf("Executing exit\n");
-        exe_exit(node->argv, state);
         close(save_out);
         close(save_in);
+        exe_exit(node->argv, state);
         return (state->last_status);
     }
     else

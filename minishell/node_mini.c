@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/17 14:39:28 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/17 15:42:53 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,33 @@ t_node	*ft_get_node(t_token *token)
 		new->token = first_cmd_token;
 	return (new);
 }
+
+// t_node	*ft_get_node(t_token *token)
+// {
+// 	t_node	*new;
+// 	t_token	*tmp;
+
+// 	new = malloc(sizeof(t_node));
+// 	if (!new)
+// 		return (NULL);
+// 	new->redirs = NULL;
+// 	new->token = token;
+// 	new->argv = NULL;
+// 	new->next = NULL;
+// 	tmp = token;
+// 	while (tmp && tmp->type != TK_PIPE_1)
+// 	{
+// 		if (tmp->type >= TK_REDIR_IN_2 && tmp->type <= TK_HEREDOC_5)
+// 		{
+// 			ft_add_redirection(new, tmp);
+// 			if (tmp->next)
+// 				tmp = tmp->next;
+// 			//printf("ADD REDIRECTION %s\n", tmp->value);
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// 	return (new);
+// }
 
 void	ft_create_node(t_node **head, t_node *new)
 {

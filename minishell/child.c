@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/16 19:10:14 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/17 15:32:09 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,11 @@ static void	handle_redirections(t_node *node, t_env *env, t_node *head)
 	if (node->redirs && i)
 	{
 		//printf("Primo redir: type=%d, fd=%d\n", node->redirs->type, node->redirs->fd);
+		printf("HANDLE REDIRECTIONS\n");
 		ft_free_token(node->token);
 		ft_free_nodes(head);
 		ft_free_env(env);
-		printf("Error in redirections\n");
+		//printf("Error in redirections\n");
 		exit(1);
 	}
 	//printf("redirect is %d\n", i);

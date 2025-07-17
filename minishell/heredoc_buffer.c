@@ -6,7 +6,7 @@
 /*   By: vloddo <vloddo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:50:13 by vloddo            #+#    #+#             */
-/*   Updated: 2025/07/16 20:08:49 by vloddo           ###   ########.fr       */
+/*   Updated: 2025/07/17 14:21:39 by vloddo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ int	handle_heredoc_sequence(t_redir *start_redir)
 	start_redir->fd = fd;
 	mark_as_skipped(start_redir->next);
 	free_heredoc_buffer(buffer);
+	//close (start_redir->fd);
 	return (0);
 }
 
